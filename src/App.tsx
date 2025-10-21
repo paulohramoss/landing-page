@@ -10,6 +10,7 @@ import Testimonials from './sections/Testimonials';
 import Contact from './sections/Contact';
 import CallToAction from './sections/CallToAction';
 import Process from './sections/Process';
+import GeminiChat from './components/GeminiChat';
 
 function App(): JSX.Element {
   const fadeIn = useMemo(
@@ -36,6 +37,7 @@ function App(): JSX.Element {
         <Contact />
       </main>
       <Footer />
+      <GeminiChat />
     </div>
   );
 }
