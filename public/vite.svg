@@ -1,0 +1,10 @@
+<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="logoGradient" x1="10" y1="10" x2="110" y2="110" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#6541F5" />
+      <stop offset="100%" stop-color="#F53855" />
+    </linearGradient>
+  </defs>
+  <rect x="10" y="10" width="100" height="100" rx="24" fill="url(#logoGradient)" />
+  <text x="60" y="74" text-anchor="middle" font-family="'Inter', sans-serif" font-size="52" font-weight="700" fill="white">VR</text>
+</svg>

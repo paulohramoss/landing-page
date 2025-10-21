@@ -1,0 +1,31 @@
+<svg width="720" height="640" viewBox="0 0 720 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient" x1="60" y1="40" x2="620" y2="600" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#6541F5" />
+      <stop offset="100%" stop-color="#F53855" />
+    </linearGradient>
+    <linearGradient id="glassGradient" x1="120" y1="120" x2="480" y2="520" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.85" />
+      <stop offset="100%" stop-color="#B0E1FF" stop-opacity="0.6" />
+    </linearGradient>
+    <linearGradient id="aluminiumGradient" x1="520" y1="160" x2="640" y2="520" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ECEFF4" />
+      <stop offset="100%" stop-color="#C8D2E0" />
+    </linearGradient>
+  </defs>
+  <rect x="40" y="40" width="640" height="560" rx="48" fill="url(#bgGradient)" opacity="0.25" />
+  <rect x="100" y="100" width="360" height="440" rx="28" fill="url(#glassGradient)" stroke="#E5F4FF" stroke-width="4" />
+  <rect x="140" y="140" width="280" height="360" rx="18" fill="#F8FBFF" opacity="0.7" />
+  <rect x="140" y="140" width="280" height="360" rx="18" stroke="#92C5FF" stroke-width="6" opacity="0.45" />
+  <path d="M220 140V500" stroke="#92C5FF" stroke-width="4" opacity="0.45" />
+  <rect x="500" y="140" width="120" height="360" rx="22" fill="url(#aluminiumGradient)" />
+  <rect x="520" y="220" width="80" height="200" rx="12" fill="#FFFFFF" opacity="0.85" />
+  <path d="M520 320H600" stroke="#9AA6B7" stroke-width="8" stroke-linecap="round" opacity="0.65" />
+  <circle cx="420" cy="220" r="16" fill="#FFFFFF" opacity="0.8" />
+  <circle cx="460" cy="260" r="10" fill="#FFFFFF" opacity="0.6" />
+  <circle cx="420" cy="300" r="12" fill="#FFFFFF" opacity="0.6" />
+  <circle cx="380" cy="260" r="8" fill="#FFFFFF" opacity="0.55" />
+  <rect x="160" y="420" width="80" height="20" rx="10" fill="#F53855" opacity="0.8" />
+  <rect x="260" y="420" width="80" height="20" rx="10" fill="#6541F5" opacity="0.8" />
+  <text x="120" y="576" fill="#ffffff" font-size="28" font-family="'Inter', sans-serif" opacity="0.9">Projetos personalizados em vidro e alumínio</text>
+</svg>
