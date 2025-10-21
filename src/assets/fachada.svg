@@ -1,0 +1,16 @@
+<svg width="480" height="320" viewBox="0 0 480 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="facadeGradient" x1="60" y1="40" x2="420" y2="280" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#E8F1FF" />
+      <stop offset="100%" stop-color="#B1C9FF" />
+    </linearGradient>
+  </defs>
+  <rect x="40" y="40" width="400" height="240" rx="20" fill="url(#facadeGradient)" />
+  <rect x="80" y="80" width="80" height="160" rx="12" fill="#0E172C" opacity="0.85" />
+  <rect x="180" y="80" width="80" height="160" rx="12" fill="#17203A" opacity="0.8" />
+  <rect x="280" y="80" width="80" height="160" rx="12" fill="#1F2945" opacity="0.8" />
+  <path d="M80 160H360" stroke="#9BB9FF" stroke-width="6" opacity="0.6" />
+  <rect x="70" y="60" width="320" height="16" rx="8" fill="#223053" opacity="0.9" />
+  <circle cx="400" cy="70" r="10" fill="#F53855" opacity="0.85" />
+  <text x="60" y="280" fill="#1F2937" font-size="20" font-family="'Inter', sans-serif" font-weight="600">Fachada comercial em pele de vidro</text>
+</svg>
