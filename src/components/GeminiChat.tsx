@@ -8,6 +8,7 @@ type GeminiChatMessage = {
 };
 
 const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+const INITIAL_GREETING_ID = -1;
 
 const SYSTEM_PROMPT =
   'Você é o assistente virtual da Vidraçaria Ramos. Responda em português brasileiro com um tom cordial, objetivo e útil. Traga informações sobre os serviços de vidraçaria, prazos de instalação, materiais utilizados e formas de contato quando solicitado.';
@@ -43,7 +44,7 @@ function GeminiChat(): JSX.Element {
   const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState<GeminiChatMessage[]>(() => [
     {
-      id: Date.now(),
+      id: INITIAL_GREETING_ID,
       role: 'model',
       content:
         'Olá! Sou o assistente virtual da Vidraçaria Ramos. Posso ajudar com informações sobre nossos produtos, prazos e orçamentos. Como posso te ajudar hoje?'
@@ -86,6 +87,7 @@ function GeminiChat(): JSX.Element {
       const payload = {
         contents: updatedMessages
           .filter((message) => message.role !== 'error')
+          .filter((message) => message.id !== INITIAL_GREETING_ID)
           .map((message) => ({
             role: message.role === 'model' ? 'model' : 'user',
             parts: [{ text: message.content }]
