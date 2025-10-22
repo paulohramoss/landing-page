@@ -163,68 +163,69 @@ function GeminiChat(): JSX.Element {
         className="gemini-chat__toggle"
         onClick={() => setIsOpen((open) => !open)}
         aria-expanded={isOpen}
-        aria-controls="gemini-chat-panel"
+        aria-controls={isOpen ? 'gemini-chat-panel' : undefined}
       >
         {isOpen ? 'Fechar assistente' : 'Falar com o Gemini'}
       </button>
 
-      <div
-        id="gemini-chat-panel"
-        className="gemini-chat__panel"
-        role="dialog"
-        aria-label="Assistente virtual Gemini"
-        hidden={!isOpen}
-      >
-        <header className="gemini-chat__header">
-          <div>
-            <h2>Assistente Gemini</h2>
-            <p>Converse com a IA do Google para tirar dúvidas sobre nossos serviços.</p>
-          </div>
-          <button type="button" className="gemini-chat__close" onClick={() => setIsOpen(false)} aria-label="Fechar chat">
-            ×
-          </button>
-        </header>
-
-        <div className="gemini-chat__messages" role="log" aria-live="polite">
-          {messages.map((message) => (
-            <div key={message.id} className={`gemini-chat__message gemini-chat__message--${message.role}`}>
-              <span className="gemini-chat__message-label">
-                {message.role === 'user' ? 'Você' : message.role === 'model' ? 'Gemini' : 'Aviso'}
-              </span>
-              <div className="gemini-chat__message-content">{renderMessage(message)}</div>
+      {isOpen && (
+        <div
+          id="gemini-chat-panel"
+          className="gemini-chat__panel"
+          role="dialog"
+          aria-label="Assistente virtual Gemini"
+        >
+          <header className="gemini-chat__header">
+            <div>
+              <h2>Assistente Gemini</h2>
+              <p>Converse com a IA do Google para tirar dúvidas sobre nossos serviços.</p>
             </div>
-          ))}
-        </div>
+            <button type="button" className="gemini-chat__close" onClick={() => setIsOpen(false)} aria-label="Fechar chat">
+              ×
+            </button>
+          </header>
 
-        <form className="gemini-chat__composer" onSubmit={handleSubmit}>
-          <label htmlFor="gemini-chat-input" className="gemini-chat__label">
-            Mensagem
-          </label>
-          <textarea
-            id="gemini-chat-input"
-            name="message"
-            placeholder={
-              isConfigured
-                ? 'Escreva sua dúvida... (Enter para enviar, Shift + Enter para nova linha)'
-                : 'Configure a chave de API do Gemini para ativar o assistente.'
-            }
-            value={inputValue}
-            onChange={(event) => setInputValue(event.target.value)}
-            onKeyDown={handleKeyDown}
-            disabled={!isConfigured || isLoading}
-            rows={3}
-            required
-          />
-          <button type="submit" className="gemini-chat__submit" disabled={!isConfigured || isLoading}>
-            {isLoading ? 'Enviando...' : 'Enviar'}
-          </button>
-          {!isConfigured && (
-            <p className="gemini-chat__hint">
-              Adicione a variável <code>VITE_GEMINI_API_KEY</code> ao arquivo de ambiente para ativar o chat.
-            </p>
-          )}
-        </form>
-      </div>
+          <div className="gemini-chat__messages" role="log" aria-live="polite">
+            {messages.map((message) => (
+              <div key={message.id} className={`gemini-chat__message gemini-chat__message--${message.role}`}>
+                <span className="gemini-chat__message-label">
+                  {message.role === 'user' ? 'Você' : message.role === 'model' ? 'Gemini' : 'Aviso'}
+                </span>
+                <div className="gemini-chat__message-content">{renderMessage(message)}</div>
+              </div>
+            ))}
+          </div>
+
+          <form className="gemini-chat__composer" onSubmit={handleSubmit}>
+            <label htmlFor="gemini-chat-input" className="gemini-chat__label">
+              Mensagem
+            </label>
+            <textarea
+              id="gemini-chat-input"
+              name="message"
+              placeholder={
+                isConfigured
+                  ? 'Escreva sua dúvida... (Enter para enviar, Shift + Enter para nova linha)'
+                  : 'Configure a chave de API do Gemini para ativar o assistente.'
+              }
+              value={inputValue}
+              onChange={(event) => setInputValue(event.target.value)}
+              onKeyDown={handleKeyDown}
+              disabled={!isConfigured || isLoading}
+              rows={3}
+              required
+            />
+            <button type="submit" className="gemini-chat__submit" disabled={!isConfigured || isLoading}>
+              {isLoading ? 'Enviando...' : 'Enviar'}
+            </button>
+            {!isConfigured && (
+              <p className="gemini-chat__hint">
+                Adicione a variável <code>VITE_GEMINI_API_KEY</code> ao arquivo de ambiente para ativar o chat.
+              </p>
+            )}
+          </form>
+        </div>
+      )}
     </div>
   );
 }
