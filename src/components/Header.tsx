@@ -27,9 +27,9 @@ function Header(): JSX.Element {
               </li>
             ))}
           </ul>
-          <a className="nav-cta" href="tel:+5511999999999">
+          <a className="nav-cta" href="tel:+5549988432733">
             <PhoneCall size={20} weight="bold" />
-            (11) 99999-9999
+            (49)98843-2733
           </a>
         </nav>
         <button
