@@ -446,6 +446,13 @@ main {
   gap: 1rem;
 }
 
+.contact-layout {
+  display: grid;
+  gap: 2.5rem;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  align-items: flex-start;
+}
+
 .contact-form {
   display: flex;
   flex-direction: column;
@@ -454,6 +461,35 @@ main {
   background: var(--color-surface);
   border-radius: 24px;
   box-shadow: var(--shadow-sm);
+}
+
+.contact-chat {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 2.5rem;
+  background: var(--color-surface);
+  border-radius: 24px;
+  box-shadow: var(--shadow-sm);
+}
+
+.contact-chat__header h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.5rem;
+  color: var(--color-dark);
+}
+
+.contact-chat__header p {
+  margin: 0;
+  color: var(--color-muted);
+}
+
+.contact-chat .jivo-chat {
+  width: 100%;
+}
+
+.contact-chat .jivo-chat__card {
+  width: 100%;
 }
 
 .form-grid {
@@ -534,6 +570,10 @@ textarea:focus {
 
   .hero {
     padding-top: 5rem;
+  }
+
+  .contact-layout {
+    grid-template-columns: 1fr;
   }
 }
 
