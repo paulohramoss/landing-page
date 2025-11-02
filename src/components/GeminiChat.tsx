@@ -9,6 +9,7 @@ type GeminiChatMessage = {
 
 const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 const INITIAL_GREETING_ID = -1;
+const STORAGE_KEY = 'gemini-chat-history';
 
 const SYSTEM_PROMPT =
   'Você é o assistente virtual da Vidraçaria Ramos. Responda em português brasileiro com um tom cordial, objetivo e útil. Traga informações sobre os serviços de vidraçaria, prazos de instalação, materiais utilizados e formas de contato quando solicitado.';
@@ -38,21 +39,60 @@ function parseResponseText(data: unknown): string | null {
     .trim() || null;
 }
 
+function getInitialMessages(): GeminiChatMessage[] {
+  const greetingMessage: GeminiChatMessage = {
+    id: INITIAL_GREETING_ID,
+    role: 'model',
+    content:
+      'Olá! Sou o assistente virtual da Vidraçaria Ramos. Posso ajudar com informações sobre nossos produtos, prazos e orçamentos. Como posso te ajudar hoje?'
+  };
+
+  if (typeof window === 'undefined') {
+    return [greetingMessage];
+  }
+
+  const storedMessages = window.localStorage.getItem(STORAGE_KEY);
+
+  if (!storedMessages) {
+    return [greetingMessage];
+  }
+
+  try {
+    const parsed = JSON.parse(storedMessages) as GeminiChatMessage[];
+
+    if (!Array.isArray(parsed) || parsed.length === 0) {
+      return [greetingMessage];
+    }
+
+    const hasGreeting = parsed.some((message) => message.id === INITIAL_GREETING_ID);
+
+    return hasGreeting ? parsed : [greetingMessage, ...parsed];
+  } catch (error) {
+    console.warn('Não foi possível carregar o histórico do chat.', error);
+    return [greetingMessage];
+  }
+}
+
 function GeminiChat(): JSX.Element {
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [messages, setMessages] = useState<GeminiChatMessage[]>(() => [
-    {
-      id: INITIAL_GREETING_ID,
-      role: 'model',
-      content:
-        'Olá! Sou o assistente virtual da Vidraçaria Ramos. Posso ajudar com informações sobre nossos produtos, prazos e orçamentos. Como posso te ajudar hoje?'
-    }
-  ]);
+  const [messages, setMessages] = useState<GeminiChatMessage[]>(getInitialMessages);
 
   const isConfigured = useMemo(() => Boolean(GEMINI_API_KEY), []);
   const messagesContainerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    try {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
+    } catch (error) {
+      console.warn('Não foi possível salvar o histórico do chat.', error);
+    }
+  }, [messages]);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -189,13 +229,8 @@ function GeminiChat(): JSX.Element {
           aria-label="Assistente virtual Gemini"
         >
           <header className="gemini-chat__header">
-            <div>
-              <h2>Assistente Gemini</h2>
-              <p>Converse com a IA do Google para tirar dúvidas sobre nossos serviços.</p>
-            </div>
-            <button type="button" className="gemini-chat__close" onClick={() => setIsOpen(false)} aria-label="Fechar chat">
-              ×
-            </button>
+            <h2>Assistente Gemini</h2>
+            <p>Converse com a IA do Google para tirar dúvidas sobre nossos serviços.</p>
           </header>
 
           <div
