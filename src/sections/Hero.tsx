@@ -1,4 +1,4 @@
-import { motion, Variants } from 'framer-motion';
+import { motion, useReducedMotion, Variants } from 'framer-motion';
 import heroImage from '../assets/hero-showcase.svg';
 
 const heroSection: Variants = {
@@ -73,7 +73,35 @@ const heroFigure: Variants = {
   }
 };
 
+const heroFigureContent: Variants = {
+  hidden: { opacity: 0, y: 12, scale: 0.96 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.6,
+      ease: 'easeOut'
+    }
+  }
+};
+
+const heroCaption: Variants = {
+  hidden: { opacity: 0, y: 14 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: 'easeOut',
+      delay: 0.2
+    }
+  }
+};
+
 function Hero(): JSX.Element {
+  const prefersReducedMotion = useReducedMotion();
+
   return (
     <motion.section
       className="hero"
@@ -118,12 +146,64 @@ function Hero(): JSX.Element {
             </motion.li>
           </motion.ul>
         </motion.div>
-        <motion.figure
-          className="hero-media"
-          variants={heroFigure}
-        >
-          <img src={heroImage} alt="Ambiente com portas e janelas de vidro" />
-          <figcaption>Projetos sob medida para cada ambiente</figcaption>
+        <motion.figure className="hero-media" variants={heroFigure}>
+          <motion.img
+            src={heroImage}
+            alt="Ambiente com portas e janelas de vidro"
+            variants={heroFigureContent}
+            animate=
+              {prefersReducedMotion
+                ? undefined
+                : {
+                    y: [0, -12, 0],
+                    rotate: [0, 0.8, -0.8, 0]
+                  }}
+            transition=
+              {prefersReducedMotion
+                ? undefined
+                : {
+                    duration: 10,
+                    ease: 'easeInOut',
+                    repeat: Infinity
+                  }}
+          />
+          {!prefersReducedMotion && (
+            <div className="hero-media-orbs" aria-hidden="true">
+              <motion.span
+                className="hero-media-orb hero-media-orb--lg"
+                initial={{ opacity: 0, scale: 0.85, y: 0 }}
+                animate={{
+                  opacity: [0.45, 0.8, 0.45],
+                  scale: [0.9, 1.05, 0.9],
+                  y: [0, -18, 0]
+                }}
+                transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 0.3 }}
+              />
+              <motion.span
+                className="hero-media-orb hero-media-orb--sm"
+                initial={{ opacity: 0, scale: 0.8, y: 0 }}
+                animate={{
+                  opacity: [0.4, 0.7, 0.4],
+                  scale: [0.85, 1.1, 0.85],
+                  y: [0, -12, 0]
+                }}
+                transition={{ duration: 6.5, repeat: Infinity, ease: 'easeInOut', delay: 0.6 }}
+              />
+              <motion.span
+                className="hero-media-orb hero-media-orb--xs"
+                initial={{ opacity: 0, scale: 0.7, y: 0 }}
+                animate={{
+                  opacity: [0.35, 0.65, 0.35],
+                  scale: [0.8, 1, 0.8],
+                  y: [0, -10, 0]
+                }}
+                transition={{ duration: 5.5, repeat: Infinity, ease: 'easeInOut', delay: 0.9 }}
+              />
+            </div>
+          )}
+          <motion.figcaption variants={heroCaption}>
+            Projetos sob medida para cada ambiente
+          </motion.figcaption>
         </motion.figure>
       </div>
     </motion.section>
