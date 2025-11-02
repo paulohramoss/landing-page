@@ -1,4 +1,4 @@
-import { List, MoonStars, PhoneCall, Sun } from '@phosphor-icons/react';
+import { List, MoonStars, Sun } from '@phosphor-icons/react';
 import { useState } from 'react';
 import Logo from './Logo';
 import type { Theme } from '../hooks/useTheme';
@@ -33,10 +33,6 @@ function Header({ theme, onToggleTheme }: HeaderProps): JSX.Element {
               </li>
             ))}
           </ul>
-          <a className="nav-cta" href="tel:+5549988432733">
-            <PhoneCall size={20} weight="bold" />
-            (49)98843-2733
-          </a>
         </nav>
         <div className="header-actions">
           <button

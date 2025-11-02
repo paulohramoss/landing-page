@@ -201,9 +201,6 @@ function Hero(): JSX.Element {
               />
             </div>
           )}
-          <motion.figcaption variants={heroCaption}>
-            Projetos sob medida para cada ambiente
-          </motion.figcaption>
         </motion.figure>
       </div>
     </motion.section>
