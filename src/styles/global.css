@@ -9,11 +9,37 @@
   --color-muted: #4b5563;
   --color-background: #f9fbff;
   --color-surface: #ffffff;
+  --color-header: rgba(249, 251, 255, 0.9);
+  --color-footer-bg: #121c2f;
+  --color-border: rgba(18, 28, 47, 0.12);
+  --color-input-bg: #f5f7fb;
+  --color-hero-badge: rgba(101, 65, 245, 0.1);
+  --color-section-alt: rgba(101, 65, 245, 0.05);
   --shadow-xs: 0 6px 18px rgba(18, 28, 47, 0.06);
   --shadow-sm: 0 12px 32px rgba(18, 28, 47, 0.08);
   --shadow-lg: 0 32px 60px rgba(18, 28, 47, 0.14);
   --container-width: min(1120px, 92vw);
   scroll-behavior: smooth;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --color-primary: #8b5cf6;
+  --color-secondary: #f472b6;
+  --color-dark: #f8fafc;
+  --color-text: #e2e8f0;
+  --color-muted: #94a3b8;
+  --color-background: #050b1a;
+  --color-surface: #0f172a;
+  --color-header: rgba(5, 11, 26, 0.85);
+  --color-footer-bg: #020617;
+  --color-border: rgba(148, 163, 184, 0.2);
+  --color-input-bg: rgba(15, 23, 42, 0.85);
+  --color-hero-badge: rgba(139, 92, 246, 0.2);
+  --color-section-alt: rgba(20, 27, 45, 0.8);
+  --shadow-xs: 0 6px 18px rgba(3, 10, 24, 0.5);
+  --shadow-sm: 0 12px 32px rgba(3, 10, 24, 0.55);
+  --shadow-lg: 0 32px 60px rgba(3, 10, 24, 0.6);
 }
 
 * {
@@ -26,6 +52,7 @@ body {
   background: var(--color-background);
   color: var(--color-text);
   line-height: 1.6;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .chat-page {
@@ -71,8 +98,8 @@ main {
   top: 0;
   z-index: 10;
   backdrop-filter: blur(16px);
-  background: rgba(249, 251, 255, 0.9);
-  box-shadow: 0 8px 24px rgba(18, 28, 47, 0.08);
+  background: var(--color-header);
+  box-shadow: var(--shadow-xs);
 }
 
 .header .container {
@@ -80,6 +107,46 @@ main {
   align-items: center;
   justify-content: space-between;
   padding: 1rem 0;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: none;
+  background: var(--color-surface);
+  color: var(--color-dark);
+  box-shadow: var(--shadow-xs);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.theme-toggle:hover {
+  transform: translateY(-1px);
+}
+
+.theme-toggle:focus-visible {
+  outline: 3px solid rgba(101, 65, 245, 0.35);
+  outline-offset: 2px;
+}
+
+:root[data-theme='dark'] .theme-toggle {
+  background: rgba(30, 41, 59, 0.88);
+  color: var(--color-dark);
+  box-shadow: none;
+}
+
+:root[data-theme='dark'] .theme-toggle:hover {
+  background: rgba(51, 65, 85, 0.88);
 }
 
 .logo {
@@ -172,7 +239,7 @@ main {
   gap: 0.5rem;
   padding: 0.5rem 1rem;
   border-radius: 999px;
-  background: rgba(101, 65, 245, 0.1);
+  background: var(--color-hero-badge);
   color: var(--color-primary);
   font-weight: 600;
   letter-spacing: 0.02em;
@@ -222,7 +289,7 @@ main {
 }
 
 .btn.secondary {
-  background: rgba(101, 65, 245, 0.1);
+  background: var(--color-hero-badge);
   color: var(--color-primary);
 }
 
@@ -311,12 +378,21 @@ main {
   font-size: 0.85rem;
 }
 
+:root[data-theme='dark'] .hero-media,
+:root[data-theme='dark'] .highlight-card {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.22), rgba(244, 114, 182, 0.18));
+}
+
+:root[data-theme='dark'] .hero-media figcaption {
+  background: rgba(15, 23, 42, 0.75);
+}
+
 .section {
   padding: 5rem 0;
 }
 
 .section.alt {
-  background: rgba(101, 65, 245, 0.05);
+  background: var(--color-section-alt);
 }
 
 .section-heading {
@@ -548,10 +624,11 @@ textarea {
   width: 100%;
   padding: 0.85rem 1rem;
   border-radius: 14px;
-  border: 1px solid rgba(18, 28, 47, 0.12);
+  border: 1px solid var(--color-border);
   font: inherit;
   color: var(--color-text);
-  background: #f5f7fb;
+  background: var(--color-input-bg);
+  transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
 textarea {
@@ -565,9 +642,16 @@ textarea:focus {
   border-color: rgba(101, 65, 245, 0.4);
 }
 
+:root[data-theme='dark'] input:focus,
+:root[data-theme='dark'] select:focus,
+:root[data-theme='dark'] textarea:focus {
+  outline: 3px solid rgba(139, 92, 246, 0.35);
+  border-color: rgba(139, 92, 246, 0.55);
+}
+
 .footer {
   padding: 3rem 0 2rem;
-  background: var(--color-dark);
+  background: var(--color-footer-bg);
   color: rgba(255, 255, 255, 0.85);
 }
 
