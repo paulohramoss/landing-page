@@ -18,13 +18,13 @@ function Footer(): JSX.Element {
           </div>
           <div>
             <h4>Endereço</h4>
-            <p>Rua das Esquadrias, 321 - Centro</p>
-            <p>São Paulo / SP</p>
+            <p>Rua Adolfo Konder, 1757 - São Jorge</p>
+            <p>São Miguel do Oeste / SC</p>
           </div>
           <div>
             <h4>Social</h4>
             <p>
-              <a href="https://instagram.com" target="_blank" rel="noreferrer">
+              <a href="https://www.instagram.com/vidra_ramos/" target="_blank" rel="noreferrer">
                 Instagram
               </a>
             </p>
