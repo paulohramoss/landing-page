@@ -10,7 +10,7 @@ function Hero({ animation }: HeroProps): JSX.Element {
     <section className="hero" id="inicio">
       <div className="container">
         <motion.div className="hero-content" initial="hidden" animate="visible" variants={animation}>
-          <span className="hero-badge">Desde 1998 transformando ambientes</span>
+          <span className="hero-badge">Desde 2000 transformando ambientes</span>
           <h1>
             Vidros temperados e esquadrias de alumínio sob medida com acabamento impecável.
           </h1>
