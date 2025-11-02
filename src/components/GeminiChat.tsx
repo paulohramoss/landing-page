@@ -1,4 +1,4 @@
-import { FormEvent, KeyboardEvent, useMemo, useState } from 'react';
+import { FormEvent, KeyboardEvent, useEffect, useMemo, useRef, useState } from 'react';
 import '../styles/gemini-chat.css';
 
 type GeminiChatMessage = {
@@ -52,6 +52,7 @@ function GeminiChat(): JSX.Element {
   ]);
 
   const isConfigured = useMemo(() => Boolean(GEMINI_API_KEY), []);
+  const messagesContainerRef = useRef<HTMLDivElement | null>(null);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -156,6 +157,18 @@ function GeminiChat(): JSX.Element {
       <p key={`${message.id}-${index}`}>{paragraph}</p>
     ));
 
+  useEffect(() => {
+    if (!isOpen) {
+      return;
+    }
+
+    const container = messagesContainerRef.current;
+
+    if (container) {
+      container.scrollTo({ top: container.scrollHeight, behavior: 'smooth' });
+    }
+  }, [isOpen, messages]);
+
   return (
     <div className={`gemini-chat ${isOpen ? 'gemini-chat--open' : ''}`}>
       <button
@@ -185,15 +198,36 @@ function GeminiChat(): JSX.Element {
             </button>
           </header>
 
-          <div className="gemini-chat__messages" role="log" aria-live="polite">
+          <div
+            ref={messagesContainerRef}
+            className="gemini-chat__messages"
+            role="log"
+            aria-live="polite"
+            aria-busy={isLoading}
+          >
             {messages.map((message) => (
               <div key={message.id} className={`gemini-chat__message gemini-chat__message--${message.role}`}>
-                <span className="gemini-chat__message-label">
-                  {message.role === 'user' ? 'Você' : message.role === 'model' ? 'Gemini' : 'Aviso'}
+                <span className="gemini-chat__message-avatar" aria-hidden="true">
+                  {message.role === 'user' ? 'Você' : message.role === 'model' ? 'G' : '!'}
                 </span>
-                <div className="gemini-chat__message-content">{renderMessage(message)}</div>
+                <div className="gemini-chat__message-body">
+                  <span className="gemini-chat__message-label">
+                    {message.role === 'user' ? 'Você' : message.role === 'model' ? 'Assistente Gemini' : 'Aviso'}
+                  </span>
+                  <div className="gemini-chat__message-content">{renderMessage(message)}</div>
+                </div>
               </div>
             ))}
+            {isLoading && (
+              <div className="gemini-chat__typing" role="status" aria-live="polite">
+                <span className="gemini-chat__typing-dots" aria-hidden="true">
+                  <span />
+                  <span />
+                  <span />
+                </span>
+                <span className="gemini-chat__typing-label">Gemini está digitando…</span>
+              </div>
+            )}
           </div>
 
           <form className="gemini-chat__composer" onSubmit={handleSubmit}>
