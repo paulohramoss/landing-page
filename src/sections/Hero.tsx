@@ -86,19 +86,6 @@ const heroFigureContent: Variants = {
   }
 };
 
-const heroCaption: Variants = {
-  hidden: { opacity: 0, y: 14 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.5,
-      ease: 'easeOut',
-      delay: 0.2
-    }
-  }
-};
-
 function Hero(): JSX.Element {
   const prefersReducedMotion = useReducedMotion();
 
