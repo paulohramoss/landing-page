@@ -288,6 +288,17 @@ main {
   transform: translateY(-2px);
 }
 
+.btn.whatsapp {
+  background: linear-gradient(135deg, #128c7e, #25d366);
+  color: white;
+  box-shadow: var(--shadow-lg);
+}
+
+.btn.whatsapp:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+}
+
 .btn.secondary {
   background: var(--color-hero-badge);
   color: var(--color-primary);
@@ -596,12 +607,21 @@ main {
   color: var(--color-muted);
 }
 
-.contact-chat .jivo-chat {
-  width: 100%;
+.contact-chat__cta {
+  align-self: flex-start;
 }
 
-.contact-chat .jivo-chat__card {
-  width: 100%;
+.contact-chat__info {
+  margin: 0;
+  padding-left: 1.25rem;
+  color: var(--color-muted);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.contact-chat__info li {
+  line-height: 1.4;
 }
 
 .form-grid {
@@ -683,6 +703,30 @@ textarea:focus {
   text-align: center;
 }
 
+.floating-whatsapp {
+  position: fixed;
+  inset: auto 1.5rem 1.5rem auto;
+  z-index: 1000;
+}
+
+.floating-whatsapp__trigger {
+  text-decoration: none;
+  min-width: 3.25rem;
+}
+
+.floating-whatsapp__trigger svg {
+  flex-shrink: 0;
+}
+
+.floating-whatsapp__label {
+  font-weight: 600;
+}
+
+.floating-whatsapp__trigger:focus-visible {
+  outline: 3px solid rgba(37, 211, 102, 0.4);
+  outline-offset: 4px;
+}
+
 @media (max-width: 960px) {
   .hero .container {
     grid-template-columns: 1fr;
@@ -736,6 +780,15 @@ textarea:focus {
 }
 
 @media (max-width: 640px) {
+  .floating-whatsapp__trigger {
+    padding: 0.9rem;
+    border-radius: 50%;
+  }
+
+  .floating-whatsapp__label {
+    display: none;
+  }
+
   .container {
     width: min(92vw, 640px);
   }

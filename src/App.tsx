@@ -1,6 +1,6 @@
 import Footer from './components/Footer';
 import Header from './components/Header';
-import FloatingChat from './components/FloatingChat';
+import FloatingWhatsAppButton from './components/FloatingWhatsAppButton';
 import CallToAction from './sections/CallToAction';
 import Contact from './sections/Contact';
 import Hero from './sections/Hero';
@@ -28,7 +28,7 @@ function App(): JSX.Element {
         <Contact />
       </main>
       <Footer />
-      <FloatingChat />
+      <FloatingWhatsAppButton />
     </div>
   );
 }
