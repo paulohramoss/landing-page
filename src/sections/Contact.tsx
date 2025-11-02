@@ -36,7 +36,7 @@ function Contact(): JSX.Element {
               </label>
               <label>
                 Telefone / WhatsApp
-                <input name="phone" type="tel" placeholder="(11) 99999-9999" required />
+                <input name="phone" type="tel" placeholder="(49) 99999-9999" required />
               </label>
               <label>
                 Tipo de projeto

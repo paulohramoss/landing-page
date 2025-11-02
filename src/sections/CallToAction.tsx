@@ -10,7 +10,7 @@ function CallToAction(): JSX.Element {
           </p>
         </div>
         <div className="cta-actions">
-          <a className="btn primary" href="https://wa.me/5511999999999" target="_blank" rel="noreferrer">
+          <a className="btn primary" href="https://wa.me/5549988432733" target="_blank" rel="noreferrer">
             Falar no WhatsApp
           </a>
           <a className="btn outline" href="mailto:contato@vidracariaramos.com">
