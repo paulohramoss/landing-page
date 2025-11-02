@@ -1,5 +1,3 @@
-import GeminiChat from '../components/GeminiChat';
-
 function Contact(): JSX.Element {
   return (
     <section className="section" id="contato">
@@ -56,15 +54,26 @@ function Contact(): JSX.Element {
             </button>
           </form>
 
-          <aside className="contact-chat" aria-label="Atendimento on-line">
+          <aside className="contact-chat" aria-label="Atendimento imediato pelo WhatsApp">
             <div className="contact-chat__header">
-              <h3>Converse agora com a Vidraçaria Ramos</h3>
+              <h3>Converse agora com a nossa equipe</h3>
               <p>
-                Prefere um atendimento imediato? Fale com o Claudio, nosso assistente virtual, e tire suas dúvidas sobre
+                Se preferir resolver tudo por mensagem, fale conosco pelo WhatsApp. Estamos prontos para responder sobre
                 projetos, prazos e materiais.
               </p>
             </div>
-            <GeminiChat />
+            <a
+              className="btn whatsapp contact-chat__cta"
+              href="https://wa.me/5549988432733?text=Olá! Gostaria de saber mais sobre os serviços da Vidraçaria Ramos."
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Chamar no WhatsApp
+            </a>
+            <ul className="contact-chat__info">
+              <li>Atendimento de segunda a sexta, das 8h às 18h.</li>
+              <li>Tempo médio de resposta inferior a 1 hora.</li>
+            </ul>
           </aside>
         </div>
       </div>

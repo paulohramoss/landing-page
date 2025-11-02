@@ -45,21 +45,9 @@ Landing page institucional desenvolvida em **React + TypeScript** para a Vidraç
    npm run preview
    ```
 
-## 🤖 Assistente Gemini integrado
+## 💬 Atendimento via WhatsApp
 
-O site agora conta com um chat flutuante que conecta diretamente ao **Google Gemini** para responder dúvidas dos visitantes.
-
-1. Crie um arquivo `.env` na raiz do projeto (ou ajuste o existente) com a variável abaixo:
-
-   ```bash
-   VITE_GEMINI_API_KEY=sua_api_key_do_gemini
-   ```
-
-   > Utilize a chave fornecida pela equipe da Vidraçaria Ramos.
-
-2. Reinicie o servidor de desenvolvimento após definir a variável de ambiente.
-
-3. O botão "Falar com o Gemini" aparecerá no canto inferior direito da página. Basta clicar para abrir o chat e conversar com a IA.
+A landing page conta com um botão flutuante que direciona o visitante para uma conversa direta com a Vidraçaria Ramos pelo WhatsApp. Basta clicar no botão no canto inferior direito da página para iniciar o atendimento.
 
 ## 📁 Estrutura de pastas
 
