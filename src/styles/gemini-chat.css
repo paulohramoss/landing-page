@@ -26,8 +26,8 @@
 }
 
 .gemini-chat__panel {
-  width: clamp(300px, 32vw, 400px);
-  max-height: min(68vh, 640px);
+  width: clamp(320px, 38vw, 480px);
+  max-height: min(78vh, 720px);
   display: flex;
   flex-direction: column;
   background: var(--color-surface);
@@ -40,38 +40,28 @@
 
 .gemini-chat__header {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 1.25rem 1.5rem;
-  background: linear-gradient(135deg, rgba(101, 65, 245, 0.1), rgba(245, 56, 85, 0.1));
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 1.5rem 1.75rem 1.25rem;
+  background: linear-gradient(135deg, rgba(101, 65, 245, 0.16), rgba(245, 56, 85, 0.14));
 }
 
 .gemini-chat__header h2 {
-  margin: 0 0 0.3rem;
-  font-size: 1.05rem;
+  margin: 0;
+  font-size: 1.1rem;
   color: var(--color-dark);
 }
 
 .gemini-chat__header p {
   margin: 0;
   color: var(--color-muted);
-  font-size: 0.85rem;
-}
-
-.gemini-chat__close {
-  border: none;
-  background: transparent;
-  color: var(--color-muted);
-  font-size: 1.5rem;
-  line-height: 1;
-  cursor: pointer;
+  font-size: 0.9rem;
 }
 
 .gemini-chat__messages {
   flex: 1;
   overflow-y: auto;
-  padding: 1.25rem 1.5rem;
+  padding: 1.5rem 1.75rem;
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
@@ -290,6 +280,6 @@
   }
 
   .gemini-chat__panel {
-    width: min(100%, 440px);
+    width: min(100%, 500px);
   }
 }
