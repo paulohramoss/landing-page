@@ -1,6 +1,7 @@
-import { List, PhoneCall } from '@phosphor-icons/react';
+import { List, MoonStars, PhoneCall, Sun } from '@phosphor-icons/react';
 import { useState } from 'react';
 import Logo from './Logo';
+import type { Theme } from '../hooks/useTheme';
 
 const navigation = [
   { label: 'Início', href: '#inicio' },
@@ -10,7 +11,12 @@ const navigation = [
   { label: 'Contato', href: '#contato' }
 ];
 
-function Header(): JSX.Element {
+type HeaderProps = {
+  theme: Theme;
+  onToggleTheme: () => void;
+};
+
+function Header({ theme, onToggleTheme }: HeaderProps): JSX.Element {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -32,15 +38,25 @@ function Header(): JSX.Element {
             (49)98843-2733
           </a>
         </nav>
-        <button
-          className="menu-toggle"
-          type="button"
-          onClick={() => setMenuOpen((state) => !state)}
-          aria-label="Abrir menu"
-          aria-expanded={menuOpen}
-        >
-          <List size={28} weight="bold" />
-        </button>
+        <div className="header-actions">
+          <button
+            className="theme-toggle"
+            type="button"
+            onClick={onToggleTheme}
+            aria-label={`Ativar tema ${theme === 'dark' ? 'claro' : 'escuro'}`}
+          >
+            {theme === 'dark' ? <Sun size={22} weight="bold" /> : <MoonStars size={22} weight="bold" />}
+          </button>
+          <button
+            className="menu-toggle"
+            type="button"
+            onClick={() => setMenuOpen((state) => !state)}
+            aria-label={menuOpen ? 'Fechar menu' : 'Abrir menu'}
+            aria-expanded={menuOpen}
+          >
+            <List size={28} weight="bold" />
+          </button>
+        </div>
       </div>
     </header>
   );
