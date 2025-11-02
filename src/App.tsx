@@ -1,6 +1,7 @@
 import type { Variants } from 'framer-motion';
 import Footer from './components/Footer';
 import Header from './components/Header';
+import FloatingChat from './components/FloatingChat';
 import CallToAction from './sections/CallToAction';
 import Contact from './sections/Contact';
 import Hero from './sections/Hero';
@@ -34,6 +35,7 @@ function App(): JSX.Element {
         <Contact />
       </main>
       <Footer />
+      <FloatingChat />
     </div>
   );
 }

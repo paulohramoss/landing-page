@@ -24,6 +24,11 @@ const SYSTEM_PROMPT =
 const GEMINI_ENDPOINT =
   "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
 
+type GeminiChatProps = {
+  className?: string;
+  onClose?: () => void;
+};
+
 function parseResponseText(data: unknown): string | null {
   if (
     typeof data !== "object" ||
@@ -88,7 +93,7 @@ function getInitialMessages(): GeminiChatMessage[] {
   }
 }
 
-function GeminiChat(): JSX.Element {
+function GeminiChat({ className, onClose }: GeminiChatProps = {}): JSX.Element {
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] =
@@ -224,18 +229,32 @@ function GeminiChat(): JSX.Element {
     }
   }, [messages]);
 
+  const rootClassName = ["jivo-chat", className].filter(Boolean).join(" ");
+
   return (
-    <div className="jivo-chat" role="application" aria-label="Atendimento on-line">
+    <div className={rootClassName} role="application" aria-label="Atendimento on-line">
       <div className="jivo-chat__card" role="dialog" aria-labelledby="jivo-chat-title">
         <header className="jivo-chat__header">
-          <div className="jivo-chat__header-main">
-            <span className="jivo-chat__avatar" aria-hidden="true">
-              C
-            </span>
-            <div className="jivo-chat__agent">
-              <h2 id="jivo-chat-title">Claudio</h2>
-              <span>Customer support</span>
+          <div className="jivo-chat__header-row">
+            <div className="jivo-chat__header-main">
+              <span className="jivo-chat__avatar" aria-hidden="true">
+                C
+              </span>
+              <div className="jivo-chat__agent">
+                <h2 id="jivo-chat-title">Claudio</h2>
+                <span>Customer support</span>
+              </div>
             </div>
+            {onClose && (
+              <button
+                type="button"
+                className="jivo-chat__close"
+                onClick={onClose}
+                aria-label="Fechar chat"
+              >
+                <span aria-hidden="true">×</span>
+              </button>
+            )}
           </div>
           <span className="jivo-chat__brand">
             Chat desenvolvido por <strong>jivochat</strong>
