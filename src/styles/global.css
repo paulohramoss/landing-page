@@ -103,6 +103,7 @@ main {
 }
 
 .header .container {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -231,6 +232,13 @@ main {
   gap: 3rem;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   align-items: center;
+}
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.5rem;
 }
 
 .hero-badge {
@@ -742,11 +750,18 @@ textarea:focus {
 }
 
 @media (max-width: 840px) {
+  .header .container {
+    gap: 1rem;
+  }
+
   .nav {
     position: absolute;
-    inset: 74px 1rem auto;
+    top: calc(100% + 0.75rem);
+    left: 0;
+    right: 0;
+    width: 100%;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
     gap: 1.5rem;
     padding: 1.5rem;
     border-radius: 16px;
@@ -755,7 +770,7 @@ textarea:focus {
     opacity: 0;
     pointer-events: none;
     transform: translateY(-10px);
-    transition: opacity 0.2s ease, transform 0.2s ease;
+    transition: opacity 0.25s ease, transform 0.25s ease;
   }
 
   .nav.is-open {
@@ -766,6 +781,11 @@ textarea:focus {
 
   .nav ul {
     flex-direction: column;
+    width: 100%;
+    gap: 1rem;
+  }
+
+  .nav a {
     width: 100%;
   }
 
@@ -780,6 +800,10 @@ textarea:focus {
 }
 
 @media (max-width: 640px) {
+  .header .container {
+    padding: 0.85rem 0;
+  }
+
   .floating-whatsapp__trigger {
     padding: 0.9rem;
     border-radius: 50%;
@@ -793,15 +817,86 @@ textarea:focus {
     width: min(92vw, 640px);
   }
 
+  .hero {
+    padding: 4.5rem 0 3.5rem;
+  }
+
+  .hero .container {
+    gap: 2.5rem;
+  }
+
+  .hero-content {
+    align-items: center;
+    text-align: center;
+    gap: 1.25rem;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.1rem, 7.5vw, 2.6rem);
+  }
+
+  .hero p {
+    margin-bottom: 1.75rem;
+  }
+
+  .hero-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .hero-actions .btn {
+    width: 100%;
+  }
+
   .hero-stats {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
+    align-items: stretch;
+    gap: 1.25rem;
+    text-align: center;
+  }
+
+  .hero-media {
+    max-width: 420px;
+    margin: 0 auto;
+  }
+
+  .section {
+    padding: 4rem 0;
+  }
+
+  .section-heading {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .section-heading p {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .service-card,
+  .highlight-card,
+  .process-card,
+  .testimonial-card,
+  .contact-form,
+  .contact-chat {
+    padding: 2rem;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-chat__cta {
+    width: 100%;
+    justify-content: center;
   }
 
   .cta .container {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
+    text-align: left;
   }
 
   .cta-actions {
@@ -811,5 +906,58 @@ textarea:focus {
 
   .cta-actions .btn {
     width: 100%;
+  }
+
+  .floating-whatsapp {
+    inset: auto 1rem 1rem auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .header .container {
+    gap: 0.75rem;
+  }
+
+  .logo {
+    gap: 0.65rem;
+  }
+
+  .logo-icon {
+    width: 42px;
+    height: 42px;
+    font-size: 1.05rem;
+  }
+
+  .hero {
+    padding: 4rem 0 3rem;
+  }
+
+  .hero-actions .btn {
+    padding: 0.85rem 1.4rem;
+  }
+
+  .hero-stats strong {
+    font-size: 1.75rem;
+  }
+
+  .nav {
+    padding: 1.25rem;
+  }
+
+  .service-card,
+  .highlight-card,
+  .process-card,
+  .testimonial-card,
+  .contact-form,
+  .contact-chat {
+    padding: 1.75rem;
+  }
+
+  .section {
+    padding: 3.5rem 0;
+  }
+
+  .floating-whatsapp {
+    inset: auto 0.75rem 0.75rem auto;
   }
 }
