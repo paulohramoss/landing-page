@@ -1,5 +1,34 @@
-import { motion, useReducedMotion, Variants } from 'framer-motion';
-import heroImage from '../assets/hero-showcase.svg';
+import { useEffect, useRef, useState } from 'react';
+import { AnimatePresence, motion, useReducedMotion, Variants } from 'framer-motion';
+import heroBathroomImage from '../assets/hero/banheiro.svg';
+import heroWindowImage from '../assets/hero/janela.svg';
+import heroContainerImage from '../assets/hero/container.svg';
+
+type HeroSlide = {
+  alt: string;
+  caption: string;
+  src: string;
+};
+
+const heroSlides: HeroSlide[] = [
+  {
+    src: heroBathroomImage,
+    alt: 'Box de banheiro de vidro temperado com perfis em preto e revestimento amadeirado.',
+    caption: 'Banheiro com box de vidro temperado e perfis em alumínio preto.'
+  },
+  {
+    src: heroWindowImage,
+    alt: 'Janela de alumínio preta com vidro refletivo instalada em fachada contemporânea.',
+    caption: 'Janela panorâmica em alumínio preto com vidro refletivo.'
+  },
+  {
+    src: heroContainerImage,
+    alt: 'Container modular amarelo com porta e janela basculante em alumínio escuro.',
+    caption: 'Container personalizado com esquadrias sob medida.'
+  }
+];
+
+const SLIDE_DURATION = 7000;
 
 const heroSection: Variants = {
   hidden: {},
@@ -74,13 +103,13 @@ const heroFigure: Variants = {
 };
 
 const heroFigureContent: Variants = {
-  hidden: { opacity: 0, y: 12, scale: 0.96 },
+  hidden: { opacity: 0, y: 16, scale: 0.96 },
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
     transition: {
-      duration: 0.6,
+      duration: 0.7,
       ease: 'easeOut'
     }
   }
@@ -88,6 +117,42 @@ const heroFigureContent: Variants = {
 
 function Hero(): JSX.Element {
   const prefersReducedMotion = useReducedMotion();
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const autoPlayRef = useRef<number | undefined>(undefined);
+
+  useEffect(() => {
+    if (prefersReducedMotion) {
+      return undefined;
+    }
+
+    autoPlayRef.current = window.setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+    }, SLIDE_DURATION);
+
+    return () => {
+      if (autoPlayRef.current !== undefined) {
+        window.clearInterval(autoPlayRef.current);
+      }
+    };
+  }, [prefersReducedMotion]);
+
+  const handleSelectSlide = (index: number) => {
+    setCurrentSlide(index);
+
+    if (prefersReducedMotion) {
+      return;
+    }
+
+    if (autoPlayRef.current !== undefined) {
+      window.clearInterval(autoPlayRef.current);
+    }
+
+    autoPlayRef.current = window.setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+    }, SLIDE_DURATION);
+  };
+
+  const activeSlide = heroSlides[currentSlide];
 
   return (
     <motion.section
@@ -134,26 +199,72 @@ function Hero(): JSX.Element {
           </motion.ul>
         </motion.div>
         <motion.figure className="hero-media" variants={heroFigure}>
-          <motion.img
-            src={heroImage}
-            alt="Ambiente com portas e janelas de vidro"
-            variants={heroFigureContent}
+          <motion.div
+            className="hero-media-slides"
             animate=
               {prefersReducedMotion
                 ? undefined
                 : {
-                    y: [0, -12, 0],
-                    rotate: [0, 0.8, -0.8, 0]
+                    y: [0, -10, 0],
+                    rotate: [0, 0.6, -0.6, 0]
                   }}
             transition=
               {prefersReducedMotion
                 ? undefined
                 : {
-                    duration: 10,
+                    duration: 12,
                     ease: 'easeInOut',
                     repeat: Infinity
                   }}
-          />
+          >
+            {prefersReducedMotion ? (
+              <img className="hero-media-image" src={activeSlide.src} alt={activeSlide.alt} />
+            ) : (
+              <AnimatePresence mode="wait">
+                <motion.img
+                  key={activeSlide.src}
+                  className="hero-media-image"
+                  src={activeSlide.src}
+                  alt={activeSlide.alt}
+                  initial="hidden"
+                  animate="visible"
+                  exit="hidden"
+                  variants={heroFigureContent}
+                />
+              </AnimatePresence>
+            )}
+          </motion.div>
+          <AnimatePresence mode="wait">
+            {activeSlide.caption && (
+              <motion.figcaption
+                key={activeSlide.caption}
+                initial={prefersReducedMotion ? false : { opacity: 0, y: 12 }}
+                animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+                exit={prefersReducedMotion ? undefined : { opacity: 0, y: 12 }}
+                transition={{ duration: 0.4, ease: 'easeOut' }}
+                aria-live="polite"
+              >
+                {activeSlide.caption}
+              </motion.figcaption>
+            )}
+          </AnimatePresence>
+          <div className="hero-media-dots" role="tablist" aria-label="Projetos em destaque">
+            {heroSlides.map((slide, index) => {
+              const isActive = index === currentSlide;
+
+              return (
+                <button
+                  key={slide.caption}
+                  type="button"
+                  className={`hero-media-dot${isActive ? ' is-active' : ''}`}
+                  onClick={() => handleSelectSlide(index)}
+                  aria-label={`Mostrar imagem: ${slide.caption}`}
+                  aria-pressed={isActive}
+                  aria-current={isActive ? 'true' : undefined}
+                />
+              );
+            })}
+          </div>
           {!prefersReducedMotion && (
             <div className="hero-media-orbs" aria-hidden="true">
               <motion.span
