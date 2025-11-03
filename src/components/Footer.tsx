@@ -29,7 +29,7 @@ function Footer(): JSX.Element {
               </a>
             </p>
             <p>
-              <a href="https://facebook.com" target="_blank" rel="noreferrer">
+              <a href="https://www.facebook.com/profile.php?id=100009049510783" target="_blank" rel="noreferrer">
                 Facebook
               </a>
             </p>
