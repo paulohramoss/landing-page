@@ -343,11 +343,53 @@ main {
   overflow: hidden;
   box-shadow: var(--shadow-lg);
   background: linear-gradient(135deg, rgba(101, 65, 245, 0.12), rgba(245, 56, 85, 0.12));
+  isolation: isolate;
+  aspect-ratio: 5 / 6;
+  min-height: clamp(320px, 56vw, 560px);
 }
 
-.hero-media img {
+.hero-media-slides {
+  position: relative;
   width: 100%;
-  height: auto;
+  height: 100%;
+  min-height: inherit;
+}
+
+.hero-media-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-media-dots {
+  position: absolute;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  display: flex;
+  gap: 0.5rem;
+  z-index: 2;
+}
+
+.hero-media-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.55);
+  cursor: pointer;
+  transition: transform 0.25s ease, background-color 0.25s ease;
+}
+
+.hero-media-dot.is-active {
+  background: var(--color-secondary);
+  transform: scale(1.15);
+}
+
+.hero-media-dot:focus-visible {
+  outline: 3px solid rgba(255, 255, 255, 0.75);
+  outline-offset: 2px;
 }
 
 .hero-media-orbs {
@@ -404,6 +446,14 @@ main {
 
 :root[data-theme='dark'] .hero-media figcaption {
   background: rgba(15, 23, 42, 0.75);
+}
+
+:root[data-theme='dark'] .hero-media-dot {
+  background: rgba(15, 23, 42, 0.55);
+}
+
+:root[data-theme='dark'] .hero-media-dot:focus-visible {
+  outline-color: rgba(139, 92, 246, 0.55);
 }
 
 .section {
