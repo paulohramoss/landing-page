@@ -159,8 +159,7 @@ function Hero(): JSX.Element {
       className="hero"
       id="inicio"
       initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.6 }}
+      animate="visible"
       variants={heroSection}
     >
       <div className="container">
