@@ -8,7 +8,7 @@ function Footer(): JSX.Element {
         <div className="footer-grid">
           <div>
             <h4>Atendimento</h4>
-            <p>Segunda a sábado das 8h às 18h</p>
+            <p>Segunda a sexta das 8h às 18h</p>
             <p>
               <a href="tel:+5549988432733">(49)98843-2733</a>
             </p>
