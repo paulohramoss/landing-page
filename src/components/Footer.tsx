@@ -11,8 +11,10 @@ function Footer(): JSX.Element {
             <p>Segunda a sexta das 8h às 18h</p>
             <p>
               <a href="tel:+5549988432733">(49)98843-2733</a>
-              <a href="tel:+5549991368810">(49)99136-8810</a>
             </p>
+            <p>
+              <a href="tel:+5549991368810">(49)99136-8810</a>
+            <p/>
             <p>
               <a href="mailto:vidraramos1@gmail.com">vidraramos1@gmail.com</a>
             </p>
