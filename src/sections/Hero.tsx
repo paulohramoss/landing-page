@@ -168,7 +168,7 @@ function Hero(): JSX.Element {
             Desde 2000 transformando ambientes
           </motion.span>
           <motion.h1 variants={heroItem}>
-            Vidros temperados e esquadrias de alumínio sob medida com acabamento impecável.
+            Vidros temperados e esquadrias de alumínio de alta qualidade: segurança e estilo para o seu espaço.
           </motion.h1>
           <motion.p variants={heroItem}>
             Projetos residenciais, comerciais e corporativos com atendimento personalizado, prazos
