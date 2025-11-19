@@ -1,9 +1,11 @@
 import { ChangeEvent, FormEvent, useRef, useState } from "react";
+import { WhatsAppModal } from "../components/WhatsAppModal";
 
 const EMAIL_ENDPOINT = "https://formsubmit.co/ajax/vidraramos1@gmail.com";
 
 function Contact(): JSX.Element {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [selectedFileName, setSelectedFileName] = useState("");
 
@@ -77,10 +79,10 @@ function Contact(): JSX.Element {
 
       setSelectedFileName("");
     } catch (error) {
-      console.error("N�o foi poss�vel enviar a mensagem.", error);
+      console.error("Não foi possível enviar a mensagem.", error);
 
       alert(
-        "N�o foi poss�vel enviar sua mensagem. Tente novamente em instantes."
+        "Não foi possível enviar sua mensagem. Tente novamente em instantes."
       );
     } finally {
       setIsSubmitting(false);
@@ -206,14 +208,18 @@ function Contact(): JSX.Element {
               </p>
             </div>
 
-            <a
+            <button
               className="btn whatsapp contact-chat__cta"
-              href="https://wa.me/5549988432733?text=Ol%C3%A1!%20Gostaria%20de%20saber%20mais%20sobre%20os%20servi%C3%A7os%20da%20Vidra%C3%A7aria%20Ramos."
-              target="_blank"
-              rel="noopener noreferrer"
+              onClick={() => setIsModalOpen(true)}
+              type="button"
             >
               Chamar no WhatsApp
-            </a>
+            </button>
+
+            <WhatsAppModal
+              isOpen={isModalOpen}
+              onClose={() => setIsModalOpen(false)}
+            />
 
             <ul className="contact-chat__info">
               <li>Atendimento de segunda a sexta, das 8h às 18h.</li>
