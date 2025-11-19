@@ -14,7 +14,7 @@ function Footer(): JSX.Element {
             </p>
             <p>
               <a href="tel:+5549991368810">(49)99136-8810</a>
-            <p/>
+            </p>
             <p>
               <a href="mailto:vidraramos1@gmail.com">vidraramos1@gmail.com</a>
             </p>
