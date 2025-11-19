@@ -1,11 +1,9 @@
 import { ChangeEvent, FormEvent, useRef, useState } from "react";
-import { WhatsAppModal } from "../components/WhatsAppModal";
 
 const EMAIL_ENDPOINT = "https://formsubmit.co/ajax/vidraramos1@gmail.com";
 
 function Contact(): JSX.Element {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [selectedFileName, setSelectedFileName] = useState("");
 
@@ -193,40 +191,6 @@ function Contact(): JSX.Element {
               {isSubmitting ? "Enviando..." : "Enviar mensagem"}
             </button>
           </form>
-
-          <aside
-            className="contact-chat"
-            aria-label="Atendimento imediato pelo WhatsApp"
-          >
-            <div className="contact-chat__header">
-              <h3>Converse agora com a nossa equipe</h3>
-
-              <p>
-                Se preferir resolver tudo por mensagem, fale conosco pelo
-                WhatsApp. Estamos prontos para responder sobre projetos, prazos
-                e materiais.
-              </p>
-            </div>
-
-            <button
-              className="btn whatsapp contact-chat__cta"
-              onClick={() => setIsModalOpen(true)}
-              type="button"
-            >
-              Chamar no WhatsApp
-            </button>
-
-            <WhatsAppModal
-              isOpen={isModalOpen}
-              onClose={() => setIsModalOpen(false)}
-            />
-
-            <ul className="contact-chat__info">
-              <li>Atendimento de segunda a sexta, das 8h às 18h.</li>
-
-              <li>Tempo médio de resposta inferior a 1 hora.</li>
-            </ul>
-          </aside>
         </div>
       </div>
     </section>

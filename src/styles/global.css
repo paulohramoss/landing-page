@@ -511,7 +511,9 @@ main {
 }
 
 .service-card:hover {
-  transform: translateY(-6px);
+  transform: scale(1.1) translateY(-6px) !important;
+  z-index: 10;
+  box-shadow: var(--shadow-lg);
 }
 
 .service-card h3 {
@@ -546,6 +548,13 @@ main {
   box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.portfolio-card:hover {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-lg);
+  z-index: 5;
 }
 
 .portfolio-card img {
