@@ -9,7 +9,7 @@ interface WhatsAppModalProps {
 const WHATSAPP_NUMBERS = [
   {
     label: "Atendimento Geral",
-    phone: "5549988432733",
+    phone: "5549920007235",
     message:
       "Olá! Gostaria de saber mais sobre os serviços da Vidraçaria Ramos.",
   },
