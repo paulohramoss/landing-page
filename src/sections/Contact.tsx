@@ -1,9 +1,12 @@
 import { ChangeEvent, FormEvent, useRef, useState } from "react";
+import { WhatsAppModal } from "../components/WhatsAppModal";
+import { WhatsappLogo, Phone, Envelope, MapPin } from "@phosphor-icons/react";
 
 const EMAIL_ENDPOINT = "https://formsubmit.co/ajax/vidraramos1@gmail.com";
 
 function Contact(): JSX.Element {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [selectedFileName, setSelectedFileName] = useState("");
 
@@ -191,8 +194,47 @@ function Contact(): JSX.Element {
               {isSubmitting ? "Enviando..." : "Enviar mensagem"}
             </button>
           </form>
+
+          <aside className="contact-chat">
+            <div className="contact-chat__header">
+              <h3>Prefere falar diretamente?</h3>
+              <p>
+                Nossa equipe está disponível para tirar dúvidas e enviar orçamentos pelo WhatsApp.
+              </p>
+            </div>
+            <button
+              className="btn whatsapp contact-chat__cta"
+              type="button"
+              onClick={() => setIsModalOpen(true)}
+            >
+              <WhatsappLogo size={22} weight="fill" />
+              Falar no WhatsApp
+            </button>
+            <ul className="contact-chat__info">
+              <li>
+                <Phone size={16} weight="bold" style={{ display: 'inline', verticalAlign: 'middle', marginRight: '0.4rem' }} />
+                <a href="tel:+5549988432733">(49) 98843-2733</a>
+              </li>
+              <li>
+                <Phone size={16} weight="bold" style={{ display: 'inline', verticalAlign: 'middle', marginRight: '0.4rem' }} />
+                <a href="tel:+5549991368810">(49) 99136-8810</a>
+              </li>
+              <li>
+                <Envelope size={16} weight="bold" style={{ display: 'inline', verticalAlign: 'middle', marginRight: '0.4rem' }} />
+                <a href="mailto:vidraramos1@gmail.com">vidraramos1@gmail.com</a>
+              </li>
+              <li>
+                <MapPin size={16} weight="bold" style={{ display: 'inline', verticalAlign: 'middle', marginRight: '0.4rem' }} />
+                Rua Adolfo Konder, 1757 – São Miguel do Oeste / SC
+              </li>
+            </ul>
+            <p className="contact-chat__hours">
+              Segunda a sexta, das 8h às 18h
+            </p>
+          </aside>
         </div>
       </div>
+      <WhatsAppModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </section>
   );
 }

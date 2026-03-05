@@ -1,4 +1,7 @@
 import { Buildings, Door, Shower, SquaresFour } from '@phosphor-icons/react';
+import { motion } from 'framer-motion';
+import { useInView } from 'framer-motion';
+import { useRef } from 'react';
 
 const services = [
   {
@@ -24,24 +27,40 @@ const services = [
 ];
 
 function Services(): JSX.Element {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: '-80px' });
+
   return (
-    <section className="section" id="servicos">
+    <section className="section" id="servicos" ref={ref}>
       <div className="container">
-        <div className="section-heading">
+        <motion.div
+          className="section-heading"
+          initial={{ opacity: 0, y: 24 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+        >
           <span className="section-eyebrow">O que fazemos</span>
           <h2>Portfólio completo em vidro temperado e alumínio sob medida</h2>
           <p>
             Atuamos do projeto à instalação com equipe própria especializada, materiais certificados e
             garantia total de serviço.
           </p>
-        </div>
+        </motion.div>
         <div className="service-grid">
-          {services.map((service) => (
-            <article key={service.title} className="service-card">
-              <service.icon size={32} weight="duotone" />
+          {services.map((service, i) => (
+            <motion.article
+              key={service.title}
+              className="service-card"
+              initial={{ opacity: 0, y: 28 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, ease: 'easeOut', delay: i * 0.1 }}
+            >
+              <div className="service-card__icon">
+                <service.icon size={32} weight="duotone" />
+              </div>
               <h3>{service.title}</h3>
               <p>{service.description}</p>
-            </article>
+            </motion.article>
           ))}
         </div>
       </div>
