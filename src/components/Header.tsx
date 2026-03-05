@@ -33,6 +33,9 @@ function Header({ theme, onToggleTheme }: HeaderProps): JSX.Element {
               </li>
             ))}
           </ul>
+          <a className="nav-cta" href="#contato" onClick={() => setMenuOpen(false)}>
+            Orçamento grátis
+          </a>
         </nav>
         <div className="header-actions">
           <button
