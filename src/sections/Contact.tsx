@@ -213,7 +213,7 @@ function Contact(): JSX.Element {
             <ul className="contact-chat__info">
               <li>
                 <Phone size={16} weight="bold" style={{ display: 'inline', verticalAlign: 'middle', marginRight: '0.4rem' }} />
-                <a href="tel:+5549988432733">(49) 98843-2733</a>
+                <a href="tel:+5549920007235">(49) 92000-7235</a>
               </li>
               <li>
                 <Phone size={16} weight="bold" style={{ display: 'inline', verticalAlign: 'middle', marginRight: '0.4rem' }} />
