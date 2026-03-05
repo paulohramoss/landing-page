@@ -1,3 +1,4 @@
+import { InstagramLogo, FacebookLogo } from '@phosphor-icons/react';
 import Logo from './Logo';
 
 function Footer(): JSX.Element {
@@ -27,12 +28,14 @@ function Footer(): JSX.Element {
           <div>
             <h4>Social</h4>
             <p>
-              <a href="https://www.instagram.com/vidra_ramos/" target="_blank" rel="noreferrer">
+              <a className="footer-social-link" href="https://www.instagram.com/vidra_ramos/" target="_blank" rel="noreferrer">
+                <InstagramLogo size={18} weight="bold" />
                 Instagram
               </a>
             </p>
             <p>
-              <a href="https://www.facebook.com/profile.php?id=100009049510783" target="_blank" rel="noreferrer">
+              <a className="footer-social-link" href="https://www.facebook.com/profile.php?id=100009049510783" target="_blank" rel="noreferrer">
+                <FacebookLogo size={18} weight="bold" />
                 Facebook
               </a>
             </p>

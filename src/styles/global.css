@@ -220,6 +220,13 @@ main {
   color: white;
   font-weight: 600;
   box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.nav-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  color: white;
 }
 
 .menu-toggle {
@@ -323,6 +330,11 @@ main {
   background: transparent;
   border: 2px solid white;
   color: white;
+}
+
+.btn.outline:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
 }
 
 .hero-stats {
@@ -754,7 +766,8 @@ main {
 
 .contact-chat__info {
   margin: 0;
-  padding-left: 1.25rem;
+  padding-left: 0;
+  list-style: none;
   color: var(--color-muted);
   display: flex;
   flex-direction: column;
@@ -861,6 +874,17 @@ textarea:focus {
   font-size: 0.85rem;
   color: rgba(255, 255, 255, 0.6);
   text-align: center;
+}
+
+.footer-social-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
 }
 
 .floating-whatsapp {
