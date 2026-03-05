@@ -516,6 +516,10 @@ main {
   box-shadow: var(--shadow-lg);
 }
 
+.service-card__icon {
+  color: var(--color-primary);
+}
+
 .service-card h3 {
   margin-top: 1.5rem;
   margin-bottom: 0.75rem;
@@ -533,6 +537,11 @@ main {
   border-radius: 22px;
   background: linear-gradient(135deg, rgba(101, 65, 245, 0.12), rgba(245, 56, 85, 0.12));
   backdrop-filter: blur(10px);
+}
+
+.highlight-card__icon {
+  color: var(--color-primary);
+  margin-bottom: 1rem;
 }
 
 .portfolio-grid {
@@ -557,14 +566,34 @@ main {
   z-index: 5;
 }
 
+.portfolio-card__image-wrap {
+  overflow: hidden;
+}
+
 .portfolio-card img {
   object-fit: cover;
   height: 220px;
   width: 100%;
+  transition: transform 0.4s ease;
+}
+
+.portfolio-card:hover img {
+  transform: scale(1.06);
 }
 
 .portfolio-card__content {
   padding: 1.75rem;
+}
+
+.portfolio-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  background: var(--color-hero-badge);
+  color: var(--color-primary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
 }
 
 .process-grid {
@@ -579,6 +608,19 @@ main {
   background: var(--color-surface);
   box-shadow: var(--shadow-sm);
   border-top: 4px solid rgba(101, 65, 245, 0.2);
+}
+
+.process-step-number {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  color: white;
+  font-weight: 700;
+  font-size: 1.1rem;
+  display: grid;
+  place-items: center;
+  margin-bottom: 1rem;
 }
 
 .testimonial-grid {
@@ -612,6 +654,31 @@ main {
 .testimonial-card span {
   font-size: 0.9rem;
   color: var(--color-muted);
+}
+
+.testimonial-stars {
+  color: #f59e0b;
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+}
+
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.testimonial-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  color: white;
+  font-weight: 700;
+  font-size: 1rem;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
 }
 
 .cta {
@@ -696,6 +763,25 @@ main {
 
 .contact-chat__info li {
   line-height: 1.4;
+}
+
+.contact-chat__hours {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--color-muted);
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.file-upload {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.file-upload__info {
+  font-size: 0.85rem;
+  color: var(--color-muted);
 }
 
 .form-grid {

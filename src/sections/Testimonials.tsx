@@ -1,3 +1,7 @@
+import { motion } from 'framer-motion';
+import { useInView } from 'framer-motion';
+import { useRef } from 'react';
+
 const testimonials = [
   {
     name: 'Fernanda Mota',
@@ -19,25 +23,53 @@ const testimonials = [
   }
 ];
 
+function getInitials(name: string): string {
+  return name
+    .split(' ')
+    .slice(0, 2)
+    .map((n) => n[0])
+    .join('');
+}
+
 function Testimonials(): JSX.Element {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: '-80px' });
+
   return (
-    <section className="section" aria-labelledby="depoimentos">
+    <section className="section" aria-labelledby="depoimentos" ref={ref}>
       <div className="container">
-        <div className="section-heading">
+        <motion.div
+          className="section-heading"
+          initial={{ opacity: 0, y: 24 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+        >
           <span className="section-eyebrow" id="depoimentos">
             Depoimentos
           </span>
           <h2>Quem já escolheu a Vidraçaria Ramos recomenda</h2>
-        </div>
+        </motion.div>
         <div className="testimonial-grid">
-          {testimonials.map((testimonial) => (
-            <figure key={testimonial.name} className="testimonial-card">
-              <blockquote>“{testimonial.quote}”</blockquote>
-              <figcaption>
-                <strong>{testimonial.name}</strong>
-                <span>{testimonial.role}</span>
+          {testimonials.map((testimonial, i) => (
+            <motion.figure
+              key={testimonial.name}
+              className="testimonial-card"
+              initial={{ opacity: 0, y: 28 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, ease: 'easeOut', delay: i * 0.12 }}
+            >
+              <div className="testimonial-stars" aria-label="5 estrelas">★★★★★</div>
+              <blockquote>"{testimonial.quote}"</blockquote>
+              <figcaption className="testimonial-author">
+                <div className="testimonial-avatar" aria-hidden="true">
+                  {getInitials(testimonial.name)}
+                </div>
+                <div>
+                  <strong>{testimonial.name}</strong>
+                  <span>{testimonial.role}</span>
+                </div>
               </figcaption>
-            </figure>
+            </motion.figure>
           ))}
         </div>
       </div>
