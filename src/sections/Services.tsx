@@ -1,28 +1,31 @@
-import { Buildings, Door, Shower, SquaresFour } from '@phosphor-icons/react';
-import { motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
+import { Buildings, Door, Shower, SquaresFour, ArrowRight } from '@phosphor-icons/react';
+import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 
 const services = [
   {
     icon: Door,
     title: 'Esquadrias de alumínio',
-    description: 'Portas, janelas e fachadas com alta durabilidade, vedação perfeita e pintura eletrostática.'
+    description: 'Portas, janelas e fachadas com alta durabilidade, vedação perfeita e pintura eletrostática.',
+    detail: 'Ideal para residências e comércios que buscam elegância e eficiência energética.'
   },
   {
     icon: Shower,
     title: 'Boxes de vidro temperado',
-    description: 'Modelos de abrir, correr ou cantoneira com ferragens premium e instalação segura.'
+    description: 'Modelos de abrir, correr ou cantoneira com ferragens premium e instalação segura.',
+    detail: 'Vidro temperado 8mm com tratamento antichoque e certificação INMETRO.'
   },
   {
     icon: Buildings,
     title: 'Fachadas comerciais',
-    description: 'Estruturas elegantes que valorizam o ponto comercial com isolamento acústico e térmico.'
+    description: 'Estruturas elegantes que valorizam o ponto comercial com isolamento acústico e térmico.',
+    detail: 'Projetos personalizados que transformam a identidade visual do seu negócio.'
   },
   {
     icon: SquaresFour,
     title: 'Coberturas e guarda-corpos',
-    description: 'Projetos personalizados para áreas externas com vidro laminado e alumínio reforçado.'
+    description: 'Projetos personalizados para áreas externas com vidro laminado e alumínio reforçado.',
+    detail: 'Soluções seguras para varandas, escadas e áreas de lazer.'
   }
 ];
 
@@ -60,6 +63,10 @@ function Services(): JSX.Element {
               </div>
               <h3>{service.title}</h3>
               <p>{service.description}</p>
+              <p className="service-card__detail">{service.detail}</p>
+              <a href="#contato" className="service-card__cta">
+                Solicitar orçamento <ArrowRight size={14} weight="bold" />
+              </a>
             </motion.article>
           ))}
         </div>

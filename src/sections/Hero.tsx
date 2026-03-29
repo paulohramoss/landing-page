@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { AnimatePresence, motion, useReducedMotion, Variants } from 'framer-motion';
+import { AnimatePresence, motion, useInView, useReducedMotion, Variants } from 'framer-motion';
 import heroBathroomImage from '../assets/hero/banheiro.svg';
 import heroWindowImage from '../assets/hero/janela.svg';
 import heroContainerImage from '../assets/hero/container.svg';
@@ -115,10 +115,45 @@ const heroFigureContent: Variants = {
   }
 };
 
+function useCountUp(target: number, decimals: number, duration: number, active: boolean): number {
+  const [count, setCount] = useState(0);
+  const rafRef = useRef<number>();
+
+  useEffect(() => {
+    if (!active) return;
+    const startTime = performance.now();
+
+    const tick = (now: number) => {
+      const elapsed = (now - startTime) / 1000;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCount(parseFloat((target * eased).toFixed(decimals)));
+      if (progress < 1) {
+        rafRef.current = requestAnimationFrame(tick);
+      }
+    };
+
+    rafRef.current = requestAnimationFrame(tick);
+    return () => {
+      if (rafRef.current !== undefined) cancelAnimationFrame(rafRef.current);
+    };
+  }, [active, target, decimals, duration]);
+
+  return count;
+}
+
 function Hero(): JSX.Element {
   const prefersReducedMotion = useReducedMotion();
   const [currentSlide, setCurrentSlide] = useState(0);
   const autoPlayRef = useRef<number | undefined>(undefined);
+
+  const statsRef = useRef(null);
+  const statsInView = useInView(statsRef, { once: true, margin: '-40px' });
+  const countersActive = statsInView && !prefersReducedMotion;
+
+  const count25 = useCountUp(25, 0, 1.8, countersActive);
+  const count800 = useCountUp(800, 0, 2.2, countersActive);
+  const count43 = useCountUp(4.3, 1, 1.8, countersActive);
 
   useEffect(() => {
     if (prefersReducedMotion) {
@@ -168,7 +203,7 @@ function Hero(): JSX.Element {
             Desde 2000 transformando ambientes
           </motion.span>
           <motion.h1 variants={heroItem}>
-             Vidros temperados e esquadrias de alumínio de alta qualidade: segurança e estilo para o seu espaço.
+            Vidros temperados e esquadrias de alumínio de alta qualidade: segurança e estilo para o seu espaço.
           </motion.h1>
           <motion.p variants={heroItem}>
             Projetos residenciais, comerciais e corporativos com atendimento personalizado, prazos
@@ -182,17 +217,23 @@ function Hero(): JSX.Element {
               Ver portfólio
             </a>
           </motion.div>
-          <motion.ul className="hero-stats" variants={heroStats}>
+          <motion.ul className="hero-stats" variants={heroStats} ref={statsRef}>
             <motion.li variants={heroStatsItem}>
-              <strong>25+</strong>
+              <strong>
+                {prefersReducedMotion ? 25 : count25}+
+              </strong>
               <span>Anos de experiência</span>
             </motion.li>
             <motion.li variants={heroStatsItem}>
-              <strong>800+</strong>
+              <strong>
+                {prefersReducedMotion ? 800 : count800}+
+              </strong>
               <span>Projetos entregues</span>
             </motion.li>
             <motion.li variants={heroStatsItem}>
-              <strong>4.9/5</strong>
+              <strong>
+                {prefersReducedMotion ? '4.3' : count43}/5
+              </strong>
               <span>Avaliação dos clientes</span>
             </motion.li>
           </motion.ul>
@@ -201,20 +242,20 @@ function Hero(): JSX.Element {
           <motion.div
             className="hero-media-slides"
             animate=
-              {prefersReducedMotion
-                ? undefined
-                : {
-                    y: [0, -10, 0],
-                    rotate: [0, 0.6, -0.6, 0]
-                  }}
+            {prefersReducedMotion
+              ? undefined
+              : {
+                y: [0, -10, 0],
+                rotate: [0, 0.6, -0.6, 0]
+              }}
             transition=
-              {prefersReducedMotion
-                ? undefined
-                : {
-                    duration: 12,
-                    ease: 'easeInOut',
-                    repeat: Infinity
-                  }}
+            {prefersReducedMotion
+              ? undefined
+              : {
+                duration: 12,
+                ease: 'easeInOut',
+                repeat: Infinity
+              }}
           >
             {prefersReducedMotion ? (
               <img className="hero-media-image" src={activeSlide.src} alt={activeSlide.alt} />

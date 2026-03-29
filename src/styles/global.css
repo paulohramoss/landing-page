@@ -523,7 +523,7 @@ main {
 }
 
 .service-card:hover {
-  transform: scale(1.1) translateY(-6px) !important;
+  transform: scale(1.04) translateY(-6px) !important;
   z-index: 10;
   box-shadow: var(--shadow-lg);
 }
@@ -536,6 +536,45 @@ main {
   margin-top: 1.5rem;
   margin-bottom: 0.75rem;
   color: var(--color-dark);
+}
+
+.service-card__detail {
+  font-size: 0.88rem;
+  color: var(--color-muted);
+  margin-top: 0.5rem;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.35s ease, opacity 0.3s ease, margin-top 0.3s ease;
+}
+
+.service-card:hover .service-card__detail {
+  max-height: 80px;
+  opacity: 1;
+  margin-top: 0.75rem;
+}
+
+.service-card__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 1.25rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  font-size: 0.9rem;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.25s ease, transform 0.25s ease, color 0.2s ease;
+  text-decoration: none;
+}
+
+.service-card:hover .service-card__cta {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.service-card__cta:hover {
+  color: var(--color-secondary);
 }
 
 .highlights {
@@ -578,8 +617,13 @@ main {
   z-index: 5;
 }
 
+.portfolio-card {
+  cursor: pointer;
+}
+
 .portfolio-card__image-wrap {
   overflow: hidden;
+  position: relative;
 }
 
 .portfolio-card img {
@@ -591,6 +635,23 @@ main {
 
 .portfolio-card:hover img {
   transform: scale(1.06);
+}
+
+.portfolio-card__zoom {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(18, 28, 47, 0.45);
+  color: white;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  backdrop-filter: blur(2px);
+}
+
+.portfolio-card:hover .portfolio-card__zoom {
+  opacity: 1;
 }
 
 .portfolio-card__content {
@@ -635,10 +696,11 @@ main {
   margin-bottom: 1rem;
 }
 
-.testimonial-grid {
-  display: grid;
-  gap: 1.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+.testimonial-carousel {
+  max-width: 700px;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
 }
 
 .testimonial-card {
@@ -649,6 +711,63 @@ main {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+}
+
+.testimonial-card--featured {
+  padding: 2.75rem;
+  border-radius: 28px;
+  margin-bottom: 0.25rem;
+}
+
+.testimonial-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 1.75rem;
+}
+
+.testimonial-nav {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: none;
+  background: var(--color-surface);
+  color: var(--color-primary);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  box-shadow: var(--shadow-xs);
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.testimonial-nav:hover {
+  background: var(--color-primary);
+  color: white;
+  transform: scale(1.08);
+}
+
+.testimonial-dots {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.testimonial-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: none;
+  background: var(--color-border);
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.testimonial-dot.is-active {
+  background: var(--color-primary);
+  transform: scale(1.35);
 }
 
 .testimonial-card blockquote {
@@ -1089,6 +1208,190 @@ textarea:focus {
   }
 }
 
+/* ── Lightbox ──────────────────────────────────────────── */
+
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.lightbox-content {
+  position: relative;
+  background: var(--color-surface);
+  border-radius: 24px;
+  overflow: hidden;
+  max-width: 860px;
+  width: 100%;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+}
+
+.lightbox-image-wrap {
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--color-section-alt);
+}
+
+.lightbox-image {
+  width: 100%;
+  max-height: 56vh;
+  object-fit: cover;
+  display: block;
+}
+
+.lightbox-info {
+  padding: 1.5rem 2rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  overflow-y: auto;
+}
+
+.lightbox-info h3 {
+  margin: 0.3rem 0 0;
+  color: var(--color-dark);
+  font-size: 1.25rem;
+}
+
+.lightbox-info p {
+  margin: 0;
+  color: var(--color-muted);
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 0.85rem;
+  right: 0.85rem;
+  z-index: 10;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(18, 28, 47, 0.65);
+  color: white;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: background 0.2s ease;
+}
+
+.lightbox-close:hover {
+  background: rgba(18, 28, 47, 0.9);
+}
+
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(18, 28, 47, 0.55);
+  color: white;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: background 0.2s ease, transform 0.2s ease;
+  z-index: 10;
+}
+
+.lightbox-nav:hover {
+  background: var(--color-primary);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.lightbox-nav--prev { left: 0.85rem; }
+.lightbox-nav--next { right: 0.85rem; }
+
+.lightbox-dots {
+  position: absolute;
+  bottom: 0.85rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.5rem;
+  z-index: 5;
+}
+
+.lightbox-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.lightbox-dot.is-active {
+  background: white;
+  transform: scale(1.35);
+}
+
+/* ── Contact Map ────────────────────────────────────────── */
+
+.contact-map {
+  margin-top: 2.5rem;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  height: 340px;
+  border: 1px solid var(--color-border);
+}
+
+.contact-map iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+/* ── Form Feedback ──────────────────────────────────────── */
+
+.form-feedback {
+  padding: 0.9rem 1.2rem;
+  border-radius: 14px;
+  font-weight: 500;
+  font-size: 0.92rem;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  line-height: 1.4;
+}
+
+.form-feedback--success {
+  background: rgba(34, 197, 94, 0.1);
+  color: #15803d;
+  border: 1px solid rgba(34, 197, 94, 0.28);
+}
+
+.form-feedback--error {
+  background: rgba(239, 68, 68, 0.1);
+  color: #dc2626;
+  border: 1px solid rgba(239, 68, 68, 0.28);
+}
+
+:root[data-theme='dark'] .form-feedback--success {
+  background: rgba(34, 197, 94, 0.14);
+  color: #4ade80;
+  border-color: rgba(34, 197, 94, 0.22);
+}
+
+:root[data-theme='dark'] .form-feedback--error {
+  background: rgba(239, 68, 68, 0.14);
+  color: #f87171;
+  border-color: rgba(239, 68, 68, 0.22);
+}
+
 @media (max-width: 480px) {
   .header .container {
     gap: 0.75rem;
@@ -1124,6 +1427,7 @@ textarea:focus {
   .highlight-card,
   .process-card,
   .testimonial-card,
+  .testimonial-card--featured,
   .contact-form,
   .contact-chat {
     padding: 1.75rem;
@@ -1135,5 +1439,22 @@ textarea:focus {
 
   .floating-whatsapp {
     inset: auto 0.75rem 0.75rem auto;
+  }
+
+  .lightbox-image {
+    max-height: 45vh;
+  }
+
+  .lightbox-info {
+    padding: 1.25rem 1.5rem 1.5rem;
+  }
+
+  .lightbox-nav {
+    width: 36px;
+    height: 36px;
+  }
+
+  .contact-map {
+    height: 260px;
   }
 }

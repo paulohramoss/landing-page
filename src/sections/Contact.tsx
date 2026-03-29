@@ -1,13 +1,16 @@
 import { ChangeEvent, FormEvent, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { WhatsAppModal } from "../components/WhatsAppModal";
-import { WhatsappLogo, Phone, Envelope, MapPin } from "@phosphor-icons/react";
+import { WhatsappLogo, Phone, Envelope, MapPin, CheckCircle, WarningCircle } from "@phosphor-icons/react";
 
 const EMAIL_ENDPOINT = "https://formsubmit.co/ajax/vidraramos1@gmail.com";
+
+type FormStatus = 'idle' | 'success' | 'error';
 
 function Contact(): JSX.Element {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [formStatus, setFormStatus] = useState<FormStatus>('idle');
   const [selectedFileName, setSelectedFileName] = useState("");
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -18,7 +21,6 @@ function Contact(): JSX.Element {
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-
     setSelectedFileName(file ? file.name : "");
   };
 
@@ -26,45 +28,27 @@ function Contact(): JSX.Element {
     event.preventDefault();
 
     const form = event.currentTarget;
-
     const formData = new FormData(form);
 
     const getValue = (key: string) => {
       const value = formData.get(key);
-
       return typeof value === "string" ? value : "";
     };
 
-    const name = getValue("name");
-
-    const email = getValue("email");
-
-    const phone = getValue("phone");
-
-    const projectType = getValue("projectType");
-
-    const message = getValue("message");
-
-    formData.set("name", name);
-
-    formData.set("email", email);
-
-    formData.set("phone", phone);
-
-    formData.set("projectType", projectType);
-
-    formData.set("message", message);
-
-    formData.append("_subject", `Novo contato - ${name || "Contato"}`);
-
+    formData.set("name", getValue("name"));
+    formData.set("email", getValue("email"));
+    formData.set("phone", getValue("phone"));
+    formData.set("projectType", getValue("projectType"));
+    formData.set("message", getValue("message"));
+    formData.append("_subject", `Novo contato - ${getValue("name") || "Contato"}`);
     formData.append("_captcha", "false");
 
     try {
       setIsSubmitting(true);
+      setFormStatus('idle');
 
       const response = await fetch(EMAIL_ENDPOINT, {
         method: "POST",
-
         body: formData,
       });
 
@@ -72,19 +56,12 @@ function Contact(): JSX.Element {
         throw new Error("Falha ao enviar e-mail");
       }
 
-      alert(
-        "Obrigado! Recebemos sua mensagem e entraremos em contato em breve."
-      );
-
+      setFormStatus('success');
       form.reset();
-
       setSelectedFileName("");
     } catch (error) {
       console.error("Não foi possível enviar a mensagem.", error);
-
-      alert(
-        "Não foi possível enviar sua mensagem. Tente novamente em instantes."
-      );
+      setFormStatus('error');
     } finally {
       setIsSubmitting(false);
     }
@@ -95,9 +72,7 @@ function Contact(): JSX.Element {
       <div className="container">
         <div className="section-heading">
           <span className="section-eyebrow">Contato</span>
-
           <h2>Solicite uma visita técnica ou orçamento sem compromisso</h2>
-
           <p>
             Preencha o formulário que nossa equipe retorna rapidamente com as
             melhores soluções em vidro e alumínio para o seu projeto.
@@ -145,9 +120,7 @@ function Contact(): JSX.Element {
                 Tipo de projeto
                 <select name="projectType" defaultValue="residencial" required>
                   <option value="residencial">Residencial</option>
-
                   <option value="comercial">Comercial</option>
-
                   <option value="corporativo">Corporativo</option>
                 </select>
               </label>
@@ -172,7 +145,6 @@ function Contact(): JSX.Element {
                 onChange={handleFileChange}
                 style={{ display: "none" }}
               />
-
               <button
                 className="btn secondary"
                 type="button"
@@ -180,7 +152,6 @@ function Contact(): JSX.Element {
               >
                 Anexar projeto (PDF, PNG, JPG ou JPEG)
               </button>
-
               <span aria-live="polite" className="file-upload__info">
                 {selectedFileName || "Nenhum arquivo selecionado"}
               </span>
@@ -193,6 +164,32 @@ function Contact(): JSX.Element {
             >
               {isSubmitting ? "Enviando..." : "Enviar mensagem"}
             </button>
+
+            <AnimatePresence>
+              {formStatus !== 'idle' && (
+                <motion.div
+                  className={`form-feedback form-feedback--${formStatus}`}
+                  initial={{ opacity: 0, y: -8, scale: 0.97 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -8, scale: 0.97 }}
+                  transition={{ duration: 0.3, ease: 'easeOut' }}
+                  role="alert"
+                  aria-live="polite"
+                >
+                  {formStatus === 'success' ? (
+                    <>
+                      <CheckCircle size={20} weight="fill" />
+                      Mensagem enviada com sucesso! Entraremos em contato em breve.
+                    </>
+                  ) : (
+                    <>
+                      <WarningCircle size={20} weight="fill" />
+                      Não foi possível enviar sua mensagem. Tente novamente em instantes.
+                    </>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </form>
 
           <aside className="contact-chat">
@@ -232,6 +229,16 @@ function Contact(): JSX.Element {
               Segunda a sexta, das 8h às 18h
             </p>
           </aside>
+        </div>
+
+        <div className="contact-map">
+          <iframe
+            src="https://maps.google.com/maps?q=Rua+Adolfo+Konder+1757+S%C3%A3o+Miguel+do+Oeste+SC+Brasil&output=embed&hl=pt-BR&z=16"
+            title="Localização Vidraçaria Ramos – Rua Adolfo Konder, 1757, São Miguel do Oeste / SC"
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
         </div>
       </div>
       <WhatsAppModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
