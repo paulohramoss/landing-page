@@ -9,14 +9,11 @@ import Portfolio from './sections/Portfolio';
 import Process from './sections/Process';
 import Services from './sections/Services';
 import Testimonials from './sections/Testimonials';
-import useTheme from './hooks/useTheme';
 
 function App(): JSX.Element {
-  const { theme, toggleTheme } = useTheme();
-
   return (
     <div className="app-shell">
-      <Header theme={theme} onToggleTheme={toggleTheme} />
+      <Header />
       <main>
         <Hero />
         <Highlights />

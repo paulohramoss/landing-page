@@ -1,7 +1,6 @@
-import { List, MoonStars, Sun } from '@phosphor-icons/react';
+import { List } from '@phosphor-icons/react';
 import { useState } from 'react';
 import Logo from './Logo';
-import type { Theme } from '../hooks/useTheme';
 
 const navigation = [
   { label: 'Início', href: '#inicio' },
@@ -11,12 +10,7 @@ const navigation = [
   { label: 'Contato', href: '#contato' }
 ];
 
-type HeaderProps = {
-  theme: Theme;
-  onToggleTheme: () => void;
-};
-
-function Header({ theme, onToggleTheme }: HeaderProps): JSX.Element {
+function Header(): JSX.Element {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -38,14 +32,6 @@ function Header({ theme, onToggleTheme }: HeaderProps): JSX.Element {
           </a>
         </nav>
         <div className="header-actions">
-          <button
-            className="theme-toggle"
-            type="button"
-            onClick={onToggleTheme}
-            aria-label={`Ativar tema ${theme === 'dark' ? 'claro' : 'escuro'}`}
-          >
-            {theme === 'dark' ? <Sun size={22} weight="bold" /> : <MoonStars size={22} weight="bold" />}
-          </button>
           <button
             className="menu-toggle"
             type="button"

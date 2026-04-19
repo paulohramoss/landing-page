@@ -2,28 +2,38 @@ import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useInView } from 'framer-motion';
 import { ArrowLeft, ArrowRight } from '@phosphor-icons/react';
 
-const testimonials = [
+type Testimonial = {
+  name: string;
+  role: string;
+  projectType: string;
+  quote: string;
+};
+
+const testimonials: Testimonial[] = [
   {
     name: 'Fernanda Mota',
-    role: 'Arquiteta - Studio FM',
+    role: 'Arquiteta — Studio FM',
+    projectType: 'Fachada comercial em vidro',
     quote:
       'A Vidraçaria Ramos virou parceira nos projetos corporativos pela agilidade e cuidado com os detalhes. Entregam exatamente o que foi aprovado com nossos clientes.'
   },
   {
     name: 'Ricardo Alves',
-    role: 'Síndico - Condomínio Horizon',
+    role: 'Síndico — Condomínio Horizon',
+    projectType: 'Fechamento de varandas',
     quote:
       'Fechamos todas as varandas do edifício com o sistema retrátil. Prazos cumpridos, equipe organizada e suporte pós-obra quando precisamos.'
   },
   {
     name: 'Juliana Martins',
-    role: 'Empresária - Café Solar',
+    role: 'Empresária — Café Solar',
+    projectType: 'Fachada em pele de vidro',
     quote:
-      'A fachada em pele de vidro transformou a apresentação do nosso negócio. Recebemos elogios diários dos clientes.'
+      'A fachada transformou completamente a apresentação do nosso negócio. Recebemos elogios diários dos clientes e as vendas aumentaram.'
   }
 ];
 
-const AUTOPLAY_INTERVAL = 5000;
+const AUTOPLAY_INTERVAL = 6000;
 
 function getInitials(name: string): string {
   return name
@@ -36,7 +46,6 @@ function getInitials(name: string): string {
 function Testimonials(): JSX.Element {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-80px' });
-
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(1);
   const autoPlayRef = useRef<number | undefined>(undefined);
@@ -63,13 +72,13 @@ function Testimonials(): JSX.Element {
   const variants = {
     enter: (d: number) => ({ opacity: 0, x: d > 0 ? 80 : -80 }),
     center: { opacity: 1, x: 0 },
-    exit: (d: number) => ({ opacity: 0, x: d > 0 ? -80 : 80 })
+    exit:  (d: number) => ({ opacity: 0, x: d > 0 ? -80 : 80 })
   };
 
   const testimonial = testimonials[current];
 
   return (
-    <section className="section" aria-labelledby="depoimentos" ref={ref}>
+    <section className="section" aria-labelledby="depoimentos-titulo" ref={ref}>
       <div className="container">
         <motion.div
           className="section-heading"
@@ -77,10 +86,11 @@ function Testimonials(): JSX.Element {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, ease: 'easeOut' }}
         >
-          <span className="section-eyebrow" id="depoimentos">
-            Depoimentos
-          </span>
+          <span className="section-eyebrow" id="depoimentos-titulo">Depoimentos</span>
           <h2>Quem já escolheu a Vidraçaria Ramos recomenda</h2>
+          <p>
+            Clientes residenciais e empresas que confiam na nossa qualidade e voltam sempre.
+          </p>
         </motion.div>
 
         <motion.div
@@ -109,6 +119,7 @@ function Testimonials(): JSX.Element {
                 <div>
                   <strong>{testimonial.name}</strong>
                   <span>{testimonial.role}</span>
+                  <p className="testimonial-project-type">{testimonial.projectType}</p>
                 </div>
               </figcaption>
             </motion.figure>
