@@ -7,6 +7,7 @@ import portaAluminio from '../assets/porta-aluminio.jpg';
 type HeroSlide = {
   alt: string;
   caption: string;
+  badge: string;
   src: string;
   objectFit?: 'cover' | 'contain';
 };
@@ -32,123 +33,97 @@ const heroSlides: HeroSlide[] = [
 
 const SLIDE_DURATION = 7000;
 
-const heroSection: Variants = {
+const containerVariants: Variants = {
   hidden: {},
   visible: {
-    transition: {
-      staggerChildren: 0.18,
-      delayChildren: 0.1
-    }
+    transition: { staggerChildren: 0.15, delayChildren: 0.1 }
   }
 };
 
-const heroContainer: Variants = {
-  hidden: { opacity: 0, y: 36 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.8,
-      ease: 'easeOut'
-    }
-  }
-};
-
-const heroItem: Variants = {
+const itemVariants: Variants = {
   hidden: { opacity: 0, y: 28 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: {
-      duration: 0.6,
-      ease: 'easeOut'
-    }
+    transition: { duration: 0.65, ease: 'easeOut' }
   }
 };
 
-const heroStats: Variants = {
-  hidden: { opacity: 0, y: 28 },
+const mediaVariants: Variants = {
+  hidden: { opacity: 0, x: 40, scale: 0.96 },
   visible: {
     opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: 'easeOut',
-      staggerChildren: 0.12
-    }
+    x: 0,
+    scale: 1,
+    transition: { duration: 0.9, ease: 'easeOut', delay: 0.2 }
   }
 };
 
-const heroStatsItem: Variants = {
-  hidden: { opacity: 0, y: 16 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.4,
-      ease: 'easeOut'
-    }
-  }
-};
-
-const heroFigure: Variants = {
-  hidden: { opacity: 0, scale: 0.92, y: 20 },
+const slideVariants: Variants = {
+  hidden: { opacity: 0, scale: 0.97 },
   visible: {
     opacity: 1,
     scale: 1,
-    y: 0,
-    transition: {
-      duration: 0.9,
-      ease: 'easeOut'
-    }
+    transition: { duration: 0.6, ease: 'easeOut' }
   }
 };
 
-const heroFigureContent: Variants = {
-  hidden: { opacity: 0, y: 16, scale: 0.96 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: {
-      duration: 0.7,
-      ease: 'easeOut'
-    }
-  }
-};
+function useCountUp(target: number, decimals: number, duration: number, active: boolean): number {
+  const [count, setCount] = useState(0);
+  const rafRef = useRef<number>();
+
+  useEffect(() => {
+    if (!active) return;
+    const startTime = performance.now();
+
+    const tick = (now: number) => {
+      const elapsed = (now - startTime) / 1000;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCount(parseFloat((target * eased).toFixed(decimals)));
+      if (progress < 1) {
+        rafRef.current = requestAnimationFrame(tick);
+      }
+    };
+
+    rafRef.current = requestAnimationFrame(tick);
+    return () => {
+      if (rafRef.current !== undefined) cancelAnimationFrame(rafRef.current);
+    };
+  }, [active, target, decimals, duration]);
+
+  return count;
+}
 
 function Hero(): JSX.Element {
   const prefersReducedMotion = useReducedMotion();
   const [currentSlide, setCurrentSlide] = useState(0);
   const autoPlayRef = useRef<number | undefined>(undefined);
 
+  const statsRef = useRef(null);
+  const statsInView = useInView(statsRef, { once: true, margin: '-40px' });
+  const countersActive = statsInView && !prefersReducedMotion;
+
+  const count25  = useCountUp(25,  0, 1.8, countersActive);
+  const count800 = useCountUp(800, 0, 2.2, countersActive);
+  const count49  = useCountUp(4.9, 1, 1.8, countersActive);
+
   useEffect(() => {
-    if (prefersReducedMotion) {
-      return undefined;
-    }
+    if (prefersReducedMotion) return undefined;
 
     autoPlayRef.current = window.setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
     }, SLIDE_DURATION);
 
     return () => {
-      if (autoPlayRef.current !== undefined) {
-        window.clearInterval(autoPlayRef.current);
-      }
+      if (autoPlayRef.current !== undefined) window.clearInterval(autoPlayRef.current);
     };
   }, [prefersReducedMotion]);
 
   const handleSelectSlide = (index: number) => {
     setCurrentSlide(index);
-
-    if (prefersReducedMotion) {
-      return;
-    }
-
-    if (autoPlayRef.current !== undefined) {
-      window.clearInterval(autoPlayRef.current);
-    }
-
+    if (prefersReducedMotion) return;
+    if (autoPlayRef.current !== undefined) window.clearInterval(autoPlayRef.current);
     autoPlayRef.current = window.setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
     }, SLIDE_DURATION);
@@ -157,13 +132,7 @@ function Hero(): JSX.Element {
   const activeSlide = heroSlides[currentSlide];
 
   return (
-    <motion.section
-      className="hero"
-      id="inicio"
-      initial="hidden"
-      animate="visible"
-      variants={heroSection}
-    >
+    <section className="hero" id="inicio">
       <div className="container">
         {/* ── Conteúdo esquerdo ── */}
         <motion.div
@@ -178,34 +147,44 @@ function Hero(): JSX.Element {
           <motion.h1 variants={heroItem}>
             Vidros temperados e esquadrias de alumínio de alta qualidade: segurança e estilo para o seu espaço.
           </motion.h1>
-          <motion.p variants={heroItem}>
-            Projetos residenciais, comerciais e corporativos com atendimento personalizado, prazos
-            cumpridos e garantia total na instalação.
+
+          <motion.p variants={itemVariants}>
+            Do box de banheiro à fachada comercial — projetos entregues com
+            prazo, garantia e qualidade comprovada.
           </motion.p>
-          <motion.div className="hero-actions" variants={heroItem}>
+
+          <motion.div className="hero-actions" variants={itemVariants}>
             <a className="btn primary" href="#contato">
-              Solicitar orçamento
+              Solicitar orçamento grátis
             </a>
             <a className="btn secondary" href="#portfolio">
-              Ver portfólio
+              Ver projetos realizados
             </a>
           </motion.div>
-          <motion.ul className="hero-stats" variants={heroStats}>
-            <motion.li variants={heroStatsItem}>
-              <strong>25+</strong>
+
+          <motion.ul className="hero-stats" ref={statsRef} variants={itemVariants}>
+            <li>
+              <strong>{prefersReducedMotion ? '25' : count25}+</strong>
               <span>Anos de experiência</span>
             </motion.li>
             <motion.li variants={heroStatsItem}>
               <strong>5.000+</strong>
               <span>Projetos entregues</span>
-            </motion.li>
-            <motion.li variants={heroStatsItem}>
-              <strong>4.9/5</strong>
+            </li>
+            <li>
+              <strong>{prefersReducedMotion ? '4.9' : count49}/5</strong>
               <span>Avaliação dos clientes</span>
-            </motion.li>
+            </li>
           </motion.ul>
         </motion.div>
-        <motion.figure className="hero-media" variants={heroFigure}>
+
+        {/* ── Media direita (sobre o bloco azul) ── */}
+        <motion.div
+          className="hero-media"
+          initial="hidden"
+          animate="visible"
+          variants={mediaVariants}
+        >
           <motion.div
             className="hero-media-slides"
             animate=
@@ -224,6 +203,21 @@ function Hero(): JSX.Element {
                 repeat: Infinity
               }}
           >
+            {/* Badge flutuante */}
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={activeSlide.badge}
+                className="hero-media-badge"
+                initial={{ opacity: 0, y: -8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.35 }}
+              >
+                {activeSlide.badge}
+              </motion.span>
+            </AnimatePresence>
+
+            {/* Slide de imagem */}
             {prefersReducedMotion ? (
               <img
                 className="hero-media-image"
@@ -242,79 +236,48 @@ function Hero(): JSX.Element {
                   initial="hidden"
                   animate="visible"
                   exit="hidden"
-                  variants={heroFigureContent}
+                  variants={slideVariants}
                 />
               </AnimatePresence>
             )}
-          </motion.div>
-          <AnimatePresence mode="wait">
-            {activeSlide.caption && (
-              <motion.figcaption
-                key={activeSlide.caption}
-                initial={prefersReducedMotion ? false : { opacity: 0, y: 12 }}
-                animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
-                exit={prefersReducedMotion ? undefined : { opacity: 0, y: 12 }}
-                transition={{ duration: 0.4, ease: 'easeOut' }}
-                aria-live="polite"
-              >
-                {activeSlide.caption}
-              </motion.figcaption>
-            )}
-          </AnimatePresence>
-          <div className="hero-media-dots" role="tablist" aria-label="Projetos em destaque">
-            {heroSlides.map((slide, index) => {
-              const isActive = index === currentSlide;
 
-              return (
-                <button
-                  key={slide.caption}
-                  type="button"
-                  className={`hero-media-dot${isActive ? ' is-active' : ''}`}
-                  onClick={() => handleSelectSlide(index)}
-                  aria-label={`Mostrar imagem: ${slide.caption}`}
-                  aria-pressed={isActive}
-                  aria-current={isActive ? 'true' : undefined}
-                />
-              );
-            })}
-          </div>
-          {!prefersReducedMotion && (
-            <div className="hero-media-orbs" aria-hidden="true">
-              <motion.span
-                className="hero-media-orb hero-media-orb--lg"
-                initial={{ opacity: 0, scale: 0.85, y: 0 }}
-                animate={{
-                  opacity: [0.45, 0.8, 0.45],
-                  scale: [0.9, 1.05, 0.9],
-                  y: [0, -18, 0]
-                }}
-                transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 0.3 }}
-              />
-              <motion.span
-                className="hero-media-orb hero-media-orb--sm"
-                initial={{ opacity: 0, scale: 0.8, y: 0 }}
-                animate={{
-                  opacity: [0.4, 0.7, 0.4],
-                  scale: [0.85, 1.1, 0.85],
-                  y: [0, -12, 0]
-                }}
-                transition={{ duration: 6.5, repeat: Infinity, ease: 'easeInOut', delay: 0.6 }}
-              />
-              <motion.span
-                className="hero-media-orb hero-media-orb--xs"
-                initial={{ opacity: 0, scale: 0.7, y: 0 }}
-                animate={{
-                  opacity: [0.35, 0.65, 0.35],
-                  scale: [0.8, 1, 0.8],
-                  y: [0, -10, 0]
-                }}
-                transition={{ duration: 5.5, repeat: Infinity, ease: 'easeInOut', delay: 0.9 }}
-              />
+            {/* Caption */}
+            <AnimatePresence mode="wait">
+              {activeSlide.caption && (
+                <motion.figcaption
+                  key={activeSlide.caption}
+                  initial={prefersReducedMotion ? false : { opacity: 0, y: 10 }}
+                  animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+                  exit={prefersReducedMotion ? undefined : { opacity: 0, y: 10 }}
+                  transition={{ duration: 0.35 }}
+                  aria-live="polite"
+                >
+                  {activeSlide.caption}
+                </motion.figcaption>
+              )}
+            </AnimatePresence>
+
+            {/* Dots */}
+            <div className="hero-media-dots" role="tablist" aria-label="Projetos em destaque">
+              {heroSlides.map((slide, index) => {
+                const isActive = index === currentSlide;
+                return (
+                  <button
+                    key={slide.badge}
+                    type="button"
+                    className={`hero-media-dot${isActive ? ' is-active' : ''}`}
+                    onClick={() => handleSelectSlide(index)}
+                    aria-label={`Mostrar: ${slide.badge}`}
+                    aria-pressed={isActive}
+                    aria-current={isActive ? 'true' : undefined}
+                  />
+                );
+              })}
             </div>
-          )}
-        </motion.figure>
+          </motion.div>
+        </motion.div>
       </div>
-    </motion.section>
+    </section>
   );
 }
 

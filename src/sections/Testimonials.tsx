@@ -2,26 +2,38 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 
-const testimonials = [
+type Testimonial = {
+  name: string;
+  role: string;
+  projectType: string;
+  quote: string;
+};
+
+const testimonials: Testimonial[] = [
   {
     name: 'Fernanda Mota',
-    role: 'Arquiteta - Studio FM',
+    role: 'Arquiteta — Studio FM',
+    projectType: 'Fachada comercial em vidro',
     quote:
       'A Vidraçaria Ramos virou parceira nos projetos corporativos pela agilidade e cuidado com os detalhes. Entregam exatamente o que foi aprovado com nossos clientes.'
   },
   {
     name: 'Ricardo Alves',
-    role: 'Síndico - Condomínio Horizon',
+    role: 'Síndico — Condomínio Horizon',
+    projectType: 'Fechamento de varandas',
     quote:
       'Fechamos todas as varandas do edifício com o sistema retrátil. Prazos cumpridos, equipe organizada e suporte pós-obra quando precisamos.'
   },
   {
     name: 'Juliana Martins',
-    role: 'Empresária - Café Solar',
+    role: 'Empresária — Café Solar',
+    projectType: 'Fachada em pele de vidro',
     quote:
-      'A fachada em pele de vidro transformou a apresentação do nosso negócio. Recebemos elogios diários dos clientes.'
+      'A fachada transformou completamente a apresentação do nosso negócio. Recebemos elogios diários dos clientes e as vendas aumentaram.'
   }
 ];
+
+const AUTOPLAY_INTERVAL = 6000;
 
 function getInitials(name: string): string {
   return name
@@ -59,7 +71,7 @@ function Testimonials(): JSX.Element {
   const t = testimonials[active];
 
   return (
-    <section className="section" aria-labelledby="depoimentos" ref={ref}>
+    <section className="section" aria-labelledby="depoimentos-titulo" ref={ref}>
       <div className="container">
         <motion.div
           className="section-heading"
@@ -67,10 +79,11 @@ function Testimonials(): JSX.Element {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, ease: 'easeOut' }}
         >
-          <span className="section-eyebrow" id="depoimentos">
-            Depoimentos
-          </span>
+          <span className="section-eyebrow" id="depoimentos-titulo">Depoimentos</span>
           <h2>Quem já escolheu a Vidraçaria Ramos recomenda</h2>
+          <p>
+            Clientes residenciais e empresas que confiam na nossa qualidade e voltam sempre.
+          </p>
         </motion.div>
 
         <div className="testimonial-carousel">

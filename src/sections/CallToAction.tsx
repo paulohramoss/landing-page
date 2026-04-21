@@ -1,6 +1,6 @@
-import { WhatsappLogo } from "@phosphor-icons/react";
-import { useState } from "react";
-import { WhatsAppModal } from "../components/WhatsAppModal";
+import { WhatsappLogo } from '@phosphor-icons/react';
+import { useState } from 'react';
+import { WhatsAppModal } from '../components/WhatsAppModal';
 
 function CallToAction(): JSX.Element {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -9,32 +9,27 @@ function CallToAction(): JSX.Element {
     <section className="cta">
       <div className="container">
         <div className="cta-content">
-          <h2>
-            Pronto para transformar seu projeto com vidro e alumínio sob medida?
-          </h2>
+          <h2>Pronto para transformar seu espaço?</h2>
           <p>
-            Envie as plantas ou fotos do ambiente e receba um orçamento
-            personalizado com sugestão de soluções em até 24 horas úteis.
+            Orçamento gratuito, sem compromisso. Atendemos residências e empresas
+            com o mesmo cuidado e qualidade.
           </p>
         </div>
         <div className="cta-actions">
+          <a className="btn cta-primary" href="#contato">
+            Solicitar orçamento
+          </a>
           <button
             className="btn whatsapp"
-            onClick={() => setIsModalOpen(true)}
             type="button"
+            onClick={() => setIsModalOpen(true)}
           >
             <WhatsappLogo size={22} weight="fill" />
             Falar no WhatsApp
           </button>
-          <a className="btn outline" href="#contato">
-            Enviar projeto
-          </a>
         </div>
       </div>
-      <WhatsAppModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
+      <WhatsAppModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </section>
   );
 }

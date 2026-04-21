@@ -1,90 +1,54 @@
-import { ChangeEvent, FormEvent, useRef, useState } from "react";
-import { WhatsAppModal } from "../components/WhatsAppModal";
-import { WhatsappLogo, Phone, Envelope, MapPin } from "@phosphor-icons/react";
+import { FormEvent, useRef, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { WhatsAppModal } from '../components/WhatsAppModal';
+import {
+  WhatsappLogo,
+  Phone,
+  Envelope,
+  MapPin,
+  CheckCircle,
+  WarningCircle
+} from '@phosphor-icons/react';
 
-const EMAIL_ENDPOINT = "https://formsubmit.co/ajax/vidraramos1@gmail.com";
+const EMAIL_ENDPOINT = 'https://formsubmit.co/ajax/vidraramos1@gmail.com';
+
+type FormStatus = 'idle' | 'success' | 'error';
 
 function Contact(): JSX.Element {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const [selectedFileName, setSelectedFileName] = useState("");
-
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
-
-  const handleUploadClick = () => {
-    fileInputRef.current?.click();
-  };
-
-  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-
-    setSelectedFileName(file ? file.name : "");
-  };
+  const [formStatus, setFormStatus] = useState<FormStatus>('idle');
+  const formRef = useRef<HTMLFormElement>(null);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     const form = event.currentTarget;
-
     const formData = new FormData(form);
 
     const getValue = (key: string) => {
       const value = formData.get(key);
-
-      return typeof value === "string" ? value : "";
+      return typeof value === 'string' ? value : '';
     };
 
-    const name = getValue("name");
-
-    const email = getValue("email");
-
-    const phone = getValue("phone");
-
-    const projectType = getValue("projectType");
-
-    const message = getValue("message");
-
-    formData.set("name", name);
-
-    formData.set("email", email);
-
-    formData.set("phone", phone);
-
-    formData.set("projectType", projectType);
-
-    formData.set("message", message);
-
-    formData.append("_subject", `Novo contato - ${name || "Contato"}`);
-
-    formData.append("_captcha", "false");
+    formData.append('_subject', `Novo contato — ${getValue('name') || 'Contato'}`);
+    formData.append('_captcha', 'false');
 
     try {
       setIsSubmitting(true);
+      setFormStatus('idle');
 
       const response = await fetch(EMAIL_ENDPOINT, {
-        method: "POST",
-
-        body: formData,
+        method: 'POST',
+        body: formData
       });
 
-      if (!response.ok) {
-        throw new Error("Falha ao enviar e-mail");
-      }
+      if (!response.ok) throw new Error('Falha ao enviar');
 
-      alert(
-        "Obrigado! Recebemos sua mensagem e entraremos em contato em breve."
-      );
-
+      setFormStatus('success');
       form.reset();
-
-      setSelectedFileName("");
     } catch (error) {
-      console.error("Não foi possível enviar a mensagem.", error);
-
-      alert(
-        "Não foi possível enviar sua mensagem. Tente novamente em instantes."
-      );
+      console.error('Não foi possível enviar a mensagem.', error);
+      setFormStatus('error');
     } finally {
       setIsSubmitting(false);
     }
@@ -95,20 +59,18 @@ function Contact(): JSX.Element {
       <div className="container">
         <div className="section-heading">
           <span className="section-eyebrow">Contato</span>
-
-          <h2>Solicite uma visita técnica ou orçamento sem compromisso</h2>
-
+          <h2>Solicite um orçamento sem compromisso</h2>
           <p>
-            Preencha o formulário que nossa equipe retorna rapidamente com as
-            melhores soluções em vidro e alumínio para o seu projeto.
+            Preencha o formulário e nossa equipe retorna com as melhores soluções
+            para o seu projeto em até 24 horas.
           </p>
         </div>
 
         <div className="contact-layout">
           <form
             className="contact-form"
+            ref={formRef}
             onSubmit={handleSubmit}
-            encType="multipart/form-data"
           >
             <div className="form-grid">
               <label>
@@ -122,16 +84,6 @@ function Contact(): JSX.Element {
               </label>
 
               <label>
-                E-mail
-                <input
-                  name="email"
-                  type="email"
-                  placeholder="seuemail@exemplo.com"
-                  required
-                />
-              </label>
-
-              <label>
                 Telefone / WhatsApp
                 <input
                   name="phone"
@@ -140,66 +92,72 @@ function Contact(): JSX.Element {
                   required
                 />
               </label>
-
-              <label>
-                Tipo de projeto
-                <select name="projectType" defaultValue="residencial" required>
-                  <option value="residencial">Residencial</option>
-
-                  <option value="comercial">Comercial</option>
-
-                  <option value="corporativo">Corporativo</option>
-                </select>
-              </label>
             </div>
+
+            <label>
+              Tipo de projeto
+              <select name="projectType" defaultValue="" required>
+                <option value="" disabled>Selecione o tipo de projeto</option>
+                <option value="box-banheiro">Box de Banheiro</option>
+                <option value="janelas">Janelas de Alumínio</option>
+                <option value="portas-divisorias">Portas & Divisórias</option>
+                <option value="fachada">Fachada Comercial</option>
+                <option value="espelhos">Espelhos</option>
+                <option value="cobertura-guardacorpo">Coberturas & Guarda-corpos</option>
+                <option value="outro">Outro</option>
+              </select>
+            </label>
 
             <label>
               Descreva sua necessidade
               <textarea
                 name="message"
                 rows={5}
-                placeholder="Conte um pouco sobre o projeto"
-              ></textarea>
-            </label>
-
-            <div className="file-upload">
-              <input
-                ref={fileInputRef}
-                id="projectFile"
-                name="projectFile"
-                type="file"
-                accept=".pdf,.png,.jpg,.jpeg"
-                onChange={handleFileChange}
-                style={{ display: "none" }}
+                placeholder="Conte um pouco sobre o projeto — tamanho, ambiente, prazo desejado..."
               />
-
-              <button
-                className="btn secondary"
-                type="button"
-                onClick={handleUploadClick}
-              >
-                Anexar projeto (PDF, PNG, JPG ou JPEG)
-              </button>
-
-              <span aria-live="polite" className="file-upload__info">
-                {selectedFileName || "Nenhum arquivo selecionado"}
-              </span>
-            </div>
+            </label>
 
             <button
               className="btn primary"
               type="submit"
               disabled={isSubmitting}
             >
-              {isSubmitting ? "Enviando..." : "Enviar mensagem"}
+              {isSubmitting ? 'Enviando...' : 'Enviar mensagem'}
             </button>
+
+            <AnimatePresence>
+              {formStatus !== 'idle' && (
+                <motion.div
+                  className={`form-feedback form-feedback--${formStatus}`}
+                  initial={{ opacity: 0, y: -8, scale: 0.97 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -8, scale: 0.97 }}
+                  transition={{ duration: 0.3, ease: 'easeOut' }}
+                  role="alert"
+                  aria-live="polite"
+                >
+                  {formStatus === 'success' ? (
+                    <>
+                      <CheckCircle size={20} weight="fill" />
+                      Mensagem enviada! Entraremos em contato em breve.
+                    </>
+                  ) : (
+                    <>
+                      <WarningCircle size={20} weight="fill" />
+                      Não foi possível enviar. Tente novamente ou fale pelo WhatsApp.
+                    </>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </form>
 
           <aside className="contact-chat">
             <div className="contact-chat__header">
               <h3>Prefere falar diretamente?</h3>
               <p>
-                Nossa equipe está disponível para tirar dúvidas e enviar orçamentos pelo WhatsApp.
+                Nossa equipe está disponível para tirar dúvidas e enviar orçamentos
+                pelo WhatsApp — resposta rápida, sem enrolação.
               </p>
             </div>
             <button
@@ -216,16 +174,16 @@ function Contact(): JSX.Element {
                 <a href="tel:+5549920007235">(49) 92000-7235</a>
               </li>
               <li>
-                <Phone size={16} weight="bold" style={{ display: 'inline', verticalAlign: 'middle', marginRight: '0.4rem' }} />
+                <Phone size={15} weight="bold" style={{ display: 'inline', verticalAlign: 'middle', marginRight: '0.4rem' }} />
                 <a href="tel:+5549991368810">(49) 99136-8810</a>
               </li>
               <li>
-                <Envelope size={16} weight="bold" style={{ display: 'inline', verticalAlign: 'middle', marginRight: '0.4rem' }} />
+                <Envelope size={15} weight="bold" style={{ display: 'inline', verticalAlign: 'middle', marginRight: '0.4rem' }} />
                 <a href="mailto:vidraramos1@gmail.com">vidraramos1@gmail.com</a>
               </li>
               <li>
-                <MapPin size={16} weight="bold" style={{ display: 'inline', verticalAlign: 'middle', marginRight: '0.4rem' }} />
-                Rua Adolfo Konder, 1757 – São Miguel do Oeste / SC
+                <MapPin size={15} weight="bold" style={{ display: 'inline', verticalAlign: 'middle', marginRight: '0.4rem' }} />
+                Rua Adolfo Konder, 1757 — São Miguel do Oeste / SC
               </li>
             </ul>
             <p className="contact-chat__hours">
