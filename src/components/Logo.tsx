@@ -1,10 +1,10 @@
+import logoVr from '../assets/logo-vr.jpg';
+
 function Logo(): JSX.Element {
   return (
     <a className="logo" href="#inicio" aria-label="Página inicial Vidraçaria Ramos">
-      <span className="logo-icon">VR</span>
-      <div className="logo-text">
-        <span className="logo-title">Vidraçaria Ramos</span>
-        <span className="logo-subtitle">Vidros e Esquadrias de Alumínio</span>
+      <div className="logo-wrap">
+        <img className="logo-img" src={logoVr} alt="Vidraçaria Ramos" />
       </div>
     </a>
   );

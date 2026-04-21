@@ -1,6 +1,6 @@
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 
 const testimonials = [
   {
@@ -34,6 +34,29 @@ function getInitials(name: string): string {
 function Testimonials(): JSX.Element {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-80px' });
+  const [active, setActive] = useState(0);
+  const [direction, setDirection] = useState(1);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDirection(1);
+      setActive((prev) => (prev + 1) % testimonials.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
+
+  function goTo(index: number) {
+    setDirection(index > active ? 1 : -1);
+    setActive(index);
+  }
+
+  const variants = {
+    enter: (dir: number) => ({ opacity: 0, x: dir > 0 ? 60 : -60 }),
+    center: { opacity: 1, x: 0 },
+    exit: (dir: number) => ({ opacity: 0, x: dir > 0 ? -60 : 60 })
+  };
+
+  const t = testimonials[active];
 
   return (
     <section className="section" aria-labelledby="depoimentos" ref={ref}>
@@ -49,28 +72,68 @@ function Testimonials(): JSX.Element {
           </span>
           <h2>Quem já escolheu a Vidraçaria Ramos recomenda</h2>
         </motion.div>
-        <div className="testimonial-grid">
-          {testimonials.map((testimonial, i) => (
-            <motion.figure
-              key={testimonial.name}
-              className="testimonial-card"
-              initial={{ opacity: 0, y: 28 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, ease: 'easeOut', delay: i * 0.12 }}
-            >
-              <div className="testimonial-stars" aria-label="5 estrelas">★★★★★</div>
-              <blockquote>"{testimonial.quote}"</blockquote>
-              <figcaption className="testimonial-author">
-                <div className="testimonial-avatar" aria-hidden="true">
-                  {getInitials(testimonial.name)}
-                </div>
-                <div>
-                  <strong>{testimonial.name}</strong>
-                  <span>{testimonial.role}</span>
-                </div>
-              </figcaption>
-            </motion.figure>
-          ))}
+
+        <div className="testimonial-carousel">
+          <div className="testimonial-carousel-track">
+            {testimonials.map((testimonial, i) => {
+              const offset = i - active;
+              const normalizedOffset =
+                offset > testimonials.length / 2
+                  ? offset - testimonials.length
+                  : offset < -testimonials.length / 2
+                  ? offset + testimonials.length
+                  : offset;
+
+              const isActive = normalizedOffset === 0;
+              const isPrev = normalizedOffset === -1;
+              const isNext = normalizedOffset === 1;
+              const isVisible = isActive || isPrev || isNext;
+
+              if (!isVisible) return null;
+
+              return (
+                <motion.figure
+                  key={testimonial.name}
+                  className="testimonial-card testimonial-card--peek"
+                  animate={{
+                    x: `calc(${normalizedOffset * 100}% + ${normalizedOffset * 16}px)`,
+                    scale: isActive ? 1 : 0.88,
+                    opacity: isActive ? 1 : 0.45,
+                    zIndex: isActive ? 2 : 1,
+                    filter: isActive ? 'none' : 'blur(1px)'
+                  }}
+                  transition={{ duration: 0.45, ease: 'easeInOut' }}
+                  onClick={() => !isActive && goTo(i)}
+                  style={{ cursor: isActive ? 'default' : 'pointer' }}
+                >
+                  <div className="testimonial-stars" aria-label="5 estrelas">★★★★★</div>
+                  <blockquote>"{testimonial.quote}"</blockquote>
+                  <figcaption className="testimonial-author">
+                    <div className="testimonial-avatar" aria-hidden="true">
+                      {getInitials(testimonial.name)}
+                    </div>
+                    <div>
+                      <strong>{testimonial.name}</strong>
+                      <span>{testimonial.role}</span>
+                    </div>
+                  </figcaption>
+                </motion.figure>
+              );
+            })}
+          </div>
+
+          <div className="testimonial-dots" role="tablist" aria-label="Depoimentos">
+            {testimonials.map((_, i) => (
+              <button
+                key={i}
+                role="tab"
+                aria-selected={i === active}
+                aria-label={`Depoimento ${i + 1}`}
+                className={`testimonial-dot${i === active ? ' testimonial-dot--active' : ''}`}
+                onClick={() => goTo(i)}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>

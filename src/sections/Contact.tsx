@@ -213,7 +213,7 @@ function Contact(): JSX.Element {
             <ul className="contact-chat__info">
               <li>
                 <Phone size={16} weight="bold" style={{ display: 'inline', verticalAlign: 'middle', marginRight: '0.4rem' }} />
-                <a href="tel:+5549988432733">(49) 98843-2733</a>
+                <a href="tel:+5549920007235">(49) 92000-7235</a>
               </li>
               <li>
                 <Phone size={16} weight="bold" style={{ display: 'inline', verticalAlign: 'middle', marginRight: '0.4rem' }} />
@@ -231,6 +231,19 @@ function Contact(): JSX.Element {
             <p className="contact-chat__hours">
               Segunda a sexta, das 8h às 18h
             </p>
+
+            <div className="contact-map">
+              <iframe
+                title="Localização Vidraçaria Ramos"
+                src="https://maps.google.com/maps?q=Rua+Adolfo+Konder,+1757,+S%C3%A3o+Miguel+do+Oeste,+SC,+Brasil&output=embed&hl=pt-BR"
+                width="100%"
+                height="180"
+                style={{ border: 0, borderRadius: '14px' }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
           </aside>
         </div>
       </div>

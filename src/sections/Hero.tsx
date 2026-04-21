@@ -1,30 +1,32 @@
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion, Variants } from 'framer-motion';
-import heroBathroomImage from '../assets/hero/banheiro.svg';
-import heroWindowImage from '../assets/hero/janela.svg';
-import heroContainerImage from '../assets/hero/container.svg';
+import boxBanheiro from '../assets/box-banheiro.jpg';
+import fachadaCasa from '../assets/fachada-casa.jpg';
+import portaAluminio from '../assets/porta-aluminio.jpg';
 
 type HeroSlide = {
   alt: string;
   caption: string;
   src: string;
+  objectFit?: 'cover' | 'contain';
 };
 
 const heroSlides: HeroSlide[] = [
   {
-    src: heroBathroomImage,
-    alt: 'Box de banheiro de vidro temperado com perfis em preto e revestimento amadeirado.',
-    caption: 'Banheiro com box de vidro temperado e perfis em alumínio preto.'
+    src: boxBanheiro,
+    alt: 'Box de banheiro com vidro temperado e perfis em alumínio dourado.',
+    caption: 'Box de banheiro com vidro temperado e perfis em alumínio dourado.',
+    objectFit: 'contain'
   },
   {
-    src: heroWindowImage,
-    alt: 'Janela de alumínio preta com vidro refletivo instalada em fachada contemporânea.',
-    caption: 'Janela panorâmica em alumínio preto com vidro refletivo.'
+    src: fachadaCasa,
+    alt: 'Fachada residencial com amplos painéis de vidro.',
+    caption: 'Fachada residencial com esquadrias de alumínio sob medida.'
   },
   {
-    src: heroContainerImage,
-    alt: 'Container modular amarelo com porta e janela basculante em alumínio escuro.',
-    caption: 'Container personalizado com esquadrias sob medida.'
+    src: portaAluminio,
+    alt: 'Porta de alumínio com acabamento sofisticado.',
+    caption: 'Porta de alumínio de alto padrão para uso comercial e residencial.'
   }
 ];
 
@@ -163,12 +165,18 @@ function Hero(): JSX.Element {
       variants={heroSection}
     >
       <div className="container">
-        <motion.div className="hero-content" variants={heroContainer}>
+        {/* ── Conteúdo esquerdo ── */}
+        <motion.div
+          className="hero-content"
+          initial="hidden"
+          animate="visible"
+          variants={heroContainer}
+        >
           <motion.span className="hero-badge" variants={heroItem}>
-            Desde 2000 transformando ambientes
+            Desde 2001 — Vidraçaria de confiança
           </motion.span>
           <motion.h1 variants={heroItem}>
-             Vidros temperados e esquadrias de alumínio de alta qualidade: segurança e estilo para o seu espaço.
+            Vidros temperados e esquadrias de alumínio de alta qualidade: segurança e estilo para o seu espaço.
           </motion.h1>
           <motion.p variants={heroItem}>
             Projetos residenciais, comerciais e corporativos com atendimento personalizado, prazos
@@ -188,7 +196,7 @@ function Hero(): JSX.Element {
               <span>Anos de experiência</span>
             </motion.li>
             <motion.li variants={heroStatsItem}>
-              <strong>800+</strong>
+              <strong>5.000+</strong>
               <span>Projetos entregues</span>
             </motion.li>
             <motion.li variants={heroStatsItem}>
@@ -201,23 +209,28 @@ function Hero(): JSX.Element {
           <motion.div
             className="hero-media-slides"
             animate=
-              {prefersReducedMotion
-                ? undefined
-                : {
-                    y: [0, -10, 0],
-                    rotate: [0, 0.6, -0.6, 0]
-                  }}
+            {prefersReducedMotion
+              ? undefined
+              : {
+                y: [0, -10, 0],
+                rotate: [0, 0.6, -0.6, 0]
+              }}
             transition=
-              {prefersReducedMotion
-                ? undefined
-                : {
-                    duration: 12,
-                    ease: 'easeInOut',
-                    repeat: Infinity
-                  }}
+            {prefersReducedMotion
+              ? undefined
+              : {
+                duration: 12,
+                ease: 'easeInOut',
+                repeat: Infinity
+              }}
           >
             {prefersReducedMotion ? (
-              <img className="hero-media-image" src={activeSlide.src} alt={activeSlide.alt} />
+              <img
+                className="hero-media-image"
+                src={activeSlide.src}
+                alt={activeSlide.alt}
+                style={{ objectFit: activeSlide.objectFit ?? 'cover' }}
+              />
             ) : (
               <AnimatePresence mode="wait">
                 <motion.img
@@ -225,6 +238,7 @@ function Hero(): JSX.Element {
                   className="hero-media-image"
                   src={activeSlide.src}
                   alt={activeSlide.alt}
+                  style={{ objectFit: activeSlide.objectFit ?? 'cover' }}
                   initial="hidden"
                   animate="visible"
                   exit="hidden"

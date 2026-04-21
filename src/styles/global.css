@@ -177,6 +177,19 @@ main {
   font-size: 1.2rem;
 }
 
+.logo-wrap {
+  height: 44px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.logo-img {
+  height: 72px;
+  width: auto;
+  display: block;
+  mix-blend-mode: multiply;
+}
+
 .logo-text {
   display: flex;
   flex-direction: column;
@@ -641,6 +654,55 @@ main {
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 }
 
+.testimonial-carousel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  overflow: hidden;
+  padding: 1rem 0 0.5rem;
+}
+
+.testimonial-carousel-track {
+  width: 100%;
+  max-width: 560px;
+  height: 260px;
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  overflow: visible;
+}
+
+.testimonial-card--peek {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  pointer-events: auto;
+}
+
+.testimonial-dots {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.testimonial-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: none;
+  background: #d1d5db;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.3s, transform 0.3s;
+}
+
+.testimonial-dot--active {
+  background: var(--color-primary);
+  transform: scale(1.3);
+}
+
 .testimonial-card {
   padding: 2.2rem;
   border-radius: 26px;
@@ -784,6 +846,13 @@ main {
   color: var(--color-muted);
   padding-top: 0.5rem;
   border-top: 1px solid var(--color-border);
+}
+
+.contact-map {
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
 }
 
 .file-upload {
