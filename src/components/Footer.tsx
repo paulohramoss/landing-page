@@ -14,11 +14,17 @@ function Footer(): JSX.Element {
     <footer className="footer">
       <div className="container">
         <div className="footer-grid">
-          <div className="footer-brand">
-            <Logo />
-            <p className="footer-tagline">
-              Vidros e esquadrias de alumínio sob medida para residências e empresas.
-              Qualidade e compromisso desde 2000.
+          <div>
+            <h4>Atendimento</h4>
+            <p>Segunda a sexta das 8h às 18h</p>
+            <p>
+              <a href="tel:+5549920007235">(49)92000-7235</a>
+            </p>
+            <p>
+              <a href="tel:+5549991368810">(49)99136-8810</a>
+            </p>
+            <p>
+              <a href="mailto:vidraramos1@gmail.com">vidraramos1@gmail.com</a>
             </p>
             <div className="footer-social">
               <a

@@ -170,7 +170,7 @@ function Contact(): JSX.Element {
             </button>
             <ul className="contact-chat__info">
               <li>
-                <Phone size={15} weight="bold" style={{ display: 'inline', verticalAlign: 'middle', marginRight: '0.4rem' }} />
+                <Phone size={16} weight="bold" style={{ display: 'inline', verticalAlign: 'middle', marginRight: '0.4rem' }} />
                 <a href="tel:+5549920007235">(49) 92000-7235</a>
               </li>
               <li>
@@ -192,8 +192,11 @@ function Contact(): JSX.Element {
 
             <div className="contact-map">
               <iframe
-                src="https://maps.google.com/maps?q=Rua+Adolfo+Konder+1757+S%C3%A3o+Miguel+do+Oeste+SC+Brasil&output=embed&hl=pt-BR&z=16"
-                title="Localização Vidraçaria Ramos – Rua Adolfo Konder, 1757, São Miguel do Oeste / SC"
+                title="Localização Vidraçaria Ramos"
+                src="https://maps.google.com/maps?q=Rua+Adolfo+Konder,+1757,+S%C3%A3o+Miguel+do+Oeste,+SC,+Brasil&output=embed&hl=pt-BR"
+                width="100%"
+                height="180"
+                style={{ border: 0, borderRadius: '14px' }}
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"

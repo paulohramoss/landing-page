@@ -1,34 +1,36 @@
 import { useEffect, useRef, useState } from 'react';
-import { AnimatePresence, motion, useInView, useReducedMotion, type Variants } from 'framer-motion';
-import heroBathroomImage from '../assets/hero/banheiro.svg';
-import heroWindowImage from '../assets/hero/janela.svg';
-import heroContainerImage from '../assets/hero/container.svg';
+import { AnimatePresence, motion, useReducedMotion, Variants, useInView } from 'framer-motion';
+import boxBanheiro from '../assets/box-banheiro.jpg';
+import fachadaCasa from '../assets/fachada-casa.jpg';
+import portaAluminio from '../assets/porta-aluminio.jpg';
 
 type HeroSlide = {
   alt: string;
   caption: string;
   badge: string;
   src: string;
+  objectFit?: 'cover' | 'contain';
 };
 
 const heroSlides: HeroSlide[] = [
   {
-    src: heroBathroomImage,
-    alt: 'Box de banheiro de vidro temperado com perfis em preto e revestimento amadeirado.',
-    caption: 'Box temperado com perfis em alumínio preto.',
-    badge: 'Box de banheiro — Vidro 8mm'
+    src: boxBanheiro,
+    alt: 'Box de banheiro com vidro temperado e perfis em alumínio dourado.',
+    caption: 'Box de banheiro com vidro temperado e perfis em alumínio dourado.',
+    badge: 'Box e Espelhos',
+    objectFit: 'contain'
   },
   {
-    src: heroWindowImage,
-    alt: 'Janela de alumínio preta com vidro refletivo instalada em fachada contemporânea.',
-    caption: 'Janela panorâmica em alumínio preto com vidro refletivo.',
-    badge: 'Janela panorâmica — Alumínio'
+    src: fachadaCasa,
+    alt: 'Fachada residencial com amplos painéis de vidro.',
+    caption: 'Fachada residencial com esquadrias de alumínio sob medida.',
+    badge: 'Fachadas'
   },
   {
-    src: heroContainerImage,
-    alt: 'Container modular amarelo com porta e janela basculante em alumínio escuro.',
-    caption: 'Container personalizado com esquadrias sob medida.',
-    badge: 'Esquadrias sob medida'
+    src: portaAluminio,
+    alt: 'Porta de alumínio com acabamento sofisticado.',
+    caption: 'Porta de alumínio de alto padrão para uso comercial e residencial.',
+    badge: 'Esquadrias'
   }
 ];
 
@@ -143,13 +145,10 @@ function Hero(): JSX.Element {
           variants={containerVariants}
         >
           <motion.span className="hero-badge" variants={itemVariants}>
-            Desde 2000 — Vidraçaria de confiança
+            Desde 2001 — Vidraçaria de confiança
           </motion.span>
-
           <motion.h1 variants={itemVariants}>
-            Vidros e esquadrias{' '}
-            <span>sob medida</span>{' '}
-            para residências e empresas
+            Vidros temperados e esquadrias de alumínio de alta qualidade: segurança e estilo para o seu espaço.
           </motion.h1>
 
           <motion.p variants={itemVariants}>
@@ -191,12 +190,21 @@ function Hero(): JSX.Element {
         >
           <motion.div
             className="hero-media-slides"
-            animate={prefersReducedMotion ? undefined : { y: [0, -8, 0] }}
-            transition={prefersReducedMotion ? undefined : {
-              duration: 10,
-              ease: 'easeInOut',
-              repeat: Infinity
-            }}
+            animate=
+            {prefersReducedMotion
+              ? undefined
+              : {
+                y: [0, -10, 0],
+                rotate: [0, 0.6, -0.6, 0]
+              }}
+            transition=
+            {prefersReducedMotion
+              ? undefined
+              : {
+                duration: 12,
+                ease: 'easeInOut',
+                repeat: Infinity
+              }}
           >
             {/* Badge flutuante */}
             <AnimatePresence mode="wait">
@@ -218,6 +226,7 @@ function Hero(): JSX.Element {
                 className="hero-media-image"
                 src={activeSlide.src}
                 alt={activeSlide.alt}
+                style={{ objectFit: activeSlide.objectFit ?? 'cover' }}
               />
             ) : (
               <AnimatePresence mode="wait">
@@ -226,6 +235,7 @@ function Hero(): JSX.Element {
                   className="hero-media-image"
                   src={activeSlide.src}
                   alt={activeSlide.alt}
+                  style={{ objectFit: activeSlide.objectFit ?? 'cover' }}
                   initial="hidden"
                   animate="visible"
                   exit="hidden"

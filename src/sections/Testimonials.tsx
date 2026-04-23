@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
-import { AnimatePresence, motion, useInView } from 'framer-motion';
-import { ArrowLeft, ArrowRight } from '@phosphor-icons/react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useInView } from 'framer-motion';
+import { useRef, useState, useEffect } from 'react';
 
 type Testimonial = {
   name: string;
@@ -46,36 +46,29 @@ function getInitials(name: string): string {
 function Testimonials(): JSX.Element {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-80px' });
-  const [current, setCurrent] = useState(0);
+  const [active, setActive] = useState(0);
   const [direction, setDirection] = useState(1);
-  const autoPlayRef = useRef<number | undefined>(undefined);
-
-  const startAutoPlay = () => {
-    autoPlayRef.current = window.setInterval(() => {
-      setDirection(1);
-      setCurrent((prev) => (prev + 1) % testimonials.length);
-    }, AUTOPLAY_INTERVAL);
-  };
 
   useEffect(() => {
-    startAutoPlay();
-    return () => window.clearInterval(autoPlayRef.current);
+    const interval = setInterval(() => {
+      setDirection(1);
+      setActive((prev) => (prev + 1) % testimonials.length);
+    }, 4000);
+    return () => clearInterval(interval);
   }, []);
 
-  const goTo = (index: number, dir?: number) => {
-    setDirection(dir !== undefined ? dir : index > current ? 1 : -1);
-    setCurrent(index);
-    window.clearInterval(autoPlayRef.current);
-    startAutoPlay();
-  };
+  function goTo(index: number) {
+    setDirection(index > active ? 1 : -1);
+    setActive(index);
+  }
 
   const variants = {
-    enter: (d: number) => ({ opacity: 0, x: d > 0 ? 80 : -80 }),
+    enter: (dir: number) => ({ opacity: 0, x: dir > 0 ? 60 : -60 }),
     center: { opacity: 1, x: 0 },
-    exit:  (d: number) => ({ opacity: 0, x: d > 0 ? -80 : 80 })
+    exit: (dir: number) => ({ opacity: 0, x: dir > 0 ? -60 : 60 })
   };
 
-  const testimonial = testimonials[current];
+  const t = testimonials[active];
 
   return (
     <section className="section" aria-labelledby="depoimentos-titulo" ref={ref}>
@@ -93,66 +86,68 @@ function Testimonials(): JSX.Element {
           </p>
         </motion.div>
 
-        <motion.div
-          className="testimonial-carousel"
-          initial={{ opacity: 0, y: 28 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, ease: 'easeOut', delay: 0.2 }}
-        >
-          <AnimatePresence mode="wait" custom={direction}>
-            <motion.figure
-              key={current}
-              className="testimonial-card testimonial-card--featured"
-              custom={direction}
-              variants={variants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{ duration: 0.32, ease: 'easeInOut' }}
-            >
-              <div className="testimonial-stars" aria-label="5 estrelas">★★★★★</div>
-              <blockquote>"{testimonial.quote}"</blockquote>
-              <figcaption className="testimonial-author">
-                <div className="testimonial-avatar" aria-hidden="true">
-                  {getInitials(testimonial.name)}
-                </div>
-                <div>
-                  <strong>{testimonial.name}</strong>
-                  <span>{testimonial.role}</span>
-                  <p className="testimonial-project-type">{testimonial.projectType}</p>
-                </div>
-              </figcaption>
-            </motion.figure>
-          </AnimatePresence>
+        <div className="testimonial-carousel">
+          <div className="testimonial-carousel-track">
+            {testimonials.map((testimonial, i) => {
+              const offset = i - active;
+              const normalizedOffset =
+                offset > testimonials.length / 2
+                  ? offset - testimonials.length
+                  : offset < -testimonials.length / 2
+                  ? offset + testimonials.length
+                  : offset;
 
-          <div className="testimonial-controls">
-            <button
-              className="testimonial-nav"
-              onClick={() => goTo((current - 1 + testimonials.length) % testimonials.length, -1)}
-              aria-label="Depoimento anterior"
-            >
-              <ArrowLeft size={18} weight="bold" />
-            </button>
-            <div className="testimonial-dots" role="tablist" aria-label="Depoimentos">
-              {testimonials.map((t, i) => (
-                <button
-                  key={t.name}
-                  className={`testimonial-dot${i === current ? ' is-active' : ''}`}
-                  onClick={() => goTo(i)}
-                  aria-label={`Ir para depoimento de ${t.name}`}
-                  aria-pressed={i === current}
-                />
-              ))}
-            </div>
-            <button
-              className="testimonial-nav"
-              onClick={() => goTo((current + 1) % testimonials.length, 1)}
-              aria-label="Próximo depoimento"
-            >
-              <ArrowRight size={18} weight="bold" />
-            </button>
+              const isActive = normalizedOffset === 0;
+              const isPrev = normalizedOffset === -1;
+              const isNext = normalizedOffset === 1;
+              const isVisible = isActive || isPrev || isNext;
+
+              if (!isVisible) return null;
+
+              return (
+                <motion.figure
+                  key={testimonial.name}
+                  className="testimonial-card testimonial-card--peek"
+                  animate={{
+                    x: `calc(${normalizedOffset * 100}% + ${normalizedOffset * 16}px)`,
+                    scale: isActive ? 1 : 0.88,
+                    opacity: isActive ? 1 : 0.45,
+                    zIndex: isActive ? 2 : 1,
+                    filter: isActive ? 'none' : 'blur(1px)'
+                  }}
+                  transition={{ duration: 0.45, ease: 'easeInOut' }}
+                  onClick={() => !isActive && goTo(i)}
+                  style={{ cursor: isActive ? 'default' : 'pointer' }}
+                >
+                  <div className="testimonial-stars" aria-label="5 estrelas">★★★★★</div>
+                  <blockquote>"{testimonial.quote}"</blockquote>
+                  <figcaption className="testimonial-author">
+                    <div className="testimonial-avatar" aria-hidden="true">
+                      {getInitials(testimonial.name)}
+                    </div>
+                    <div>
+                      <strong>{testimonial.name}</strong>
+                      <span>{testimonial.role}</span>
+                    </div>
+                  </figcaption>
+                </motion.figure>
+              );
+            })}
           </div>
-        </motion.div>
+
+          <div className="testimonial-dots" role="tablist" aria-label="Depoimentos">
+            {testimonials.map((_, i) => (
+              <button
+                key={i}
+                role="tab"
+                aria-selected={i === active}
+                aria-label={`Depoimento ${i + 1}`}
+                className={`testimonial-dot${i === active ? ' testimonial-dot--active' : ''}`}
+                onClick={() => goTo(i)}
+              />
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );
