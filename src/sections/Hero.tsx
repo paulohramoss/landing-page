@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { AnimatePresence, motion, useReducedMotion, Variants } from 'framer-motion';
+import { AnimatePresence, motion, useReducedMotion, Variants, useInView } from 'framer-motion';
 import boxBanheiro from '../assets/box-banheiro.jpg';
 import fachadaCasa from '../assets/fachada-casa.jpg';
 import portaAluminio from '../assets/porta-aluminio.jpg';
@@ -17,17 +17,20 @@ const heroSlides: HeroSlide[] = [
     src: boxBanheiro,
     alt: 'Box de banheiro com vidro temperado e perfis em alumínio dourado.',
     caption: 'Box de banheiro com vidro temperado e perfis em alumínio dourado.',
+    badge: 'Box e Espelhos',
     objectFit: 'contain'
   },
   {
     src: fachadaCasa,
     alt: 'Fachada residencial com amplos painéis de vidro.',
-    caption: 'Fachada residencial com esquadrias de alumínio sob medida.'
+    caption: 'Fachada residencial com esquadrias de alumínio sob medida.',
+    badge: 'Fachadas'
   },
   {
     src: portaAluminio,
     alt: 'Porta de alumínio com acabamento sofisticado.',
-    caption: 'Porta de alumínio de alto padrão para uso comercial e residencial.'
+    caption: 'Porta de alumínio de alto padrão para uso comercial e residencial.',
+    badge: 'Esquadrias'
   }
 ];
 
@@ -139,12 +142,12 @@ function Hero(): JSX.Element {
           className="hero-content"
           initial="hidden"
           animate="visible"
-          variants={heroContainer}
+          variants={containerVariants}
         >
-          <motion.span className="hero-badge" variants={heroItem}>
+          <motion.span className="hero-badge" variants={itemVariants}>
             Desde 2001 — Vidraçaria de confiança
           </motion.span>
-          <motion.h1 variants={heroItem}>
+          <motion.h1 variants={itemVariants}>
             Vidros temperados e esquadrias de alumínio de alta qualidade: segurança e estilo para o seu espaço.
           </motion.h1>
 
@@ -166,9 +169,9 @@ function Hero(): JSX.Element {
             <li>
               <strong>{prefersReducedMotion ? '25' : count25}+</strong>
               <span>Anos de experiência</span>
-            </motion.li>
-            <motion.li variants={heroStatsItem}>
-              <strong>5.000+</strong>
+            </li>
+            <li>
+              <strong>{prefersReducedMotion ? '800' : count800}+</strong>
               <span>Projetos entregues</span>
             </li>
             <li>
