@@ -1,4 +1,4 @@
-import { FormEvent, useRef, useState } from 'react';
+import { FormEvent, DragEvent, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { WhatsAppModal } from '../components/WhatsAppModal';
 import {
@@ -7,18 +7,98 @@ import {
   Envelope,
   MapPin,
   CheckCircle,
-  WarningCircle
+  WarningCircle,
+  UploadSimple,
+  X
 } from '@phosphor-icons/react';
 
 const EMAIL_ENDPOINT = 'https://formsubmit.co/ajax/vidraramos1@gmail.com';
+const ACCEPTED_MIME = [
+  'application/pdf',
+  'application/msword',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'image/jpeg',
+  'image/png',
+];
+const ACCEPTED_ATTR = '.pdf,.doc,.docx,.jpg,.jpeg,.png';
+const MAX_FILES = 5;
 
+type FileEntry = { file: File; preview: string | null };
 type FormStatus = 'idle' | 'success' | 'error';
+
+function formatSize(bytes: number): string {
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
+function getBadge(file: File): { label: string; mod: string } {
+  if (file.type.startsWith('image/')) return { label: 'IMG', mod: 'img' };
+  if (file.type === 'application/pdf') return { label: 'PDF', mod: 'pdf' };
+  return { label: 'DOC', mod: 'doc' };
+}
 
 function Contact(): JSX.Element {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formStatus, setFormStatus] = useState<FormStatus>('idle');
+  const [selectedFiles, setSelectedFiles] = useState<FileEntry[]>([]);
+  const [isDragging, setIsDragging] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const createdUrls = useRef<Set<string>>(new Set());
+
+  useEffect(() => {
+    return () => {
+      createdUrls.current.forEach(url => URL.revokeObjectURL(url));
+    };
+  }, []);
+
+  const makeEntry = (file: File): FileEntry => {
+    let preview: string | null = null;
+    if (file.type.startsWith('image/')) {
+      preview = URL.createObjectURL(file);
+      createdUrls.current.add(preview);
+    }
+    return { file, preview };
+  };
+
+  const addFiles = (incoming: File[]) => {
+    const valid = incoming.filter(f => ACCEPTED_MIME.includes(f.type));
+    setSelectedFiles(prev => {
+      const existing = new Set(prev.map(e => e.file.name));
+      const newEntries = valid.filter(f => !existing.has(f.name)).map(makeEntry);
+      return [...prev, ...newEntries].slice(0, MAX_FILES);
+    });
+  };
+
+  const removeFile = (index: number) => {
+    setSelectedFiles(prev => {
+      const entry = prev[index];
+      if (entry.preview) {
+        URL.revokeObjectURL(entry.preview);
+        createdUrls.current.delete(entry.preview);
+      }
+      return prev.filter((_, i) => i !== index);
+    });
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) addFiles(Array.from(e.target.files));
+    e.target.value = '';
+  };
+
+  const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = () => setIsDragging(false);
+
+  const handleDrop = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDragging(false);
+    addFiles(Array.from(e.dataTransfer.files));
+  };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -32,19 +112,24 @@ function Contact(): JSX.Element {
 
     formData.append('_subject', `Novo contato — ${getValue('name') || 'Contato'}`);
     formData.append('_captcha', 'false');
+    formData.delete('attachment');
+    selectedFiles.forEach(({ file }) => formData.append('attachment', file));
 
     try {
       setIsSubmitting(true);
       setFormStatus('idle');
 
-      const response = await fetch(EMAIL_ENDPOINT, {
-        method: 'POST',
-        body: formData
-      });
-
+      const response = await fetch(EMAIL_ENDPOINT, { method: 'POST', body: formData });
       if (!response.ok) throw new Error('Falha ao enviar');
 
+      selectedFiles.forEach(({ preview }) => {
+        if (preview) {
+          URL.revokeObjectURL(preview);
+          createdUrls.current.delete(preview);
+        }
+      });
       setFormStatus('success');
+      setSelectedFiles([]);
       form.reset();
     } catch (error) {
       console.error('Não foi possível enviar a mensagem.', error);
@@ -53,6 +138,8 @@ function Contact(): JSX.Element {
       setIsSubmitting(false);
     }
   };
+
+  const atLimit = selectedFiles.length >= MAX_FILES;
 
   return (
     <section className="section" id="contato">
@@ -67,30 +154,15 @@ function Contact(): JSX.Element {
         </div>
 
         <div className="contact-layout">
-          <form
-            className="contact-form"
-            ref={formRef}
-            onSubmit={handleSubmit}
-          >
+          <form className="contact-form" ref={formRef} onSubmit={handleSubmit}>
             <div className="form-grid">
               <label>
                 Nome completo
-                <input
-                  name="name"
-                  type="text"
-                  placeholder="Como devemos te chamar?"
-                  required
-                />
+                <input name="name" type="text" placeholder="Como devemos te chamar?" required />
               </label>
-
               <label>
                 Telefone / WhatsApp
-                <input
-                  name="phone"
-                  type="tel"
-                  placeholder="(49) 99999-9999"
-                  required
-                />
+                <input name="phone" type="tel" placeholder="(49) 99999-9999" required />
               </label>
             </div>
 
@@ -117,11 +189,78 @@ function Contact(): JSX.Element {
               />
             </label>
 
-            <button
-              className="btn primary"
-              type="submit"
-              disabled={isSubmitting}
-            >
+            <div className="file-upload-field">
+              <p className="file-upload-label">
+                Arquivos do projeto{' '}
+                <span className="file-upload-label__optional">(opcional)</span>
+              </p>
+
+              <div
+                className={`file-upload-zone${isDragging ? ' file-upload-zone--dragging' : ''}${atLimit ? ' file-upload-zone--disabled' : ''}`}
+                onClick={() => !atLimit && fileInputRef.current?.click()}
+                onDragOver={!atLimit ? handleDragOver : undefined}
+                onDragLeave={handleDragLeave}
+                onDrop={!atLimit ? handleDrop : undefined}
+                role="button"
+                tabIndex={atLimit ? -1 : 0}
+                onKeyDown={e => !atLimit && e.key === 'Enter' && fileInputRef.current?.click()}
+                aria-label="Área de upload de arquivos"
+              >
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  name="attachment"
+                  accept={ACCEPTED_ATTR}
+                  multiple
+                  onChange={handleFileChange}
+                  style={{ display: 'none' }}
+                />
+                <UploadSimple size={28} weight="duotone" />
+                <span className="file-upload-zone__title">
+                  {atLimit
+                    ? `Limite de ${MAX_FILES} arquivos atingido`
+                    : 'Clique ou arraste arquivos aqui'}
+                </span>
+                <span className="file-upload-zone__hint">
+                  PDF, DOC, DOCX, JPG, PNG · máx. {MAX_FILES} arquivos
+                </span>
+              </div>
+
+              {selectedFiles.length > 0 && (
+                <ul className="file-upload-list">
+                  {selectedFiles.map(({ file, preview }, i) => {
+                    const badge = getBadge(file);
+                    return (
+                      <li key={`${file.name}-${i}`} className="file-upload-item">
+                        {preview ? (
+                          <img
+                            src={preview}
+                            alt={file.name}
+                            className="file-upload-item__thumb"
+                          />
+                        ) : (
+                          <span className={`file-upload-item__badge file-upload-item__badge--${badge.mod}`}>
+                            {badge.label}
+                          </span>
+                        )}
+                        <span className="file-upload-item__name">{file.name}</span>
+                        <span className="file-upload-item__size">{formatSize(file.size)}</span>
+                        <button
+                          type="button"
+                          className="file-upload-remove"
+                          onClick={() => removeFile(i)}
+                          aria-label={`Remover ${file.name}`}
+                        >
+                          <X size={13} weight="bold" />
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+            </div>
+
+            <button className="btn primary" type="submit" disabled={isSubmitting}>
               {isSubmitting ? 'Enviando...' : 'Enviar mensagem'}
             </button>
 
@@ -186,10 +325,7 @@ function Contact(): JSX.Element {
                 Rua Adolfo Konder, 1757 — São Miguel do Oeste / SC
               </li>
             </ul>
-            <p className="contact-chat__hours">
-              Segunda a sexta, das 8h às 18h
-            </p>
-
+            <p className="contact-chat__hours">Segunda a sexta, das 8h às 18h</p>
             <div className="contact-map">
               <iframe
                 title="Localização Vidraçaria Ramos"
