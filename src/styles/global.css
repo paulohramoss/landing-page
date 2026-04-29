@@ -2,23 +2,30 @@
 
 :root {
   color-scheme: light;
-  --color-primary:      #c0392b;   /* vermelho elegante, não saturado */
-  --color-primary-dark: #96281b;   /* hover/pressed */
+  --color-primary: #c0392b;
+  /* vermelho elegante, não saturado */
+  --color-primary-dark: #96281b;
+  /* hover/pressed */
   --color-primary-deep: #7b241c;
-  --color-primary-light:#fdecea;   /* blush muito suave para fundos */
-  --color-accent:       #f59e0b;
-  --color-dark:         #1c1c1e;   /* quase preto neutro */
-  --color-text:         #1c1c1e;
-  --color-muted:        #6b7280;
-  --color-background:   #ffffff;
-  --color-surface:      #ffffff;
-  --color-surface-alt:  #f9f9f9;   /* cinza muito claro, neutro */
-  --color-header:       rgba(255, 255, 255, 0.94);
-  --color-footer-bg:    #1c1412;   /* escuro quente, quase preto */
-  --color-border:       #ede8e8;   /* borda quase branca com leve calor */
-  --color-input-bg:     #f9f9f9;
-  --color-hero-badge:   rgba(192, 57, 43, 0.07);
-  --color-section-alt:  #f9f9f9;
+  --color-primary-light: #fdecea;
+  /* blush muito suave para fundos */
+  --color-accent: #f59e0b;
+  --color-dark: #1c1c1e;
+  /* quase preto neutro */
+  --color-text: #1c1c1e;
+  --color-muted: #6b7280;
+  --color-background: #ffffff;
+  --color-surface: #ffffff;
+  --color-surface-alt: #f9f9f9;
+  /* cinza muito claro, neutro */
+  --color-header: rgba(255, 255, 255, 0.94);
+  --color-footer-bg: #1c1412;
+  /* escuro quente, quase preto */
+  --color-border: #ede8e8;
+  /* borda quase branca com leve calor */
+  --color-input-bg: #f9f9f9;
+  --color-hero-badge: rgba(192, 57, 43, 0.07);
+  --color-section-alt: #f9f9f9;
   --shadow-xs: 0 4px 12px rgba(0, 0, 0, 0.06);
   --shadow-sm: 0 8px 32px rgba(0, 0, 0, 0.08);
   --shadow-lg: 0 24px 48px rgba(0, 0, 0, 0.14);
@@ -593,7 +600,7 @@ main {
   font-weight: 700;
 }
 
-.service-card > p {
+.service-card>p {
   font-size: 0.9rem;
   color: var(--color-muted);
   line-height: 1.6;
@@ -1184,16 +1191,19 @@ textarea:focus {
 }
 
 .footer-social-link {
-  display: inline-flex;
+  display: inline-flex !important;
   align-items: center;
   justify-content: center;
   width: 36px;
   height: 36px;
+  margin-bottom: 0 !important;
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.08);
   color: rgba(255, 255, 255, 0.65);
   border: 1px solid rgba(255, 255, 255, 0.1);
   transition: background 0.2s ease, color 0.2s ease;
+  line-height: 0;
+  flex-shrink: 0;
 }
 
 .footer-social-link:hover {
@@ -1378,8 +1388,13 @@ textarea:focus {
   transform: translateY(-50%) scale(1.1);
 }
 
-.lightbox-nav--prev { left: 0.85rem; }
-.lightbox-nav--next { right: 0.85rem; }
+.lightbox-nav--prev {
+  left: 0.85rem;
+}
+
+.lightbox-nav--next {
+  right: 0.85rem;
+}
 
 .lightbox-dots {
   position: absolute;
