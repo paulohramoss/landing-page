@@ -107,9 +107,9 @@ function Hero(): JSX.Element {
   const statsInView = useInView(statsRef, { once: true, margin: '-40px' });
   const countersActive = statsInView && !prefersReducedMotion;
 
-  const count25  = useCountUp(25,  0, 1.8, countersActive);
-  const count800 = useCountUp(800, 0, 2.2, countersActive);
-  const count49  = useCountUp(4.9, 1, 1.8, countersActive);
+  const count25 = useCountUp(25, 0, 1.8, countersActive);
+  const count2000 = useCountUp(2000, 0, 2.2, countersActive);
+  const count49 = useCountUp(4.9, 1, 1.8, countersActive);
 
   useEffect(() => {
     if (prefersReducedMotion) return undefined;
@@ -171,7 +171,7 @@ function Hero(): JSX.Element {
               <span>Anos de experiência</span>
             </li>
             <li>
-              <strong>{prefersReducedMotion ? '800' : count800}+</strong>
+              <strong>{prefersReducedMotion ? '2.000' : count2000}+</strong>
               <span>Projetos entregues</span>
             </li>
             <li>
