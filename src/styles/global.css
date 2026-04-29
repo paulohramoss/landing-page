@@ -1093,15 +1093,150 @@ main {
   flex-shrink: 0;
 }
 
-.file-upload {
+.file-upload-field {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.6rem;
 }
 
-.file-upload__info {
-  font-size: 0.85rem;
+.file-upload-label {
+  margin: 0;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--color-dark);
+}
+
+.file-upload-label__optional {
+  font-weight: 400;
   color: var(--color-muted);
+  font-size: 0.82rem;
+}
+
+.file-upload-zone {
+  border: 2px dashed var(--color-border);
+  border-radius: 12px;
+  padding: 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  cursor: pointer;
+  color: var(--color-muted);
+  text-align: center;
+  transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+  user-select: none;
+}
+
+.file-upload-zone:hover,
+.file-upload-zone--dragging {
+  border-color: var(--color-primary);
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+}
+
+.file-upload-zone--disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.file-upload-zone__title {
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.file-upload-zone__hint {
+  font-size: 0.76rem;
+}
+
+.file-upload-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.file-upload-item {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.5rem 0.875rem 0.5rem 0.5rem;
+  border-radius: 10px;
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  font-size: 0.84rem;
+  color: var(--color-dark);
+}
+
+.file-upload-item__thumb {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 6px;
+  flex-shrink: 0;
+  border: 1px solid var(--color-border);
+}
+
+.file-upload-item__badge {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+}
+
+.file-upload-item__badge--pdf {
+  background: rgba(220, 38, 38, 0.1);
+  color: #dc2626;
+}
+
+.file-upload-item__badge--doc {
+  background: rgba(37, 99, 235, 0.1);
+  color: #2563eb;
+}
+
+.file-upload-item__badge--img {
+  background: rgba(16, 185, 129, 0.1);
+  color: #059669;
+}
+
+.file-upload-item__name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-upload-item__size {
+  font-size: 0.76rem;
+  color: var(--color-muted);
+  flex-shrink: 0;
+}
+
+.file-upload-remove {
+  border: none;
+  background: transparent;
+  color: var(--color-muted);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  padding: 0.2rem;
+  border-radius: 4px;
+  transition: color 0.2s ease, background 0.2s ease;
+  flex-shrink: 0;
+  line-height: 0;
+}
+
+.file-upload-remove:hover {
+  color: var(--color-primary);
+  background: var(--color-primary-light);
 }
 
 .form-grid {
