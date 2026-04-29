@@ -126,19 +126,26 @@ main {
   font-size: 1.1rem;
 }
 
-.logo-wrap {
-  height: 50px;
-  overflow: hidden;
-  flex-shrink: 0;
+.logo-brand {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  line-height: 1;
 }
 
-.logo-img {
-  height: 90px;
-  width: auto;
-  display: block;
-  mix-blend-mode: multiply;
+.logo-initials {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: #cc0000;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.logo-company {
+  font-size: 0.55rem;
+  font-weight: 700;
+  color: #cc0000;
+  letter-spacing: 0.12em;
+  margin-top: 1px;
 }
 
 .logo-text {
