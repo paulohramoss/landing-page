@@ -1,5 +1,4 @@
 import { InstagramLogo, FacebookLogo } from '@phosphor-icons/react';
-import Logo from './Logo';
 
 const quickLinks = [
   { label: 'Início', href: '#inicio' },
