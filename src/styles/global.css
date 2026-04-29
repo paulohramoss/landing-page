@@ -625,7 +625,7 @@ main {
 }
 
 .service-card:hover .service-card__detail {
-  max-height: 80px;
+  max-height: 200px;
   opacity: 1;
   margin-top: 0.75rem;
 }
