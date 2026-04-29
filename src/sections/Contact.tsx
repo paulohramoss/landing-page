@@ -167,11 +167,11 @@ function Contact(): JSX.Element {
           <form className="contact-form" ref={formRef} onSubmit={handleSubmit}>
             <div className="form-grid">
               <label>
-                Nome completo <span className="required-mark">*</span>
+                <span>Nome completo <span className="required-mark">*</span></span>
                 <input name="name" type="text" placeholder="Como devemos te chamar?" required />
               </label>
               <label>
-                Telefone / WhatsApp <span className="required-mark">*</span>
+                <span>Telefone / WhatsApp <span className="required-mark">*</span></span>
                 <input
                   name="phone"
                   type="tel"
@@ -184,7 +184,7 @@ function Contact(): JSX.Element {
             </div>
 
             <label>
-              Tipo de projeto <span className="required-mark">*</span>
+              <span>Tipo de projeto <span className="required-mark">*</span></span>
               <select name="projectType" defaultValue="" required>
                 <option value="" disabled>Selecione o tipo de projeto</option>
                 <option value="box-banheiro">Box de Banheiro</option>
