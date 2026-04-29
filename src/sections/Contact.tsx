@@ -31,6 +31,14 @@ function formatSize(bytes: number): string {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
+function maskPhone(value: string): string {
+  const d = value.replace(/\D/g, '').slice(0, 11);
+  if (d.length <= 10) {
+    return d.replace(/^(\d{2})(\d)/, '($1) $2').replace(/(\d{4})(\d)/, '$1-$2');
+  }
+  return d.replace(/^(\d{2})(\d)/, '($1) $2').replace(/(\d{5})(\d)/, '$1-$2');
+}
+
 function getBadge(file: File): { label: string; mod: string } {
   if (file.type.startsWith('image/')) return { label: 'IMG', mod: 'img' };
   if (file.type === 'application/pdf') return { label: 'PDF', mod: 'pdf' };
@@ -43,6 +51,7 @@ function Contact(): JSX.Element {
   const [formStatus, setFormStatus] = useState<FormStatus>('idle');
   const [selectedFiles, setSelectedFiles] = useState<FileEntry[]>([]);
   const [isDragging, setIsDragging] = useState(false);
+  const [phone, setPhone] = useState('');
   const formRef = useRef<HTMLFormElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const createdUrls = useRef<Set<string>>(new Set());
@@ -130,6 +139,7 @@ function Contact(): JSX.Element {
       });
       setFormStatus('success');
       setSelectedFiles([]);
+      setPhone('');
       form.reset();
     } catch (error) {
       console.error('Não foi possível enviar a mensagem.', error);
@@ -157,17 +167,24 @@ function Contact(): JSX.Element {
           <form className="contact-form" ref={formRef} onSubmit={handleSubmit}>
             <div className="form-grid">
               <label>
-                Nome completo
+                Nome completo <span className="required-mark">*</span>
                 <input name="name" type="text" placeholder="Como devemos te chamar?" required />
               </label>
               <label>
-                Telefone / WhatsApp
-                <input name="phone" type="tel" placeholder="(49) 99999-9999" required />
+                Telefone / WhatsApp <span className="required-mark">*</span>
+                <input
+                  name="phone"
+                  type="tel"
+                  placeholder="(49) 99999-9999"
+                  value={phone}
+                  onChange={e => setPhone(maskPhone(e.target.value))}
+                  required
+                />
               </label>
             </div>
 
             <label>
-              Tipo de projeto
+              Tipo de projeto <span className="required-mark">*</span>
               <select name="projectType" defaultValue="" required>
                 <option value="" disabled>Selecione o tipo de projeto</option>
                 <option value="box-banheiro">Box de Banheiro</option>
