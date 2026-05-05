@@ -1,37 +1,45 @@
-import { useEffect, useRef, useState } from 'react';
-import { AnimatePresence, motion, useReducedMotion, Variants, useInView } from 'framer-motion';
-import boxBanheiro from '../assets/box-banheiro.jpg';
-import fachadaCasa from '../assets/fachada-casa.jpg';
-import portaAluminio from '../assets/porta-aluminio.jpg';
+import { useEffect, useRef, useState } from "react";
+import {
+  AnimatePresence,
+  motion,
+  useReducedMotion,
+  Variants,
+  useInView,
+} from "framer-motion";
+import boxBanheiro from "../assets/box-banheiro.jpg";
+import fachadaCasa from "../assets/fachada-casa.jpg";
+import portaAluminio from "../assets/porta-aluminio.jpg";
 
 type HeroSlide = {
   alt: string;
   caption: string;
   badge: string;
   src: string;
-  objectFit?: 'cover' | 'contain';
+  objectFit?: "cover" | "contain";
 };
 
 const heroSlides: HeroSlide[] = [
   {
     src: boxBanheiro,
-    alt: 'Box de banheiro com vidro temperado e perfis em alumínio dourado.',
-    caption: 'Box de banheiro com vidro temperado e perfis em alumínio dourado.',
-    badge: 'Box e Espelhos',
-    objectFit: 'contain'
+    alt: "Box de banheiro com vidro temperado e perfis em alumínio dourado.",
+    caption:
+      "Box de banheiro com vidro temperado e perfis em alumínio dourado.",
+    badge: "Box e Espelhos",
+    objectFit: "contain",
   },
   {
     src: fachadaCasa,
-    alt: 'Fachada residencial com amplos painéis de vidro.',
-    caption: 'Fachada residencial com esquadrias de alumínio sob medida.',
-    badge: 'Fachadas'
+    alt: "Fachada residencial com amplos painéis de vidro.",
+    caption: "Fachada residencial com esquadrias de alumínio sob medida.",
+    badge: "Fachadas",
   },
   {
     src: portaAluminio,
-    alt: 'Porta de alumínio com acabamento sofisticado.',
-    caption: 'Porta de alumínio de alto padrão para uso comercial e residencial.',
-    badge: 'Esquadrias'
-  }
+    alt: "Porta de alumínio com acabamento sofisticado.",
+    caption:
+      "Porta de alumínio de alto padrão para uso comercial e residencial.",
+    badge: "Esquadrias",
+  },
 ];
 
 const SLIDE_DURATION = 7000;
@@ -39,8 +47,8 @@ const SLIDE_DURATION = 7000;
 const containerVariants: Variants = {
   hidden: {},
   visible: {
-    transition: { staggerChildren: 0.15, delayChildren: 0.1 }
-  }
+    transition: { staggerChildren: 0.15, delayChildren: 0.1 },
+  },
 };
 
 const itemVariants: Variants = {
@@ -48,8 +56,8 @@ const itemVariants: Variants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.65, ease: 'easeOut' }
-  }
+    transition: { duration: 0.65, ease: "easeOut" },
+  },
 };
 
 const mediaVariants: Variants = {
@@ -58,8 +66,8 @@ const mediaVariants: Variants = {
     opacity: 1,
     x: 0,
     scale: 1,
-    transition: { duration: 0.9, ease: 'easeOut', delay: 0.2 }
-  }
+    transition: { duration: 0.9, ease: "easeOut", delay: 0.2 },
+  },
 };
 
 const slideVariants: Variants = {
@@ -67,11 +75,16 @@ const slideVariants: Variants = {
   visible: {
     opacity: 1,
     scale: 1,
-    transition: { duration: 0.6, ease: 'easeOut' }
-  }
+    transition: { duration: 0.6, ease: "easeOut" },
+  },
 };
 
-function useCountUp(target: number, decimals: number, duration: number, active: boolean): number {
+function useCountUp(
+  target: number,
+  decimals: number,
+  duration: number,
+  active: boolean,
+): number {
   const [count, setCount] = useState(0);
   const rafRef = useRef<number>();
 
@@ -104,11 +117,11 @@ function Hero(): JSX.Element {
   const autoPlayRef = useRef<number | undefined>(undefined);
 
   const statsRef = useRef(null);
-  const statsInView = useInView(statsRef, { once: true, margin: '-40px' });
+  const statsInView = useInView(statsRef, { once: true, margin: "-40px" });
   const countersActive = statsInView && !prefersReducedMotion;
 
   const count25 = useCountUp(25, 0, 1.8, countersActive);
-  const count2000 = useCountUp(2000, 0, 2.2, countersActive);
+  const count20000 = useCountUp(20000, 0, 2.2, countersActive);
   const count49 = useCountUp(4.9, 1, 1.8, countersActive);
 
   useEffect(() => {
@@ -119,14 +132,16 @@ function Hero(): JSX.Element {
     }, SLIDE_DURATION);
 
     return () => {
-      if (autoPlayRef.current !== undefined) window.clearInterval(autoPlayRef.current);
+      if (autoPlayRef.current !== undefined)
+        window.clearInterval(autoPlayRef.current);
     };
   }, [prefersReducedMotion]);
 
   const handleSelectSlide = (index: number) => {
     setCurrentSlide(index);
     if (prefersReducedMotion) return;
-    if (autoPlayRef.current !== undefined) window.clearInterval(autoPlayRef.current);
+    if (autoPlayRef.current !== undefined)
+      window.clearInterval(autoPlayRef.current);
     autoPlayRef.current = window.setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
     }, SLIDE_DURATION);
@@ -148,7 +163,8 @@ function Hero(): JSX.Element {
             Desde 2001 — Vidraçaria de confiança
           </motion.span>
           <motion.h1 variants={itemVariants}>
-            Vidros temperados e esquadrias de alumínio de alta qualidade: segurança e estilo para o seu espaço.
+            Vidros temperados e esquadrias de alumínio de alta qualidade:
+            segurança e estilo para o seu espaço.
           </motion.h1>
 
           <motion.p variants={itemVariants}>
@@ -165,17 +181,21 @@ function Hero(): JSX.Element {
             </a>
           </motion.div>
 
-          <motion.ul className="hero-stats" ref={statsRef} variants={itemVariants}>
+          <motion.ul
+            className="hero-stats"
+            ref={statsRef}
+            variants={itemVariants}
+          >
             <li>
-              <strong>{prefersReducedMotion ? '25' : count25}+</strong>
+              <strong>{prefersReducedMotion ? "25" : count25}+</strong>
               <span>Anos de experiência</span>
             </li>
             <li>
-              <strong>{prefersReducedMotion ? '2.000' : count2000}+</strong>
+              <strong>{prefersReducedMotion ? "20.000" : count20000}+</strong>
               <span>Projetos entregues</span>
             </li>
             <li>
-              <strong>{prefersReducedMotion ? '4.9' : count49}/5</strong>
+              <strong>{prefersReducedMotion ? "4.9" : count49}/5</strong>
               <span>Avaliação dos clientes</span>
             </li>
           </motion.ul>
@@ -190,21 +210,23 @@ function Hero(): JSX.Element {
         >
           <motion.div
             className="hero-media-slides"
-            animate=
-            {prefersReducedMotion
-              ? undefined
-              : {
-                y: [0, -10, 0],
-                rotate: [0, 0.6, -0.6, 0]
-              }}
-            transition=
-            {prefersReducedMotion
-              ? undefined
-              : {
-                duration: 12,
-                ease: 'easeInOut',
-                repeat: Infinity
-              }}
+            animate={
+              prefersReducedMotion
+                ? undefined
+                : {
+                    y: [0, -10, 0],
+                    rotate: [0, 0.6, -0.6, 0],
+                  }
+            }
+            transition={
+              prefersReducedMotion
+                ? undefined
+                : {
+                    duration: 12,
+                    ease: "easeInOut",
+                    repeat: Infinity,
+                  }
+            }
           >
             {/* Badge flutuante */}
             <AnimatePresence mode="wait">
@@ -226,7 +248,7 @@ function Hero(): JSX.Element {
                 className="hero-media-image"
                 src={activeSlide.src}
                 alt={activeSlide.alt}
-                style={{ objectFit: activeSlide.objectFit ?? 'cover' }}
+                style={{ objectFit: activeSlide.objectFit ?? "cover" }}
               />
             ) : (
               <AnimatePresence mode="wait">
@@ -235,7 +257,7 @@ function Hero(): JSX.Element {
                   className="hero-media-image"
                   src={activeSlide.src}
                   alt={activeSlide.alt}
-                  style={{ objectFit: activeSlide.objectFit ?? 'cover' }}
+                  style={{ objectFit: activeSlide.objectFit ?? "cover" }}
                   initial="hidden"
                   animate="visible"
                   exit="hidden"
@@ -250,8 +272,12 @@ function Hero(): JSX.Element {
                 <motion.figcaption
                   key={activeSlide.caption}
                   initial={prefersReducedMotion ? false : { opacity: 0, y: 10 }}
-                  animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
-                  exit={prefersReducedMotion ? undefined : { opacity: 0, y: 10 }}
+                  animate={
+                    prefersReducedMotion ? undefined : { opacity: 1, y: 0 }
+                  }
+                  exit={
+                    prefersReducedMotion ? undefined : { opacity: 0, y: 10 }
+                  }
                   transition={{ duration: 0.35 }}
                   aria-live="polite"
                 >
@@ -261,18 +287,22 @@ function Hero(): JSX.Element {
             </AnimatePresence>
 
             {/* Dots */}
-            <div className="hero-media-dots" role="tablist" aria-label="Projetos em destaque">
+            <div
+              className="hero-media-dots"
+              role="tablist"
+              aria-label="Projetos em destaque"
+            >
               {heroSlides.map((slide, index) => {
                 const isActive = index === currentSlide;
                 return (
                   <button
                     key={slide.badge}
                     type="button"
-                    className={`hero-media-dot${isActive ? ' is-active' : ''}`}
+                    className={`hero-media-dot${isActive ? " is-active" : ""}`}
                     onClick={() => handleSelectSlide(index)}
                     aria-label={`Mostrar: ${slide.badge}`}
                     aria-pressed={isActive}
-                    aria-current={isActive ? 'true' : undefined}
+                    aria-current={isActive ? "true" : undefined}
                   />
                 );
               })}
