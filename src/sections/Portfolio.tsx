@@ -2,15 +2,22 @@ import { useState, useRef } from 'react';
 import { AnimatePresence, motion, useInView } from 'framer-motion';
 import { MagnifyingGlass } from '@phosphor-icons/react';
 import casaVidro from '../assets/portfolio/casa-vidro.jpeg';
+import casaVidroWebp from '../assets/portfolio/casa-vidro.webp';
 import duasRodas from '../assets/portfolio/duas-rodas.jpeg';
+import duasRodasWebp from '../assets/portfolio/duas-rodas.webp';
 import container from '../assets/portfolio/container.jpeg';
+import containerWebp from '../assets/portfolio/container.webp';
 import gambatoo from '../assets/portfolio/gambatoo.jpeg';
+import gambatooWebp from '../assets/portfolio/gambatoo.webp';
 import PortfolioLightbox from '../components/PortfolioLightbox';
 
 type Category = 'residencial' | 'comercial';
 
 type Project = {
   image: string;
+  imageWebp: string;
+  width: number;
+  height: number;
   category: Category;
   badge: string;
   title: string;
@@ -20,6 +27,9 @@ type Project = {
 const projects: Project[] = [
   {
     image: casaVidro,
+    imageWebp: casaVidroWebp,
+    width: 1080,
+    height: 788,
     category: 'residencial',
     badge: 'Residencial',
     title: 'Residência contemporânea',
@@ -28,6 +38,9 @@ const projects: Project[] = [
   },
   {
     image: duasRodas,
+    imageWebp: duasRodasWebp,
+    width: 1080,
+    height: 782,
     category: 'comercial',
     badge: 'Comercial',
     title: 'Concessionária Duas Rodas',
@@ -36,6 +49,9 @@ const projects: Project[] = [
   },
   {
     image: container,
+    imageWebp: containerWebp,
+    width: 1042,
+    height: 782,
     category: 'comercial',
     badge: 'Comercial',
     title: 'Módulo multiuso em container',
@@ -44,6 +60,9 @@ const projects: Project[] = [
   },
   {
     image: gambatoo,
+    imageWebp: gambatooWebp,
+    width: 1080,
+    height: 544,
     category: 'comercial',
     badge: 'Comercial',
     title: 'Fachada Gambatto',
@@ -96,7 +115,17 @@ function Portfolio(): JSX.Element {
               onKeyDown={(e) => e.key === 'Enter' && openLightbox(i)}
             >
               <div className="portfolio-card__image-wrap">
-                <img src={project.image} alt={project.title} />
+                <picture>
+                  <source srcSet={project.imageWebp} type="image/webp" />
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    width={project.width}
+                    height={project.height}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </picture>
                 <div className="portfolio-card__zoom" aria-hidden="true">
                   <MagnifyingGlass size={28} weight="bold" />
                 </div>
@@ -118,6 +147,7 @@ function Portfolio(): JSX.Element {
           <PortfolioLightbox
             images={projects.map((p) => ({
               src: p.image,
+              srcWebp: p.imageWebp,
               title: p.title,
               description: p.description,
               badge: p.badge

@@ -1,20 +1,25 @@
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion, Variants, useInView } from 'framer-motion';
 import boxBanheiro from '../assets/box-banheiro.jpg';
+import boxBanheiroWebp from '../assets/box-banheiro.webp';
 import fachadaCasa from '../assets/fachada-casa.jpg';
+import fachadaCasaWebp from '../assets/fachada-casa.webp';
 import portaAluminio from '../assets/porta-aluminio.jpg';
+import portaAluminioWebp from '../assets/porta-aluminio.webp';
 
 type HeroSlide = {
   alt: string;
   caption: string;
   badge: string;
   src: string;
+  srcWebp: string;
   objectFit?: 'cover' | 'contain';
 };
 
 const heroSlides: HeroSlide[] = [
   {
     src: boxBanheiro,
+    srcWebp: boxBanheiroWebp,
     alt: 'Box de banheiro com vidro temperado e perfis em alumínio dourado.',
     caption: 'Box de banheiro com vidro temperado e perfis em alumínio dourado.',
     badge: 'Box e Espelhos',
@@ -22,12 +27,14 @@ const heroSlides: HeroSlide[] = [
   },
   {
     src: fachadaCasa,
+    srcWebp: fachadaCasaWebp,
     alt: 'Fachada residencial com amplos painéis de vidro.',
     caption: 'Fachada residencial com esquadrias de alumínio sob medida.',
     badge: 'Fachadas'
   },
   {
     src: portaAluminio,
+    srcWebp: portaAluminioWebp,
     alt: 'Porta de alumínio com acabamento sofisticado.',
     caption: 'Porta de alumínio de alto padrão para uso comercial e residencial.',
     badge: 'Esquadrias'
@@ -222,25 +229,30 @@ function Hero(): JSX.Element {
 
             {/* Slide de imagem */}
             {prefersReducedMotion ? (
-              <img
-                className="hero-media-image"
-                src={activeSlide.src}
-                alt={activeSlide.alt}
-                style={{ objectFit: activeSlide.objectFit ?? 'cover' }}
-              />
-            ) : (
-              <AnimatePresence mode="wait">
-                <motion.img
-                  key={activeSlide.src}
+              <picture>
+                <source srcSet={activeSlide.srcWebp} type="image/webp" />
+                <img
                   className="hero-media-image"
                   src={activeSlide.src}
                   alt={activeSlide.alt}
                   style={{ objectFit: activeSlide.objectFit ?? 'cover' }}
-                  initial="hidden"
-                  animate="visible"
-                  exit="hidden"
-                  variants={slideVariants}
                 />
+              </picture>
+            ) : (
+              <AnimatePresence mode="wait">
+                <picture key={activeSlide.src}>
+                  <source srcSet={activeSlide.srcWebp} type="image/webp" />
+                  <motion.img
+                    className="hero-media-image"
+                    src={activeSlide.src}
+                    alt={activeSlide.alt}
+                    style={{ objectFit: activeSlide.objectFit ?? 'cover' }}
+                    initial="hidden"
+                    animate="visible"
+                    exit="hidden"
+                    variants={slideVariants}
+                  />
+                </picture>
               </AnimatePresence>
             )}
 

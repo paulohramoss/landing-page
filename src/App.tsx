@@ -1,7 +1,9 @@
 import Footer from './components/Footer';
 import Header from './components/Header';
 import FloatingWhatsAppButton from './components/FloatingWhatsAppButton';
+import CallToAction from './sections/CallToAction';
 import Contact from './sections/Contact';
+import FAQ from './sections/FAQ';
 import Hero from './sections/Hero';
 import Highlights from './sections/Highlights';
 import Portfolio from './sections/Portfolio';
@@ -20,6 +22,8 @@ function App(): JSX.Element {
         <Portfolio />
         <Process />
         <Testimonials />
+        <CallToAction />
+        <FAQ />
         <Contact />
       </main>
       <Footer />

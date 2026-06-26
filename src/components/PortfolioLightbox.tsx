@@ -4,6 +4,7 @@ import { X, ArrowLeft, ArrowRight } from '@phosphor-icons/react';
 
 type LightboxImage = {
   src: string;
+  srcWebp: string;
   title: string;
   description: string;
   badge: string;
@@ -62,16 +63,18 @@ function PortfolioLightbox({
       >
         <div className="lightbox-image-wrap">
           <AnimatePresence mode="wait">
-            <motion.img
-              key={current.src}
-              src={current.src}
-              alt={current.title}
-              className="lightbox-image"
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -30 }}
-              transition={{ duration: 0.22 }}
-            />
+            <picture key={current.src}>
+              <source srcSet={current.srcWebp} type="image/webp" />
+              <motion.img
+                src={current.src}
+                alt={current.title}
+                className="lightbox-image"
+                initial={{ opacity: 0, x: 30 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -30 }}
+                transition={{ duration: 0.22 }}
+              />
+            </picture>
           </AnimatePresence>
 
           <button className="lightbox-close" onClick={onClose} aria-label="Fechar">

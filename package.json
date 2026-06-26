@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "generate:webp": "node scripts/generate-webp.cjs"
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.3",
@@ -25,6 +26,7 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-react": "^7.34.3",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "sharp": "^0.35.2",
     "typescript": "^5.4.5",
     "vite": "^5.2.11"
   }

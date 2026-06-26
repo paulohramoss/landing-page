@@ -5,6 +5,7 @@ const quickLinks = [
   { label: 'Serviços', href: '#servicos' },
   { label: 'Portfólio', href: '#portfolio' },
   { label: 'Como funciona', href: '#processo' },
+  { label: 'FAQ', href: '#faq' },
   { label: 'Contato', href: '#contato' }
 ];
 
@@ -17,10 +18,10 @@ function Footer(): JSX.Element {
             <h4>Atendimento</h4>
             <p>Segunda a sexta das 8h às 18h</p>
             <p>
-              <a href="tel:+5549920007235">(49)92000-7235</a>
+              <a href="tel:+5549920007235">(49) 92000-7235</a>
             </p>
             <p>
-              <a href="tel:+5549991368810">(49)99136-8810</a>
+              <a href="tel:+5549991368810">(49) 99136-8810</a>
             </p>
             <p>
               <a href="mailto:vidraramos1@gmail.com">vidraramos1@gmail.com</a>

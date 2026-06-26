@@ -1,6 +1,7 @@
 import { FormEvent, DragEvent, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { WhatsAppModal } from '../components/WhatsAppModal';
+import { trackEvent } from '../lib/analytics';
 import {
   WhatsappLogo,
   Phone,
@@ -9,6 +10,7 @@ import {
   CheckCircle,
   WarningCircle,
   UploadSimple,
+  Paperclip,
   X
 } from '@phosphor-icons/react';
 
@@ -52,6 +54,7 @@ function Contact(): JSX.Element {
   const [selectedFiles, setSelectedFiles] = useState<FileEntry[]>([]);
   const [isDragging, setIsDragging] = useState(false);
   const [phone, setPhone] = useState('');
+  const [showFileUpload, setShowFileUpload] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const createdUrls = useRef<Set<string>>(new Set());
@@ -137,8 +140,10 @@ function Contact(): JSX.Element {
           createdUrls.current.delete(preview);
         }
       });
+      trackEvent('generate_lead', { project_type: getValue('projectType') });
       setFormStatus('success');
       setSelectedFiles([]);
+      setShowFileUpload(false);
       setPhone('');
       form.reset();
     } catch (error) {
@@ -207,73 +212,90 @@ function Contact(): JSX.Element {
             </label>
 
             <div className="file-upload-field">
-              <p className="file-upload-label">
-                Arquivos do projeto{' '}
-                <span className="file-upload-label__optional">(opcional)</span>
-              </p>
+              {!showFileUpload && selectedFiles.length === 0 ? (
+                <button
+                  type="button"
+                  className="file-upload-toggle"
+                  onClick={() => setShowFileUpload(true)}
+                >
+                  <Paperclip size={16} weight="bold" />
+                  Anexar foto ou arquivo do projeto (opcional)
+                </button>
+              ) : (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  transition={{ duration: 0.25, ease: 'easeOut' }}
+                >
+                  <p className="file-upload-label">
+                    Arquivos do projeto{' '}
+                    <span className="file-upload-label__optional">(opcional)</span>
+                  </p>
 
-              <div
-                className={`file-upload-zone${isDragging ? ' file-upload-zone--dragging' : ''}${atLimit ? ' file-upload-zone--disabled' : ''}`}
-                onClick={() => !atLimit && fileInputRef.current?.click()}
-                onDragOver={!atLimit ? handleDragOver : undefined}
-                onDragLeave={handleDragLeave}
-                onDrop={!atLimit ? handleDrop : undefined}
-                role="button"
-                tabIndex={atLimit ? -1 : 0}
-                onKeyDown={e => !atLimit && e.key === 'Enter' && fileInputRef.current?.click()}
-                aria-label="Área de upload de arquivos"
-              >
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  name="attachment"
-                  accept={ACCEPTED_ATTR}
-                  multiple
-                  onChange={handleFileChange}
-                  style={{ display: 'none' }}
-                />
-                <UploadSimple size={28} weight="duotone" />
-                <span className="file-upload-zone__title">
-                  {atLimit
-                    ? `Limite de ${MAX_FILES} arquivos atingido`
-                    : 'Clique ou arraste arquivos aqui'}
-                </span>
-                <span className="file-upload-zone__hint">
-                  PDF, DOC, DOCX, JPG, PNG · máx. {MAX_FILES} arquivos
-                </span>
-              </div>
+                  <div
+                    className={`file-upload-zone${isDragging ? ' file-upload-zone--dragging' : ''}${atLimit ? ' file-upload-zone--disabled' : ''}`}
+                    onClick={() => !atLimit && fileInputRef.current?.click()}
+                    onDragOver={!atLimit ? handleDragOver : undefined}
+                    onDragLeave={handleDragLeave}
+                    onDrop={!atLimit ? handleDrop : undefined}
+                    role="button"
+                    tabIndex={atLimit ? -1 : 0}
+                    onKeyDown={e => !atLimit && e.key === 'Enter' && fileInputRef.current?.click()}
+                    aria-label="Área de upload de arquivos"
+                  >
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      name="attachment"
+                      accept={ACCEPTED_ATTR}
+                      multiple
+                      onChange={handleFileChange}
+                      style={{ display: 'none' }}
+                    />
+                    <UploadSimple size={28} weight="duotone" />
+                    <span className="file-upload-zone__title">
+                      {atLimit
+                        ? `Limite de ${MAX_FILES} arquivos atingido`
+                        : 'Clique ou arraste arquivos aqui'}
+                    </span>
+                    <span className="file-upload-zone__hint">
+                      PDF, DOC, DOCX, JPG, PNG · máx. {MAX_FILES} arquivos
+                    </span>
+                  </div>
 
-              {selectedFiles.length > 0 && (
-                <ul className="file-upload-list">
-                  {selectedFiles.map(({ file, preview }, i) => {
-                    const badge = getBadge(file);
-                    return (
-                      <li key={`${file.name}-${i}`} className="file-upload-item">
-                        {preview ? (
-                          <img
-                            src={preview}
-                            alt={file.name}
-                            className="file-upload-item__thumb"
-                          />
-                        ) : (
-                          <span className={`file-upload-item__badge file-upload-item__badge--${badge.mod}`}>
-                            {badge.label}
-                          </span>
-                        )}
-                        <span className="file-upload-item__name">{file.name}</span>
-                        <span className="file-upload-item__size">{formatSize(file.size)}</span>
-                        <button
-                          type="button"
-                          className="file-upload-remove"
-                          onClick={() => removeFile(i)}
-                          aria-label={`Remover ${file.name}`}
-                        >
-                          <X size={13} weight="bold" />
-                        </button>
-                      </li>
-                    );
-                  })}
-                </ul>
+                  {selectedFiles.length > 0 && (
+                    <ul className="file-upload-list">
+                      {selectedFiles.map(({ file, preview }, i) => {
+                        const badge = getBadge(file);
+                        return (
+                          <li key={`${file.name}-${i}`} className="file-upload-item">
+                            {preview ? (
+                              <img
+                                src={preview}
+                                alt={file.name}
+                                className="file-upload-item__thumb"
+                              />
+                            ) : (
+                              <span className={`file-upload-item__badge file-upload-item__badge--${badge.mod}`}>
+                                {badge.label}
+                              </span>
+                            )}
+                            <span className="file-upload-item__name">{file.name}</span>
+                            <span className="file-upload-item__size">{formatSize(file.size)}</span>
+                            <button
+                              type="button"
+                              className="file-upload-remove"
+                              onClick={() => removeFile(i)}
+                              aria-label={`Remover ${file.name}`}
+                            >
+                              <X size={13} weight="bold" />
+                            </button>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  )}
+                </motion.div>
               )}
             </div>
 

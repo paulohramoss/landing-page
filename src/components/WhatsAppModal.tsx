@@ -1,5 +1,6 @@
 import { X, WhatsappLogo } from "@phosphor-icons/react";
 import { useEffect, useRef } from "react";
+import { trackEvent } from "../lib/analytics";
 
 interface WhatsAppModalProps {
   isOpen: boolean;
@@ -136,7 +137,10 @@ export function WhatsAppModal({ isOpen, onClose }: WhatsAppModalProps) {
                 padding: "1rem 1.5rem",
                 textDecoration: "none",
               }}
-              onClick={onClose}
+              onClick={() => {
+                trackEvent('whatsapp_click', { label: item.label });
+                onClose();
+              }}
             >
               <span>{item.label}</span>
               <WhatsappLogo size={24} />

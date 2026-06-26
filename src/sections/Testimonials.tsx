@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { useInView } from 'framer-motion';
+import { useInView, useReducedMotion } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 
 type Testimonial = {
@@ -48,14 +48,17 @@ function Testimonials(): JSX.Element {
   const inView = useInView(ref, { once: true, margin: '-80px' });
   const [active, setActive] = useState(0);
   const [direction, setDirection] = useState(1);
+  const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
+    if (prefersReducedMotion) return undefined;
+
     const interval = setInterval(() => {
       setDirection(1);
       setActive((prev) => (prev + 1) % testimonials.length);
-    }, 4000);
+    }, AUTOPLAY_INTERVAL);
     return () => clearInterval(interval);
-  }, []);
+  }, [prefersReducedMotion]);
 
   function goTo(index: number) {
     setDirection(index > active ? 1 : -1);
