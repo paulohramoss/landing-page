@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { AnimatePresence, motion, useInView } from 'framer-motion';
-import { MagnifyingGlass } from '@phosphor-icons/react';
+import { MagnifyingGlassIcon } from '@phosphor-icons/react';
 import casaVidro from '../assets/portfolio/casa-vidro.jpeg';
 import casaVidroWebp from '../assets/portfolio/casa-vidro.webp';
 import duasRodas from '../assets/portfolio/duas-rodas.jpeg';
@@ -127,7 +127,7 @@ function Portfolio(): JSX.Element {
                   />
                 </picture>
                 <div className="portfolio-card__zoom" aria-hidden="true">
-                  <MagnifyingGlass size={28} weight="bold" />
+                  <MagnifyingGlassIcon size={28} weight="bold" />
                 </div>
               </div>
               <div className="portfolio-card__content">

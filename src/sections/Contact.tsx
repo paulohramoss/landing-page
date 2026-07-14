@@ -300,7 +300,7 @@ function Contact(): JSX.Element {
             </div>
 
             <button className="btn primary" type="submit" disabled={isSubmitting}>
-              {isSubmitting ? 'Enviando...' : 'Enviar mensagem'}
+              {isSubmitting ? 'Enviando...' : 'Solicitar meu orçamento'}
             </button>
 
             <AnimatePresence>

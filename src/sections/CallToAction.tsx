@@ -1,4 +1,4 @@
-import { WhatsappLogo } from '@phosphor-icons/react';
+import { WhatsappLogoIcon } from '@phosphor-icons/react';
 import { useState } from 'react';
 import { WhatsAppModal } from '../components/WhatsAppModal';
 
@@ -24,7 +24,7 @@ function CallToAction(): JSX.Element {
             type="button"
             onClick={() => setIsModalOpen(true)}
           >
-            <WhatsappLogo size={22} weight="fill" />
+            <WhatsappLogoIcon size={22} weight="fill" />
             Falar no WhatsApp
           </button>
         </div>

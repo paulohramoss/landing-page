@@ -1,5 +1,4 @@
-import { motion, AnimatePresence } from 'framer-motion';
-import { useInView, useReducedMotion } from 'framer-motion';
+import { motion, useInView, useReducedMotion } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 
 type Testimonial = {
@@ -47,31 +46,20 @@ function Testimonials(): JSX.Element {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-80px' });
   const [active, setActive] = useState(0);
-  const [direction, setDirection] = useState(1);
   const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
     if (prefersReducedMotion) return undefined;
 
     const interval = setInterval(() => {
-      setDirection(1);
       setActive((prev) => (prev + 1) % testimonials.length);
     }, AUTOPLAY_INTERVAL);
     return () => clearInterval(interval);
   }, [prefersReducedMotion]);
 
   function goTo(index: number) {
-    setDirection(index > active ? 1 : -1);
     setActive(index);
   }
-
-  const variants = {
-    enter: (dir: number) => ({ opacity: 0, x: dir > 0 ? 60 : -60 }),
-    center: { opacity: 1, x: 0 },
-    exit: (dir: number) => ({ opacity: 0, x: dir > 0 ? -60 : 60 })
-  };
-
-  const t = testimonials[active];
 
   return (
     <section className="section" aria-labelledby="depoimentos-titulo" ref={ref}>
@@ -93,12 +81,12 @@ function Testimonials(): JSX.Element {
           <div className="testimonial-carousel-track">
             {testimonials.map((testimonial, i) => {
               const offset = i - active;
-              const normalizedOffset =
-                offset > testimonials.length / 2
-                  ? offset - testimonials.length
-                  : offset < -testimonials.length / 2
-                  ? offset + testimonials.length
-                  : offset;
+              let normalizedOffset = offset;
+              if (offset > testimonials.length / 2) {
+                normalizedOffset -= testimonials.length;
+              } else if (offset < -testimonials.length / 2) {
+                normalizedOffset += testimonials.length;
+              }
 
               const isActive = normalizedOffset === 0;
               const isPrev = normalizedOffset === -1;
@@ -123,7 +111,7 @@ function Testimonials(): JSX.Element {
                   style={{ cursor: isActive ? 'default' : 'pointer' }}
                 >
                   <div className="testimonial-stars" aria-label="5 estrelas">★★★★★</div>
-                  <blockquote>"{testimonial.quote}"</blockquote>
+                  <blockquote>&quot;{testimonial.quote}&quot;</blockquote>
                   <figcaption className="testimonial-author">
                     <div className="testimonial-avatar" aria-hidden="true">
                       {getInitials(testimonial.name)}
@@ -139,9 +127,9 @@ function Testimonials(): JSX.Element {
           </div>
 
           <div className="testimonial-dots" role="tablist" aria-label="Depoimentos">
-            {testimonials.map((_, i) => (
+            {testimonials.map((testimonial, i) => (
               <button
-                key={i}
+                key={testimonial.name}
                 role="tab"
                 aria-selected={i === active}
                 aria-label={`Depoimento ${i + 1}`}

@@ -7,20 +7,25 @@ import {
   useInView,
 } from "framer-motion";
 import boxBanheiro from "../assets/box-banheiro.jpg";
+import boxBanheiroWebp from "../assets/box-banheiro.webp";
 import fachadaCasa from "../assets/fachada-casa.jpg";
+import fachadaCasaWebp from "../assets/fachada-casa.webp";
 import portaAluminio from "../assets/porta-aluminio.jpg";
+import portaAluminioWebp from "../assets/porta-aluminio.webp";
 
 type HeroSlide = {
   alt: string;
   caption: string;
   badge: string;
   src: string;
+  srcWebp: string;
   objectFit?: "cover" | "contain";
 };
 
 const heroSlides: HeroSlide[] = [
   {
     src: boxBanheiro,
+    srcWebp: boxBanheiroWebp,
     alt: "Box de banheiro com vidro temperado e perfis em alumínio dourado.",
     caption:
       "Box de banheiro com vidro temperado e perfis em alumínio dourado.",
@@ -29,12 +34,14 @@ const heroSlides: HeroSlide[] = [
   },
   {
     src: fachadaCasa,
+    srcWebp: fachadaCasaWebp,
     alt: "Fachada residencial com amplos painéis de vidro.",
     caption: "Fachada residencial com esquadrias de alumínio sob medida.",
     badge: "Fachadas",
   },
   {
     src: portaAluminio,
+    srcWebp: portaAluminioWebp,
     alt: "Porta de alumínio com acabamento sofisticado.",
     caption:
       "Porta de alumínio de alto padrão para uso comercial e residencial.",
@@ -121,7 +128,7 @@ function Hero(): JSX.Element {
   const countersActive = statsInView && !prefersReducedMotion;
 
   const count25 = useCountUp(25, 0, 1.8, countersActive);
-  const count20000 = useCountUp(20000, 0, 2.2, countersActive);
+  const count2000 = useCountUp(2000, 0, 2.2, countersActive);
   const count49 = useCountUp(4.9, 1, 1.8, countersActive);
 
   useEffect(() => {
@@ -163,13 +170,13 @@ function Hero(): JSX.Element {
             Desde 2001 — Vidraçaria de confiança
           </motion.span>
           <motion.h1 variants={itemVariants}>
-            Vidros temperados e esquadrias de alumínio de alta qualidade:
-            segurança e estilo para o seu espaço.
+            Seu box, janela ou fachada sob medida — no prazo e com garantia.
           </motion.h1>
 
           <motion.p variants={itemVariants}>
-            Do box de banheiro à fachada comercial — projetos entregues com
-            prazo, garantia e qualidade comprovada.
+            Vidro temperado e esquadrias de alumínio instalados pela nossa
+            própria equipe, com medição no local e materiais certificados
+            INMETRO.
           </motion.p>
 
           <motion.div className="hero-actions" variants={itemVariants}>
@@ -191,12 +198,12 @@ function Hero(): JSX.Element {
               <span>Anos de experiência</span>
             </li>
             <li>
-              <strong>{prefersReducedMotion ? "20.000" : count20000}+</strong>
+              <strong>{prefersReducedMotion ? "2.000" : count2000}+</strong>
               <span>Projetos entregues</span>
             </li>
             <li>
               <strong>{prefersReducedMotion ? "4.9" : count49}/5</strong>
-              <span>Avaliação dos clientes</span>
+              <span>Avaliação no Google</span>
             </li>
           </motion.ul>
         </motion.div>
@@ -244,25 +251,40 @@ function Hero(): JSX.Element {
 
             {/* Slide de imagem */}
             {prefersReducedMotion ? (
-              <img
-                className="hero-media-image"
-                src={activeSlide.src}
-                alt={activeSlide.alt}
-                style={{ objectFit: activeSlide.objectFit ?? "cover" }}
-              />
-            ) : (
-              <AnimatePresence mode="wait">
-                <motion.img
-                  key={activeSlide.src}
+              <picture>
+                <source srcSet={activeSlide.srcWebp} type="image/webp" />
+                <img
                   className="hero-media-image"
                   src={activeSlide.src}
                   alt={activeSlide.alt}
+                  fetchPriority="high"
                   style={{ objectFit: activeSlide.objectFit ?? "cover" }}
+                />
+              </picture>
+            ) : (
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeSlide.src}
+                  className="hero-media-image"
                   initial="hidden"
                   animate="visible"
                   exit="hidden"
                   variants={slideVariants}
-                />
+                >
+                  <picture>
+                    <source srcSet={activeSlide.srcWebp} type="image/webp" />
+                    <img
+                      src={activeSlide.src}
+                      alt={activeSlide.alt}
+                      fetchPriority={currentSlide === 0 ? "high" : "auto"}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: activeSlide.objectFit ?? "cover",
+                      }}
+                    />
+                  </picture>
+                </motion.div>
               </AnimatePresence>
             )}
 
