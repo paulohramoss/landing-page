@@ -1693,6 +1693,104 @@ textarea:focus {
 
 /* ── Responsive ──────────────────────────────────────────── */
 
+/* ── Páginas de serviço ──────────────────────────────────── */
+
+.service-hero {
+  padding: 3rem 0 4rem;
+  background: linear-gradient(160deg, #ffffff 55%, #f5e8e6 100%);
+}
+
+.service-hero .container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.25rem;
+}
+
+.service-hero h1 {
+  font-size: clamp(2rem, 4.5vw, 3.2rem);
+  line-height: 1.1;
+  color: var(--color-dark);
+  max-width: 22ch;
+}
+
+.service-hero__intro {
+  font-size: 1.125rem;
+  color: var(--color-muted);
+  max-width: 62ch;
+}
+
+.service-hero__benefits {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 0.75rem 1.5rem;
+  width: 100%;
+}
+
+.service-hero__benefits li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-dark);
+  font-weight: 500;
+}
+
+.service-hero__benefits svg {
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.breadcrumb {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--color-muted);
+}
+
+.breadcrumb a {
+  color: var(--color-primary);
+}
+
+.service-ideal {
+  margin-top: 2rem;
+  text-align: center;
+  color: var(--color-muted);
+}
+
+.service-ideal strong {
+  color: var(--color-dark);
+}
+
+.related-services {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.related-services a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.7rem 1.2rem;
+  border-radius: 999px;
+  border: 1.5px solid var(--color-border);
+  color: var(--color-dark);
+  font-weight: 600;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.related-services a:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
 @media (max-width: 1024px) {
   .footer-grid {
     grid-template-columns: 1fr 1fr;
@@ -1722,9 +1820,20 @@ textarea:focus {
 
   .hero .container {
     grid-template-columns: 1fr;
-    gap: 2.5rem;
-    padding-top: 4rem;
+    gap: 1.75rem;
+    padding-top: 1.5rem;
     padding-bottom: 3rem;
+  }
+
+  /* Vidraçaria vende pelo olho: no celular a foto da obra vem primeiro */
+  .hero-media {
+    order: -1;
+    padding: 0;
+  }
+
+  .hero-media-slides {
+    aspect-ratio: 4 / 3;
+    max-height: 52vh;
   }
 
   .hero h1 {
@@ -1870,6 +1979,19 @@ textarea:focus {
   .contact-form,
   .contact-chat {
     padding: 1.75rem;
+  }
+
+  .service-hero {
+    padding: 2rem 0 3rem;
+  }
+
+  .service-hero .container {
+    align-items: center;
+    text-align: center;
+  }
+
+  .service-hero__benefits li {
+    justify-content: center;
   }
 
   .form-grid {

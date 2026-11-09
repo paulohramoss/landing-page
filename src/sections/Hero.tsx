@@ -167,7 +167,7 @@ function Hero(): JSX.Element {
           variants={containerVariants}
         >
           <motion.span className="hero-badge" variants={itemVariants}>
-            Desde 2001 — Vidraçaria de confiança
+            Vidraçaria em São Miguel do Oeste/SC desde 2001
           </motion.span>
           <motion.h1 variants={itemVariants}>
             Seu box, janela ou fachada sob medida — no prazo e com garantia.
@@ -257,7 +257,7 @@ function Hero(): JSX.Element {
                   className="hero-media-image"
                   src={activeSlide.src}
                   alt={activeSlide.alt}
-                  fetchPriority="high"
+                  {...{ fetchpriority: "high" }}
                   style={{ objectFit: activeSlide.objectFit ?? "cover" }}
                 />
               </picture>
@@ -276,7 +276,7 @@ function Hero(): JSX.Element {
                     <img
                       src={activeSlide.src}
                       alt={activeSlide.alt}
-                      fetchPriority={currentSlide === 0 ? "high" : "auto"}
+                      {...{ fetchpriority: currentSlide === 0 ? "high" : "auto" }}
                       style={{
                         width: "100%",
                         height: "100%",

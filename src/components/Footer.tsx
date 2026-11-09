@@ -1,12 +1,12 @@
 import { InstagramLogo, FacebookLogo } from '@phosphor-icons/react';
 
 const quickLinks = [
-  { label: 'Início', href: '#inicio' },
-  { label: 'Serviços', href: '#servicos' },
-  { label: 'Portfólio', href: '#portfolio' },
-  { label: 'Como funciona', href: '#processo' },
-  { label: 'FAQ', href: '#faq' },
-  { label: 'Contato', href: '#contato' }
+  { label: 'Início', href: '/#inicio' },
+  { label: 'Serviços', href: '/#servicos' },
+  { label: 'Portfólio', href: '/#portfolio' },
+  { label: 'Como funciona', href: '/#processo' },
+  { label: 'FAQ', href: '/#faq' },
+  { label: 'Contato', href: '/#contato' }
 ];
 
 function Footer(): JSX.Element {

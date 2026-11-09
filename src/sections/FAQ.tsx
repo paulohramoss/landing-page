@@ -1,10 +1,10 @@
 import { CaretDown } from '@phosphor-icons/react';
 import { AnimatePresence, motion, useInView } from 'framer-motion';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
-type FaqItem = { question: string; answer: string };
+export type FaqItem = { question: string; answer: string };
 
-const faqs: FaqItem[] = [
+export const homeFaqs: FaqItem[] = [
   {
     question: 'O orçamento tem algum custo?',
     answer:
@@ -27,28 +27,20 @@ const faqs: FaqItem[] = [
   }
 ];
 
-function FAQ(): JSX.Element {
+type FAQProps = {
+  items?: FaqItem[];
+  title?: string;
+};
+
+// O JSON-LD (FAQPage) é gerado estaticamente no build — ver scripts/prerender.mjs.
+function FAQ({
+  items = homeFaqs,
+  title = 'Perguntas que recebemos com frequência'
+}: FAQProps): JSX.Element {
+  const faqs = items;
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-80px' });
   const [openIndex, setOpenIndex] = useState<number | null>(0);
-
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.type = 'application/ld+json';
-    script.text = JSON.stringify({
-      '@context': 'https://schema.org',
-      '@type': 'FAQPage',
-      mainEntity: faqs.map((item) => ({
-        '@type': 'Question',
-        name: item.question,
-        acceptedAnswer: { '@type': 'Answer', text: item.answer }
-      }))
-    });
-    document.head.appendChild(script);
-    return () => {
-      document.head.removeChild(script);
-    };
-  }, []);
 
   return (
     <section className="section alt" id="faq" ref={ref}>
@@ -60,7 +52,7 @@ function FAQ(): JSX.Element {
           transition={{ duration: 0.6, ease: 'easeOut' }}
         >
           <span className="section-eyebrow">Dúvidas frequentes</span>
-          <h2>Perguntas que recebemos com frequência</h2>
+          <h2>{title}</h2>
           <p>
             Ainda com dúvidas? Fale com a nossa equipe pelo WhatsApp ou envie sua mensagem pelo
             formulário abaixo.
