@@ -466,6 +466,7 @@ main {
 
 .hero-media-badge {
   position: absolute;
+  z-index: 2;
   left: 1rem;
   top: 1rem;
   padding: 0.4rem 0.9rem;
@@ -505,6 +506,7 @@ main {
 
 .hero-media figcaption {
   position: absolute;
+  z-index: 2;
   left: 1rem;
   bottom: 1rem;
   padding: 0.4rem 0.9rem;
@@ -1752,6 +1754,18 @@ textarea:focus {
 
 .breadcrumb a {
   color: var(--color-primary);
+}
+
+.service-grid--options {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+@media (max-width: 640px) {
+  .service-grid--options {
+    grid-template-columns: 1fr;
+  }
 }
 
 .service-ideal {

@@ -67,7 +67,7 @@ function ServicePage({ service }: ServicePageProps): JSX.Element {
               <span className="section-eyebrow">Modelos e opções</span>
               <h2>O que fazemos em {service.name.toLowerCase()}</h2>
             </div>
-            <div className="service-grid">
+            <div className="service-grid service-grid--options">
               {service.options.map((option) => (
                 <article key={option.title} className="service-card">
                   <h3>{option.title}</h3>
