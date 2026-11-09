@@ -2,10 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import {
   AnimatePresence,
   motion,
-  useReducedMotion,
   Variants,
   useInView,
 } from "framer-motion";
+import { useReducedMotionSafe } from '../lib/useReducedMotionSafe';
 import boxBanheiro from "../assets/box-banheiro.jpg";
 import boxBanheiroWebp from "../assets/box-banheiro.webp";
 import fachadaCasa from "../assets/fachada-casa.jpg";
@@ -119,7 +119,7 @@ function useCountUp(
 }
 
 function Hero(): JSX.Element {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useReducedMotionSafe();
   const [currentSlide, setCurrentSlide] = useState(0);
   const autoPlayRef = useRef<number | undefined>(undefined);
 

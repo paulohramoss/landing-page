@@ -1,4 +1,5 @@
-import { motion, useInView, useReducedMotion } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
+import { useReducedMotionSafe } from '../lib/useReducedMotionSafe';
 import { useRef, useState, useEffect } from 'react';
 
 type Testimonial = {
@@ -46,7 +47,7 @@ function Testimonials(): JSX.Element {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-80px' });
   const [active, setActive] = useState(0);
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useReducedMotionSafe();
 
   useEffect(() => {
     if (prefersReducedMotion) return undefined;
