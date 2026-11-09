@@ -2,10 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import {
   AnimatePresence,
   motion,
-  useReducedMotion,
   Variants,
   useInView,
 } from "framer-motion";
+import { useReducedMotionSafe } from '../lib/useReducedMotionSafe';
 import boxBanheiro from "../assets/box-banheiro.jpg";
 import boxBanheiroWebp from "../assets/box-banheiro.webp";
 import fachadaCasa from "../assets/fachada-casa.jpg";
@@ -86,21 +86,34 @@ const slideVariants: Variants = {
   },
 };
 
+// Contagem de 0 até o número final quando os números aparecem na tela.
+// O valor inicial é o número final: assim o HTML pré-renderizado (Google,
+// visitante sem JavaScript) já mostra "25+", "20.000+"... e a hidratação bate.
+// Ao entrar na tela, zera e conta até o alvo. Roda mesmo com "reduzir
+// animações": é só o número mudando, sem movimento na tela.
+const COUNT_START_DELAY = 0.5; // segundos — espera os números terminarem de surgir
+
 function useCountUp(
   target: number,
   decimals: number,
   duration: number,
   active: boolean,
 ): number {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(target);
   const rafRef = useRef<number>();
+
+  // Logo após o React assumir a página, zera: quando o visitante rolar até
+  // os números, a contagem já parte do 0 (sem "piscar" o valor final antes).
+  useEffect(() => {
+    setCount(0);
+  }, []);
 
   useEffect(() => {
     if (!active) return;
-    const startTime = performance.now();
+    const startTime = performance.now() + COUNT_START_DELAY * 1000;
 
     const tick = (now: number) => {
-      const elapsed = (now - startTime) / 1000;
+      const elapsed = Math.max(0, (now - startTime) / 1000);
       const progress = Math.min(elapsed / duration, 1);
       const eased = 1 - Math.pow(1 - progress, 3);
       setCount(parseFloat((target * eased).toFixed(decimals)));
@@ -119,17 +132,16 @@ function useCountUp(
 }
 
 function Hero(): JSX.Element {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useReducedMotionSafe();
   const [currentSlide, setCurrentSlide] = useState(0);
   const autoPlayRef = useRef<number | undefined>(undefined);
 
   const statsRef = useRef(null);
   const statsInView = useInView(statsRef, { once: true, margin: "-40px" });
-  const countersActive = statsInView && !prefersReducedMotion;
 
-  const count25 = useCountUp(25, 0, 1.8, countersActive);
-  const count2000 = useCountUp(2000, 0, 2.2, countersActive);
-  const count49 = useCountUp(4.9, 1, 1.8, countersActive);
+  const count25 = useCountUp(25, 0, 2, statsInView);
+  const count20000 = useCountUp(20000, 0, 2.5, statsInView);
+  const count49 = useCountUp(4.9, 1, 2, statsInView);
 
   useEffect(() => {
     if (prefersReducedMotion) return undefined;
@@ -167,7 +179,7 @@ function Hero(): JSX.Element {
           variants={containerVariants}
         >
           <motion.span className="hero-badge" variants={itemVariants}>
-            Desde 2001 — Vidraçaria de confiança
+            Vidraçaria em São Miguel do Oeste/SC desde 2001
           </motion.span>
           <motion.h1 variants={itemVariants}>
             Seu box, janela ou fachada sob medida — no prazo e com garantia.
@@ -194,15 +206,15 @@ function Hero(): JSX.Element {
             variants={itemVariants}
           >
             <li>
-              <strong>{prefersReducedMotion ? "25" : count25}+</strong>
+              <strong>{count25}+</strong>
               <span>Anos de experiência</span>
             </li>
             <li>
-              <strong>{prefersReducedMotion ? "2.000" : count2000}+</strong>
+              <strong>{count20000.toLocaleString("pt-BR")}+</strong>
               <span>Projetos entregues</span>
             </li>
             <li>
-              <strong>{prefersReducedMotion ? "4.9" : count49}/5</strong>
+              <strong>{count49.toFixed(1)}/5</strong>
               <span>Avaliação no Google</span>
             </li>
           </motion.ul>
@@ -257,7 +269,7 @@ function Hero(): JSX.Element {
                   className="hero-media-image"
                   src={activeSlide.src}
                   alt={activeSlide.alt}
-                  fetchPriority="high"
+                  {...{ fetchpriority: "high" }}
                   style={{ objectFit: activeSlide.objectFit ?? "cover" }}
                 />
               </picture>
@@ -276,7 +288,7 @@ function Hero(): JSX.Element {
                     <img
                       src={activeSlide.src}
                       alt={activeSlide.alt}
-                      fetchPriority={currentSlide === 0 ? "high" : "auto"}
+                      {...{ fetchpriority: currentSlide === 0 ? "high" : "auto" }}
                       style={{
                         width: "100%",
                         height: "100%",

@@ -3,12 +3,12 @@ import { useState } from 'react';
 import Logo from './Logo';
 
 const navigation = [
-  { label: 'Início', href: '#inicio' },
-  { label: 'Serviços', href: '#servicos' },
-  { label: 'Portfólio', href: '#portfolio' },
-  { label: 'Processo', href: '#processo' },
-  { label: 'FAQ', href: '#faq' },
-  { label: 'Contato', href: '#contato' }
+  { label: 'Início', href: '/#inicio' },
+  { label: 'Serviços', href: '/#servicos' },
+  { label: 'Portfólio', href: '/#portfolio' },
+  { label: 'Processo', href: '/#processo' },
+  { label: 'FAQ', href: '/#faq' },
+  { label: 'Contato', href: '/#contato' }
 ];
 
 function Header(): JSX.Element {

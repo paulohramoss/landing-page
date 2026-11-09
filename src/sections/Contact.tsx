@@ -47,7 +47,9 @@ function getBadge(file: File): { label: string; mod: string } {
   return { label: 'DOC', mod: 'doc' };
 }
 
-function Contact(): JSX.Element {
+type ContactProps = { defaultProjectType?: string };
+
+function Contact({ defaultProjectType = '' }: ContactProps): JSX.Element {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formStatus, setFormStatus] = useState<FormStatus>('idle');
@@ -190,7 +192,7 @@ function Contact(): JSX.Element {
 
             <label>
               <span>Tipo de projeto <span className="required-mark">*</span></span>
-              <select name="projectType" defaultValue="" required>
+              <select name="projectType" defaultValue={defaultProjectType} required>
                 <option value="" disabled>Selecione o tipo de projeto</option>
                 <option value="box-banheiro">Box de Banheiro</option>
                 <option value="janelas">Janelas de Alumínio</option>

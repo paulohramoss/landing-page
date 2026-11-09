@@ -1,4 +1,5 @@
-import { motion, useInView, useReducedMotion } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
+import { useReducedMotionSafe } from '../lib/useReducedMotionSafe';
 import { useRef } from 'react';
 
 const steps = [
@@ -27,7 +28,7 @@ const steps = [
 function Process(): JSX.Element {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-80px' });
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useReducedMotionSafe();
 
   return (
     <section className="section alt" id="processo" ref={ref}>

@@ -1,6 +1,7 @@
 import { Shower, FrameCorners, Door, Buildings, FlipHorizontal, Umbrella, ArrowRight } from '@phosphor-icons/react';
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
+import { services as servicePages, serviceUrl } from '../data/services';
 
 const services = [
   {
@@ -77,8 +78,8 @@ function Services(): JSX.Element {
               <h3>{service.title}</h3>
               <p>{service.description}</p>
               <p className="service-card__detail">{service.detail}</p>
-              <a href="#contato" className="service-card__cta">
-                Solicitar orçamento <ArrowRight size={14} weight="bold" />
+              <a href={serviceUrl(servicePages[i])} className="service-card__cta">
+                Saiba mais sobre {servicePages[i].name.toLowerCase()} <ArrowRight size={14} weight="bold" />
               </a>
             </motion.article>
           ))}
