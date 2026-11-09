@@ -128,7 +128,7 @@ function Hero(): JSX.Element {
   const countersActive = statsInView && !prefersReducedMotion;
 
   const count25 = useCountUp(25, 0, 1.8, countersActive);
-  const count2000 = useCountUp(2000, 0, 2.2, countersActive);
+  const count20000 = useCountUp(20000, 0, 2.2, countersActive);
   const count49 = useCountUp(4.9, 1, 1.8, countersActive);
 
   useEffect(() => {
@@ -198,7 +198,7 @@ function Hero(): JSX.Element {
               <span>Anos de experiência</span>
             </li>
             <li>
-              <strong>{prefersReducedMotion ? "2.000" : count2000}+</strong>
+              <strong>{prefersReducedMotion ? "20.000" : count20000.toLocaleString("pt-BR")}+</strong>
               <span>Projetos entregues</span>
             </li>
             <li>

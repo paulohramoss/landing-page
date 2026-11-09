@@ -35,7 +35,7 @@ export const services: ServicePageData[] = [
     metaTitle: 'Box para Banheiro em São Miguel do Oeste/SC | Vidraçaria Ramos',
     metaDescription:
       'Box de vidro temperado sob medida em São Miguel do Oeste e região: modelos de correr, abrir e canto. Medição no local e orçamento grátis.',
-    h1: 'Box para banheiro sob medida em São Miguel do Oeste',
+    h1: 'Box para banheiro sob medida',
     intro:
       'Box de vidro temperado feito na medida exata do seu banheiro, com ferragens de qualidade e instalação pela nossa própria equipe. Vamos até você, medimos o espaço e indicamos o modelo que funciona melhor no seu dia a dia.',
     whatsappMessage: 'Olá! Vi o site e gostaria de um orçamento de box para banheiro.',
@@ -89,7 +89,7 @@ export const services: ServicePageData[] = [
     metaTitle: 'Janelas de Alumínio em São Miguel do Oeste/SC | Vidraçaria Ramos',
     metaDescription:
       'Janelas de alumínio sob medida em São Miguel do Oeste: correr, basculante, maxim-ar e pivotante. Medição no local e orçamento grátis.',
-    h1: 'Janelas de alumínio sob medida em São Miguel do Oeste',
+    h1: 'Janelas de alumínio sob medida',
     intro:
       'Esquadrias de alumínio feitas para o vão da sua obra, em todos os modelos mais usados. Atendemos construção nova e troca de janelas antigas, com medição no local e instalação pela nossa equipe.',
     whatsappMessage: 'Olá! Vi o site e gostaria de um orçamento de janelas de alumínio.',
@@ -131,7 +131,7 @@ export const services: ServicePageData[] = [
     metaTitle: 'Portas e Divisórias de Vidro em São Miguel do Oeste | Vidraçaria Ramos',
     metaDescription:
       'Portas de vidro temperado e divisórias internas sob medida em São Miguel do Oeste/SC para casas, lojas e escritórios. Orçamento grátis.',
-    h1: 'Portas e divisórias de vidro em São Miguel do Oeste',
+    h1: 'Portas e divisórias de vidro',
     intro:
       'Portas de vidro temperado e divisórias que deixam o ambiente mais claro, amplo e moderno. Fazemos sob medida para residências, lojas e escritórios.',
     whatsappMessage: 'Olá! Vi o site e gostaria de um orçamento de porta ou divisória de vidro.',
@@ -167,7 +167,7 @@ export const services: ServicePageData[] = [
     metaTitle: 'Fachadas de Vidro em São Miguel do Oeste/SC | Vidraçaria Ramos',
     metaDescription:
       'Fachadas comerciais em vidro e alumínio sob medida em São Miguel do Oeste e região. Valorize seu ponto comercial. Orçamento sem compromisso.',
-    h1: 'Fachadas comerciais de vidro em São Miguel do Oeste',
+    h1: 'Fachadas comerciais de vidro',
     intro:
       'A fachada é o cartão de visita do seu negócio. Projetamos e instalamos fachadas em vidro e alumínio que valorizam o ponto, aumentam a entrada de luz e deixam a vitrine à vista de quem passa.',
     whatsappMessage: 'Olá! Vi o site e gostaria de um orçamento de fachada de vidro.',
@@ -204,7 +204,7 @@ export const services: ServicePageData[] = [
     metaTitle: 'Espelhos Sob Medida em São Miguel do Oeste/SC | Vidraçaria Ramos',
     metaDescription:
       'Espelhos sob medida em São Miguel do Oeste para banheiros, academias, lojas e decoração. Bisotê, lapidado ou liso, com instalação.',
-    h1: 'Espelhos sob medida em São Miguel do Oeste',
+    h1: 'Espelhos sob medida',
     intro:
       'Espelhos cortados no tamanho exato da sua parede, para banheiro, quarto, academia, loja ou decoração. Entregamos instalado, com fixação segura.',
     whatsappMessage: 'Olá! Vi o site e gostaria de um orçamento de espelho.',
@@ -240,7 +240,7 @@ export const services: ServicePageData[] = [
     metaTitle: 'Guarda-corpo e Cobertura de Vidro em São Miguel do Oeste | Vidraçaria Ramos',
     metaDescription:
       'Guarda-corpo e cobertura de vidro laminado sob medida em São Miguel do Oeste/SC para varandas, escadas e áreas de lazer. Orçamento grátis.',
-    h1: 'Guarda-corpo e cobertura de vidro em São Miguel do Oeste',
+    h1: 'Guarda-corpo e cobertura de vidro',
     intro:
       'Segurança sem tapar a vista. Instalamos guarda-corpos e coberturas em vidro laminado para varandas, sacadas, escadas e áreas de lazer.',
     whatsappMessage: 'Olá! Vi o site e gostaria de um orçamento de guarda-corpo ou cobertura de vidro.',
