@@ -102,9 +102,14 @@ function useCountUp(
   const [count, setCount] = useState(target);
   const rafRef = useRef<number>();
 
+  // Logo após o React assumir a página, zera: quando o visitante rolar até
+  // os números, a contagem já parte do 0 (sem "piscar" o valor final antes).
+  useEffect(() => {
+    setCount(0);
+  }, []);
+
   useEffect(() => {
     if (!active) return;
-    setCount(0);
     const startTime = performance.now() + COUNT_START_DELAY * 1000;
 
     const tick = (now: number) => {
